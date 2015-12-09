@@ -1,0 +1,30 @@
+<form method="<?php echo $this->element->getMethod(); ?>" action="<?php echo $this->element->getAction(); ?>" id="<?php echo $this->element->getId(); ?>" enctype="<?php echo $this->element->getEncType(); ?>">
+	<div class="complete_form">
+	<div class="upper_form">
+			<?php
+			echo $this->{$this->element->tabel->helper}(
+					$this->element->tabel->getName(), $this->element->tabel->getValue(), $this->element->tabel->getAttribs()
+			);
+			?>
+			<?php
+			if (($this->element->tabel->getMessages())) {
+				echo $this->formErrors($this->element->tabel->getMessages());
+			}
+			?>
+			<div class="clear"></div>
+	</div>		
+<?php
+echo $this->{$this->element->button->helper}(
+		$this->element->button->getName(), $this->element->button->getValue(), $this->element->button->getAttribs()
+);
+?>			
+		<div class="clear"></div>
+	</div>
+</form>
+
+<script type="text/javascript">
+	SyntaxHighlighter.all()
+	$(document).ready(function() {
+		$('#<?php echo $this->element->getId(); ?>').validationEngine('attach', {promptPosition: "centerRight"});
+	});
+</script>

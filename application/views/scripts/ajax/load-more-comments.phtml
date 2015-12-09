@@ -1,0 +1,47 @@
+<?php 
+$parentComments = $this->parentComment;
+if($parentComments){
+?>
+<ul>
+<?php 
+	  foreach($parentComments as $comm){
+		  ?>
+		  <li class="comment">
+			  <p class="author"><?php echo $comm->getName();?></p>
+			  <?php $created = Needs_Strings::time_elapsed_string($comm->getCreated()); ?>
+			  <p class="time"><?php echo $created;?></p>
+			  <div class="clear"></div>   
+			  <p class="main_comment"><?php echo $comm->getComment(); ?></p>
+			  <a href="#comment_form" class="replyLink"  data-id="<?php echo $comm->getId(); ?>">Răspunde la comentariu</a>
+			 
+			  <?php 
+				  $childComments=Needs_Comments::getChildComments($comm->getId(), 1);
+				  if($childComments){ ?>
+				  <ul>
+				  <?php
+					  foreach($childComments as $commChild){ ?>
+						  <?php $created = Needs_Strings::time_elapsed_string($commChild->getCreated()); ?>
+						  <li class="reply">
+							  <p class="author"><?php echo $commChild->getName();?></p>
+							  <p class="time"><?php echo $created; ?></p>
+							  <div class="clear"></div>   
+							  <p class="main_comment"><?php echo $commChild->getComment();?></p>					
+						  </li> 
+					<?php
+					  }
+					?> 
+				 </ul>		  
+				<?php	  
+				}
+				?>
+		  </li>
+		  <?php
+	  } ?>
+	</ul>
+	<?php if($this->pageNr){ ?>
+		<a href="javascript:;" class="load_more">Încarcă mai multe comentarii</a>		  
+	<?php  } ?>
+<?php
+ }	  
+?>
+	

@@ -1,0 +1,225 @@
+<div class="main_forms">
+  <form method="<?php echo $this->element->getMethod();?>" action="<?php echo $this->element->getAction();?>" id="<?php echo $this->element->getId();?>" enctype="<?php echo $this->element->getEncType();?>">
+	<div class="left">
+		<!--BEGIN idProiect -->
+		<?php
+		echo $this->{$this->element->projectId->helper}(
+					$this->element->projectId->getName(),
+					$this->element->projectId->getValue(),					
+					$this->element->projectId->getAttribs()					
+				);
+		?>		
+		<!--BEGIN NUME -->
+		
+		<!--BEGIN ProjectManager -->
+
+		<?php
+			echo $this->{$this->element->idProjectManager->helper}(
+						$this->element->idProjectManager->getName(),
+						$this->element->idProjectManager->getValue(),					
+						$this->element->idProjectManager->getAttribs(),	
+						$this->element->idProjectManager->getMultiOptions()
+					);
+		?>
+		<?php
+			if(($this->element->idProjectManager->getMessages())){ echo  $this->formErrors($this->element->idProjectManager->getMessages());} 
+		?>   				
+		<div class="clear"></div>	
+		<!--BEGIN ChiefDepartment -->
+	
+		<!--BEGIN ProjectStatus -->
+
+		<?php
+			echo $this->{$this->element->idProjectStatus->helper}(
+						$this->element->idProjectStatus->getName(),
+						$this->element->idProjectStatus->getValue(),					
+						$this->element->idProjectStatus->getAttribs(),	
+						$this->element->idProjectStatus->getMultiOptions()
+					);
+		?>
+		
+		<?php
+			if(($this->element->idProjectStatus->getMessages())){ echo  $this->formErrors($this->element->idProjectStatus->getMessages());} 
+		?>  
+		<div class="clear"></div>	
+		
+		<!--BEGIN Fisiere atasate -->
+		
+		<label><input type="file" id="attachedFiles" name="attachedFiles" /></label>	
+		<div class="load_file_inputs"></div> <!--	save uploaded files in hidden inputs-->
+		<table class="load_files"></table> <!--	show uploaded files-->
+	</div>
+	<div class="clear"></div>
+	
+	<?php echo $this->{$this->element->submit->helper}(
+		$this->element->submit->getName(),
+		$this->element->submit->getValue(),
+		$this->element->submit->getAttribs()
+	);?>
+  </form>
+</div>
+<div id="confirmDefaultFileDelete" title="Confirmare" style="display:none;">
+	Confirmati stergerea de fisier?
+</div>
+
+<script>
+function getProjectType(){
+	var department = $("#idDepartment").val();
+	$.post( "<?php echo WEBROOT; ?>ajax/get-project-type-by-department",{ idDepartment: department }, function( data ) {
+		if(data){
+			try 
+			{
+				var items = eval('(' + data + ')');	
+			} catch (e) {}
+			if(items) 
+			{
+				$('#idType').html( items );
+				$.uniform.update("#idType");
+			}
+		}
+		
+	});	
+}	
+	
+$(document).ready(function(){
+
+	$('#<?php echo $this->element->getId(); ?>').validationEngine('attach', {promptPosition: "centerRight"});
+	
+	$("#idDepartment").change(function () {
+		getProjectType();	
+			
+	});
+	
+	$('#startDate').datepicker({dateFormat:'yy-mm-dd'});
+	$('#deliveryDate').datepicker({dateFormat:'yy-mm-dd'});
+	
+	//BEGIN:if edit Show saved files
+	//for edit
+	var projectId = $('#projectId').val();	
+	if(projectId){
+		// load files
+		$.post('<?php echo WEBROOT ?>ajax/show-saved-project-files', {'projectId':projectId,'fileType':'file'}, function(dataFile) 
+		{
+			try 
+			{
+				var itemsFile = eval('(' + dataFile + ')');
+			} catch (e) {}
+			if(itemsFile) 
+			{ 
+				$('.load_files').append(itemsFile);
+			}
+		});
+	}
+	
+	//BEGIN:delete SAVED Files
+	$(document).on('click','.deleteSavedDefault', function() {		
+			var valueId = $(this).attr('rel');
+			$("#confirmDefaultFileDelete").dialog({
+				bgiframe: true,
+				height: 140,
+				width: 400,
+				modal: true,
+				buttons:{
+					'<?php echo Zend_Registry::get('translate')->_('yes'); ?>': function(){				
+						$.get('<?php echo WEBROOT ?>ajax/delete-project-saved-uploads/fileId/'+valueId, function(dataFile) 
+						{
+							try 
+							{
+								var itemsFile = eval('(' + dataFile + ')');
+							} catch (e) {}
+							if(itemsFile) 
+							{								
+								$('.defaultSavedShow_'+valueId).remove();
+							}
+						});
+						$(this).dialog('close').dialog('destroy');		
+					},
+					'<?php echo Zend_Registry::get('translate')->_('no'); ?>': function(){
+						$(this).dialog('close').dialog('destroy');					
+					}
+				}
+			});
+			return false;		
+	});
+	//END:if edit Show saved files
+	//
+	//BEGIN:upload files
+	$('#attachedFiles').uploadify({
+		'swf'				: '<?php echo WEBROOT; ?>theme/admin/js/uploadify/uploadify.swf',
+		'uploader'			: '<?php echo WEBROOT ?>ajax/upload-project-files',
+		'removeCompleted'	: true,	
+		'scriptAccess'		: 'always',
+		'formData'			: {'PHPSESSID' : '<?php echo session_id(); ?>'},		
+		'onUploadSuccess'	: function(file, data, response) {
+			try 
+			{
+				var items= eval('(' + data + ')');
+			} catch (e) {}
+			if(items) 
+			{	
+				if(items.success)
+				{				
+					$('.load_file_inputs').append('<input type="hidden" id="gallery_'+items.fileId+'" name="galleryFiles[]" value="'+items.fileId+'" />'); 
+					// load files
+					$.post('<?php echo WEBROOT ?>ajax/show-project-uploads/', {'fileId':items.fileId,'fileType':'file'}, function(dataFile) 
+					{
+						try 
+						{
+							var itemsFile = eval('(' + dataFile + ')');
+						} catch (e) {}
+						if(itemsFile) 
+						{							
+							$('.load_files').append(itemsFile);
+						}
+					});
+				}else{
+					alert(items.message);
+				}	
+			}				
+	}		
+	
+    });	
+	//END:upload files
+	
+	// BEGIN:Delete uploaded files
+	$(document).on('click','.deleteDefault', function() {		
+			var valueId = $(this).attr('rel');
+			$("#confirmDefaultFileDelete").dialog({
+				bgiframe: true,
+				height: 140,
+				width: 400,
+				modal: true,
+				buttons:{
+					'<?php echo Zend_Registry::get('translate')->_('yes'); ?>': function(){				
+						$.get('<?php echo WEBROOT ?>ajax/delete-project-upload/fileId/'+valueId, function(dataFile) 
+						{
+							try 
+							{
+								var itemsFile = eval('(' + dataFile + ')');
+							} catch (e) {}
+							if(itemsFile) 
+							{								
+								$('#gallery_'+valueId).remove();								
+								$('.defaultShow_'+valueId).remove();
+							}
+						});
+						$(this).dialog('close').dialog('destroy');		
+					},
+					'<?php echo Zend_Registry::get('translate')->_('no'); ?>': function(){
+						$(this).dialog('close').dialog('destroy');					
+					}
+				}
+			});
+			return false;		
+		});
+		// END:Delete uploaded files
+		$("#idDepartment").uniform();
+		
+		$('#idType').uniform();
+		$("#idProjectManager").uniform();
+		$("#idChiefDepartment").uniform();
+		$("#idProjectStatus").uniform();
+		
+});
+
+</script>

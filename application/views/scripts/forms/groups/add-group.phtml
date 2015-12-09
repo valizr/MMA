@@ -1,0 +1,61 @@
+<div class="form_sidebar">
+    <form class="addForms" method="<?php echo $this->element->getMethod(); ?>" action="<?php echo $this->element->getAction(); ?>" id="<?php echo $this->element->getId(); ?>" enctype="<?php echo $this->element->getEncType(); ?>">
+        <!--BEGIN NUME -->
+        <div class="input_wrapper">		
+            <?php echo $this->{$this->element->control->helper}($this->element->control->getName(), $this->element->control->getValue(), $this->element->control->getAttribs()); ?>
+            <?php
+            echo $this->{$this->element->name->helper}(
+                    $this->element->name->getName(),
+                    $this->element->name->getValue(),
+                    $this->element->name->getAttribs()
+            )?>
+            <?php
+            if (($this->element->name->getMessages())) {
+                echo $this->formErrors($this->element->name->getMessages());
+            }?> 
+        </div>
+        <div class="clear"></div>
+
+        <div class="input_wrapper">		
+            <?php
+            echo $this->{$this->element->type->helper}(
+                    $this->element->type->getName(),
+                    $this->element->type->getValue(),
+                    $this->element->type->getAttribs(),
+                    $this->element->type->getMultiOptions()
+            )?>
+            <?php
+            if (($this->element->type->getMessages())) {
+                echo $this->formErrors($this->element->type->getMessages());
+            }?> 
+        </div>                        
+        <div class="clear"></div>
+        
+        <div class="input_wrapper">		
+            <?php
+            echo $this->{$this->element->color->helper}(
+                    $this->element->color->getName(),
+                    $this->element->color->getValue(),
+                    $this->element->color->getAttribs()
+            )?>
+            <?php
+            if (($this->element->type->getMessages())) {
+                echo $this->formErrors($this->element->type->getMessages());
+            }?> 
+        </div>                        
+        <div class="clear"></div>
+
+        
+        <div class="input_wrapper">
+            <?php
+            echo $this->{$this->element->submit->helper}(
+                    $this->element->submit->getName(), $this->element->submit->getValue(), $this->element->submit->getAttribs()
+            )?>
+        </div>
+    </form>
+</div>
+<script>
+    $(document).ready(function() {
+        $('#<?php echo $this->element->getId(); ?>').validationEngine('attach', {promptPosition: "centerRight"});
+    });
+</script>

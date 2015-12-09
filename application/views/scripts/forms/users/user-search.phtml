@@ -1,0 +1,40 @@
+<form method="<?php echo $this->element->getMethod();?>" action="<?php echo $this->element->getAction();?>" id="<?php echo $this->element->getId();?>" enctype="<?php echo $this->element->getEncType();?>">	
+	<label for="filter_by">Filter by</label>		
+	<?php echo $this->{$this->element->action->helper}(
+				$this->element->action->getName(),
+				$this->element->action->getValue(),
+				$this->element->action->getAttribs()
+			);?>
+
+<!--dupa nume-->	
+			<?php echo $this->{$this->element->nameSearch->helper}(
+				$this->element->nameSearch->getName(),
+				$this->element->nameSearch->getValue(),
+				$this->element->nameSearch->getAttribs()
+			);?>
+			<?php if(($this->element->nameSearch->getMessages())){ echo  $this->formErrors($this->element->nameSearch->getMessages());}?>
+<!--dupa level-->
+				<?php 
+					echo $this->{$this->element->idRoleSearch->helper}(
+						$this->element->idRoleSearch->getName(),
+						$this->element->idRoleSearch->getValue(),				
+						$this->element->idRoleSearch->getAttribs(),
+						$this->element->idRoleSearch->getMultiOptions()
+					);
+				?>
+				<?php if(($this->element->idRoleSearch->getMessages())){ echo  $this->formErrors($this->element->idRoleSearch->getMessages());} ?>
+<!--dupa email-->		
+			<?php echo $this->{$this->element->emailSearch->helper}(
+				$this->element->emailSearch->getName(),
+				$this->element->emailSearch->getValue(),
+				$this->element->emailSearch->getAttribs()
+			);?>
+			<?php if(($this->element->emailSearch->getMessages())){ echo  $this->formErrors($this->element->emailSearch->getMessages());}?>
+<!--submit-->
+			<?php echo $this->{$this->element->search->helper}(
+				$this->element->search->getName(),
+				$this->element->search->getValue(),
+				$this->element->search->getAttribs()
+			);?>
+			<a href="<?php echo WEBROOT;?>users" class="reset">Reset</a>
+</form>

@@ -1,0 +1,75 @@
+<div id="center">
+<?php if($this->result):?>
+<div class="main_wrap">
+	<h1 class="main_title">Notificari <span>(<?php echo $this->totalItemCount; ?> necitite)</span></h1>
+	<div class="clear"></div>
+	<div class="list">
+		<?php if(!empty($this->message)) : ?>
+			<?php foreach($this->message as $value) : ?>
+				<center class="w670"><?php echo $value; ?></center>
+			<?php endforeach; ?>
+			<div class="clear"></div>
+		<?php endif; ?>		
+		<?php if($this->search) :  ?>
+		<h1 class="notif_result">Rezultatele cautarii dupa: <?php echo ($this->search['subject']) ? '<span>Subiect - '.$this->search['subject'].'</span>' : ''; ?><?php echo ($this->search['message']) ? '<span>Mesaj - '.Needs_Tools::getDepartmentById($this->search['message']).';</span>' : ''; ?></h1>
+		<?php endif ?>
+		<div class="clear"></div>
+		<?php foreach($this->result as $value): ?>
+		<div class="list_notif <?php echo (($value->getStatus())?"necitit":"");?>">
+			<a class="delete confirmDelete tipsyTrigger" href="<?php echo WEBROOT;?>notifications/delete/id/<?php echo $value->getId();?>" original-title="<?php echo Zend_Registry::get('translate')->_('admin_edit'); ?>" title="Stergere"></a>
+			<a href="<?php echo WEBROOT."notifications/details/id/".$value->getId();?>"><h1><?php echo $value->getSubject().' ';?></h1></a>
+			<span class="subtitle">
+					<span class="added">Data: <span><?php echo date('d-m-Y',$value->getCreated()).' ';?></span></span> 
+					<span><?php echo Needs_Strings::limitString($value->getMessage(),120);?></span>
+			</span>
+		</div>
+		<?php endforeach ?>
+	</div>
+</div>
+
+<?php if($this->itemCountPerPage < $this->totalItemCount){?>
+	<?php echo $this->result;?>
+<?php }?>
+<?php else: ?>
+	<div class="main_wrap">
+		<h1 class="main_title">Notificari <span>(<?php echo ($this->totalItemCount) ? $this->totalItemCount : '0'; ?>)</span></h1>
+		<div class="list">
+			<div class="list_nobar">
+				<?php if($this->search) :  ?>
+					<h1>Nu a fost gasit nici un rezultat dupa: <?php echo ($this->search['name']) ? '<span>Subiect - '.$this->search['subject'].'</span>' : ''; ?><?php echo ($this->search['message']) ? '<span>Mesaj - '.$this->search['subject'].'</span>':'' ?></h1>
+				<?php endif ?>
+			</div>		
+		</div>
+	</div>
+<?php endif; ?>
+</div>
+<div id="right">
+	<?php echo $this->form; ?>
+</div>
+<div id="confirmDelete" title="Confirmati stergere" style="display:none;">
+	Confirmati stergerea notificarii?
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.confirmDelete').click(function(){
+		var link = $(this);
+		$("#confirmDelete").dialog({
+			bgiframe: true,
+			height: 140,
+			width: 400,
+			modal: true,
+			buttons:{
+				'<?php echo Zend_Registry::get('translate')->_('yes'); ?>': function(){
+					$(this).dialog('close').dialog('destroy');
+					window.location.href = link.attr('href');
+				},
+				'<?php echo Zend_Registry::get('translate')->_('no'); ?>': function(){
+					$(this).dialog('close').dialog('destroy');
+					window.location.reload();
+				}
+			}
+		});
+		return false;
+	});
+});
+</script>

@@ -1,0 +1,100 @@
+<?php echo $this->doctype('HTML5'); ?>
+<html>
+<head>
+	<?php echo $this->headTitle(); ?>
+	<?php echo $this->headMeta()->appendName('keywords', 'registru, intrari, iesiri'); ?>
+	<link rel="icon" type="images/jpeg" href="<?php echo WEBROOT;?>/theme/10pteuropa/favicon.ico" />
+	<?php echo $this->headMeta()
+		->appendHttpEquiv('Content-Type', 'text/html; charset=UTF-8')
+		->appendHttpEquiv('Content-Language', 'ro-RO')
+		->appendHttpEquiv('expires', 'Wed, 26 Feb 2013 08:21:57 GMT')
+		->appendHttpEquiv('pragma', 'no-cache')
+		->appendHttpEquiv('Cache-Control', 'no-cache');
+	?>
+	<?php echo $this->headLink();?>
+	<?php echo $this->headStyle();?>
+	<?php echo $this->headScript();?>
+</head>
+	<body>
+		<div id="wrapper">
+			<?php echo $this->render('header.phtml') ?>
+			
+			<?php echo $this->render('left.phtml') ?>	
+					
+			<div class="center-right">
+					<?php echo $this->layout()->content ?>
+			</div>
+			<script type="text/javascript">
+			$('#left').css("height", $(document).height()); //display full height of main divs
+			$('#footer_wrapper').css("height", $(document).height()); //display full height of main divs
+			$('#right').css("height", $(document).height()); //display full height of main divs
+			
+			$(document).ready(function() {
+				$(".canhide").click(function() {
+					$(this).hide();
+				});
+				//notifications
+				$( ".notification").click(function(){
+					if($('.notification').hasClass('active'))
+					{
+						$('#notifications').stop().slideUp();				
+						$('.notification').removeClass('active');
+					}
+					else
+					{
+						$('#settings').stop().slideUp();				
+						$('.setari_cont').removeClass('active');
+						$('#notifications').stop().slideDown();				
+						$('.notification').addClass('active');
+					}
+				});
+				//account settings
+				$( ".setari_cont").click(function(){
+					if($('.setari_cont').hasClass('active'))
+					{
+						$('#settings').stop().slideUp();				
+						$('.setari_cont').removeClass('active');
+					}
+					else
+					{
+						$('#notifications').stop().slideUp();				
+						$('.notification').removeClass('active');
+						$('#settings').stop().slideDown();				
+						$('.setari_cont').addClass('active');
+					}
+				});
+			});
+			
+			// slide up function daca se da click inafara div-ului
+			$(document).click(function(e) 
+			{
+				var t = (e.target)               
+				if(
+					!$(".setari_cont").is(t) // if the target of the click isn't the container...
+					&& $(".setari_cont").has(e.target).length === 0 // ... nor a descendant of the container					
+					&& !$("#settings").is(t) // if the target of the click isn't the container...
+					&& $("#settings").has(e.target).length === 0 // ... nor a descendant of the container										
+					) 
+				{			
+					$('.setari_cont').removeClass('active');
+                    $('#settings').slideUp();							
+				}
+				if(
+					!$(".notification").is(t) // if the target of the click isn't the container...
+					&& $(".notification").has(e.target).length === 0 // ... nor a descendant of the container					
+					&& !$("#notifications").is(t) // if the target of the click isn't the container...
+					&& $("#notifications").has(e.target).length === 0 // ... nor a descendant of the container
+				  )
+					{
+						$('.notification').removeClass('active');
+						$('#notifications').slideUp();
+					}
+			});
+			</script>
+			<div class="clear"></div>
+		</div>
+		<div id="footer_wrapper">
+			<?php echo $this->render('footer.phtml') ?>
+		</div>
+	</body>
+</html>

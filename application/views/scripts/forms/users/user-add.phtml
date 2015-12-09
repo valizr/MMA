@@ -1,0 +1,53 @@
+<div class="form_sidebar">
+	<form class="addForms" method="<?php echo $this->element->getMethod();?>" action="<?php echo $this->element->getAction();?>" id="<?php echo $this->element->getId();?>" enctype="<?php echo $this->element->getEncType();?>">	
+	<?php echo $this->{$this->element->action->helper}(
+					$this->element->action->getName(),
+					$this->element->action->getValue(),
+					$this->element->action->getAttribs()
+				);?>
+		
+<!--dupa nume-->
+		<div class="input_wrapper">				
+				<?php echo $this->{$this->element->name->helper}(
+					$this->element->name->getName(),
+					$this->element->name->getValue(),
+					$this->element->name->getAttribs()
+				);?>
+				<?php if(($this->element->name->getMessages())){ echo  $this->formErrors($this->element->name->getMessages());}?>
+		</div>
+		<div class="clear"></div>
+<!--dupa level-->
+		<div class="input_wrapper">	
+				<?php echo $this->{$this->element->idRole->helper}(
+					$this->element->idRole->getName(),
+					$this->element->idRole->getValue(),				
+					$this->element->idRole->getAttribs(),
+					$this->element->idRole->getMultiOptions()
+				);?>
+				<?php if(($this->element->idRole->getMessages())){ echo  $this->formErrors($this->element->idRole->getMessages());} ?>
+		</div>
+<!--dupa email-->
+		<div class="input_wrapper">				
+				<?php echo $this->{$this->element->email->helper}(
+					$this->element->email->getName(),
+					$this->element->email->getValue(),
+					$this->element->email->getAttribs()
+				);?>
+				<?php if(($this->element->email->getMessages())){ echo  $this->formErrors($this->element->email->getMessages());}?>
+		</div>
+		<div class="clear"></div>
+<!--submit-->
+		<div class="input_wrapper">	
+				<?php echo $this->{$this->element->add->helper}(
+					$this->element->add->getName(),
+					$this->element->add->getValue(),
+					$this->element->add->getAttribs()
+				);?>
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#<?php echo $this->element->getId();?>').validationEngine('attach', {promptPosition : "centerRight"});
+});
+</script>

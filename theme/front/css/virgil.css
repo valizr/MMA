@@ -1,0 +1,133 @@
+/*begin wrapper pagini*/
+.main_wrap{}
+
+
+
+.add{font-family: "open_sanslight";
+	display:block;
+	color: #fff;
+	width: 165px;
+	height: 25px;
+	background: url("../images/add_project_btn.png") no-repeat;
+	-webkit-border-radius: 15px;
+	border-radius: 15px;
+	text-indent: 40px;
+	font-size: 13px;
+	text-decoration: none;
+	float:right;
+	line-height: 25px;	
+	margin: 31px 40px 14px 40px;}
+
+.list{width: 730px;
+	float:left;
+	background: #fff;
+	border: 1px solid #e0e1e2;
+	border-top: 0;}
+.list_result{padding:20px 0px;}
+.list_nobar{position: relative;}
+.list.role{min-height: 500px;}
+.list h1{font-family: "open_sansbold";
+		font-size: 20px;
+		font-weight: normal;
+		color: #002539;
+		line-height: 20px;
+		margin-left: 30px;}
+/*end wrapper pagini*/
+
+/*begin tip proiect*/   /* type1 */
+.tipProiect{border-bottom:1px solid #d1d2d4;padding: 17px 0 17px 0px;position: relative;}
+.tipProiect h1{font-family: "open_sansbold";font-size: 20px;font-weight:normal;color: #002539;line-height: 20px;}
+.tipProiect h1 span{color: #a7a9ab !important;}
+/*end tip proiect*/
+
+/*begin notifications*/
+.notif_result{padding:20px 0px;margin-right:30px;font-family:"open_sanslight"!important;}
+.list_notif{padding: 17px 0 17px 30px;border-bottom: 1px solid #d1d2d4;position: relative;}
+.list_notif a{text-decoration:none;}
+.list_notif h1{font-family: "open_sansbold";font-size: 20px;font-weight:normal;color: #002539;margin: 0;line-height: 20px; float:none;}
+.list_notif span{font-family: "open_sanslight";color: #a7a9ab;font-size: 12px;}
+.list_notif .delete{width: 16px; height: 16px; display:block;background: url("../images/user-delete.png") top left no-repeat;position: absolute;right: 60px;}
+.subtitle{font-size: 12px !important;
+			color: #a7a9ab !important;
+			margin-right: 30px;}
+.subtitle span{font-size: 12px !important; color: #404041 !important;}
+.added{margin-right:30px;margin-left:10px;}
+.added span{font-size: 12px !important; color: #404041 !important;}
+/*end notifications*/
+
+/*begin department*/
+.box{border-bottom: 1px solid #d1d2d4;
+			padding: 17px 0 17px 0px;
+			position: relative;}
+.box .delete{width: 16px;
+			height: 16px;
+			display: block;
+			background: url("../images/user-delete.png") top left no-repeat;
+			position: absolute;
+			right: 60px;
+			top:20px;}
+.box .edit{width: 16px;
+			height: 16px;
+			display: block;
+			background: url("../images/settings_pink.png") top left no-repeat;
+			position: absolute;
+			right: 30px;
+			top:20px;}
+/*end department*/
+
+.hint{margin:0px 0px 10px 30px;font-family:"open_sanslight";}
+
+/*.load_files tbody div{display: inline-block;
+					/*color: #33afa2;
+					text-decoration: none;
+					font-size: 14px;
+					font-family: "open_sanslight";
+					margin-bottom: 5px;}
+.load_files tbody div:hover{color:#91306c;}	
+.load_files a{display:inline-block;color:#33afa2;text-decoration:none;font-size:20px;font-family:"open_sanslight";margin-bottom:5px;}
+.load_files a:hover{color:#91306c;}*/
+
+.vezi_proiect{height: 25px;
+			float: left;
+			color: #fff;
+			background-color: #21968a;
+			-webkit-border-radius: 15px;
+			border-radius: 15px;
+			text-indent: 0;
+			font-family: "open_sanslight";
+			font-size: 13px;
+			font-weight: normal;
+			display: block;
+			text-decoration: none;
+			padding: 0 20px 0 20px;
+			line-height: 25px;}
+.vezi_proiect:hover{background-color: #91306C;}
+
+#settings{background-color: #E6E7E8;
+			display: none;
+			left: 0px;
+			position: absolute;
+			top: 90px;
+			z-index: 9999;}
+
+#settings a{text-decoration:none;
+			color:#404041;
+			font-family:"open_sanslight";
+			border:2px solid #1F9488;
+			float: left;
+			width: 376px;
+			height: 30px;
+			border-top: 0;
+			font-size: 20px;
+			font-weight: normal;
+			padding: 10px;
+			text-decoration: none;
+}
+
+#executionTerm, #noVatValue, #deadlinePayment, #startDate, #deliveryDate{width:130px;float:left;}
+.left p{float:left;height:34px;line-height:34px;font-family:"open_sanslight";margin-right:10px;}
+
+#formProjects label{margin:0px;width:140px;float:left;height:34px;line-height:34px;font-family:"open_sanslight";margin-right:10px;}
+.ui-dialog{background:#f7fffe!important;}
+.ui-button-text {color:#fff!important;}
+.ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only{background:#1f9488!important;}

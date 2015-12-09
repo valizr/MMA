@@ -1,0 +1,122 @@
+<div id="center">
+<div class="main_wrap">
+	<h1 class="main_title">Users</h1>
+	<div class="inside_wrap">
+		<!--afisare mesaje de eroare/succes-->
+		<?php if(!empty($this->message)) : ?>
+			<?php foreach($this->message as $value) : ?>
+				<center class="w670"><?php echo $value; ?></center>
+			<?php endforeach; ?>	
+		<?php endif; ?>
+		<p>All users <span>(<?php echo ($this->totalItemCount) ? $this->totalItemCount : '0'; ?>)</span></p>
+		<div class="filter_wrap">
+			<?php echo $this->formSearch; ?>
+		</div>
+		<?php if($this->search) :  ?>
+			<div class="search_wrapper">
+				<p>Search results after:	<?php echo ($this->search['nameSearch']) ? '<span>Name - '.$this->search['nameSearch'].';</span>' : '' ; ?>
+											<?php echo ($this->search['idRoleSearch']) ? '<span>Level - '.Needs_Tools::getLevelById($this->search['idRoleSearch']).';</span>' : '' ; ?>
+											<?php echo ($this->search['emailSearch']) ? '<span>Email - '.$this->search['emailSearch'].';</span>' : '' ; ?>
+											<?php echo ($this->search['idShopSearch']) ? '<span>Store name - '.  Needs_Tools::getShopById($this->search['idShopSearch']).';</span>' : '' ; ?>							
+				</p>
+			</div>
+		<?php endif; ?>
+		<div class="listing_wrap">
+			<table class='inside_table' cellspacing="0" cellpadding = "0" width="100%">
+				<colgroup>
+					<col width="295"/>
+					<col width="57"/>
+					<col width="210" />
+					<col />
+				</colgroup>
+				<tr>
+					<th>User</th>
+					<th>Level</th>
+					<th>Email</th>
+					<th>Edit</th>
+				</tr>
+<?php if($this->result):?>		
+	<?php foreach($this->result as $value): ?>
+	<tr>
+		<td>
+			<div class='listing_border'>
+				<img class="user_pic" src="<?php echo WEBROOT; ?>theme/front/images/user_no_pic.png" alt="user pic">
+				<div class="user_info_table">
+					<span><?php echo $value->getName();?></span>
+				</div>
+			</div>
+		</td>
+		<td><div class='listing_border level_table'><span><?php echo $value->getRole()->getId();?></span></div></td>
+		<td>
+			<div class='listing_border'>
+				<div class="regular">
+				<?php echo $value->getEmail();?>
+				</div>
+			</div>
+		</td>
+		<td>
+			<div class='listing_actions'>
+				<div class="regular">
+					<a class="edit tipsyTrigger" <?php echo Needs_Roles::hasAccess( Zend_Registry::get('user')->getIdRole(), 'edit_users',true); ?> href="<?php echo WEBROOT;?>users/edit/id/<?php echo $value->getId();?>/page/<?php echo $this->page ?>"></a>
+					<a class="delete confirmDelete tipsyTrigger" <?php echo Needs_Roles::hasAccess( Zend_Registry::get('user')->getIdRole(), 'delete_users',true); ?> href="<?php echo WEBROOT;?>users/delete/id/<?php echo $value->getId();?>/page/<?php echo $this->page ?>"></a>
+				</div>
+			</div>
+		</td>
+	</tr>
+	<?php endforeach ?>
+<?php endif; ?>
+			</table>
+		</div>
+	<?php if($this->itemCountPerPage < $this->totalItemCount){?>
+		<?php echo $this->result;?>
+	<?php }?>
+	</div>
+</div>
+
+<div class="clear"></div>
+</div>
+<div id="right">
+		<div class="search_right">
+			<form id="searchForm" action="">
+				<input type="text" id="search" name="search" placeholder="Search platform">
+				<input type="submit" id="searchSubmit" name="searchSubmit" value="">
+			</form>
+		</div>
+		<div class="inner_right">
+			<div class="addUser">
+				<p>Add new user</p>
+				<?php echo $this->form; ?>
+			</div>
+		</div>
+</div>
+<div id="confirmDelete" title="Confirmati stergerea" style="display:none;">
+	Confirmati stergerea utilizatorului?
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	
+	$(".pagination select").uniform();
+	$("#idRole").uniform();
+	$(".uniformSelect").uniform();
+	$('.confirmDelete').click(function(){
+		var link = $(this);
+		$("#confirmDelete").dialog({
+			bgiframe: true,
+			height: 140,
+			width: 400,
+			modal: true,
+			buttons:{
+				'<?php echo Zend_Registry::get('translate')->_('yes'); ?>': function(){
+					$(this).dialog('close').dialog('destroy');
+					window.location.href = link.attr('href');
+				},
+				'<?php echo Zend_Registry::get('translate')->_('no'); ?>': function(){
+					$(this).dialog('close').dialog('destroy');
+					window.location.reload();
+				}
+			}
+		});
+		return false;
+	});
+});
+</script>

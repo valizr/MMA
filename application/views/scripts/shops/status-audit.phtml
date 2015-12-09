@@ -1,0 +1,68 @@
+<div id="center">
+	<div class="pageTitle">
+		<h1 class="main_title">Stores</h1>
+	</div>
+
+<div class="main_wrap">
+	<div class="page_wrap">
+		<div class="inside_wrap">
+		<?php if (!empty($this->message)) : ?>
+			<?php foreach ($this->message as $value) : ?>
+				<center class="w670"><?php echo $value; ?></center>
+			<?php endforeach; ?>
+			<div class="clear"></div>
+		<?php endif; ?>
+		<a href="" class="inbox active_tab">Stores with no audit <span>(<?php echo ($this->totalNr) ? $this->totalNr : '0'; ?>)</span></a>
+		<a href="<?php echo WEBROOT ?>shops/status-daily-sales" class="inbox">Stores with no daily sale report</a>
+		<div class="clear"></div>
+	<?php if($this->result):?>
+		<div class='listing_wrap'>
+			<table class='inside_table' cellspacing="0" cellpadding = "0" width="100%">
+				<colgroup>
+					<col width="430px"/>
+					<col width="140px"/>										
+					<col width="100px"/>										
+				</colgroup>
+				<tr>
+					<th>Store</th>
+					<th>Date</th>
+					<th>Actions</th>
+				</tr>
+		<?php foreach ($this->result as $value): ?>
+			<tr>
+				<td>
+					<div class='product_col1'> <?php echo Needs_Tools::getShopById($value->getIdShop()); ?></div>
+				</td>
+				<td>
+					<div class='product_col1'> <?php  echo date('m-d-Y', strtotime($value->getDate())); ?></div>
+				</td>
+				<td>
+					<div>
+						<a class="edit tipsyTrigger" href="<?php echo WEBROOT;?>daily-sales/audit/date/<?php echo $value->getDate();?>/idShop/<?php echo $value->getIdShop() ?>"></a>
+					</div>
+				</td>
+			</tr>
+		<?php endforeach ?>
+			</table>
+		</div>
+		<?php if($this->itemCountPerPage < $this->totalItemCount){?>
+			<?php echo $this->result;?>
+		<?php }?>
+	<?php endif; ?>
+	</div>
+</div>
+</div>
+</div>
+<div id="right">
+	<div class="search_right">
+		<form id="searchForm" action="">
+			<input type="text" id="search" name="search" placeholder="Search platform">
+			<input type="submit" id="searchSubmit" name="searchSubmit" value="">
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".pagination select").uniform();
+	});
+</script>

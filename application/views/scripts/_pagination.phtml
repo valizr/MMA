@@ -1,0 +1,52 @@
+<?php
+$result = Zend_View_Helper_PaginationControl::getDefaultViewPartial();
+if(is_array($result)) {
+	if(!empty($result[1])) {
+		$allParams = $result[1];
+	} else {
+		$allParams = Zend_Controller_Front::getInstance()->getRequest()->getParams();
+	}
+} else {
+	$allParams = array();
+}
+if($this->pageCount){?>
+<div class="bot_pagination">
+	 <ul class="pagination">
+		<!-- Numbered page links -->
+		<li>Page</li>
+		<li>
+			<select id="paginationControl">
+			
+		<?php foreach($this->pagesInRange as $page) : ?>
+			<?php if($page != $this->current) : ?>
+				<option  value="<?php echo $this->url(array_merge($allParams, array('page' => $page))); ?>"><?php echo $page; ?></option>
+			<?php else : ?>
+				<option <?php echo ($page == $this->current) ? ' selected="selected"' : ''; ?> value=""><?php echo $page; ?></option>
+			<?php endif; ?>
+		<?php endforeach; ?>
+			
+			</select>
+		</li>
+		<li>of</li>
+		<li><?php echo $this->pageCount ?></li>
+	</ul>
+	<div class="pagination_button">
+		<?php if(isset($this->previous)) : ?>
+			<a href="<?php echo $this->url(array_merge($allParams, array('page' => $this->previous))); ?>">Prev Page</a>
+		<?php else : ?>
+			
+		<?php endif; ?>
+		
+		<?php if(isset($this->next)){?>
+			<a href="<?php echo $this->url(array_merge($allParams, array('page' => $this->next))); ?>">Next Page</a>
+		<?php }else{?>
+			
+		<?php }?>
+	</div>
+</div>
+<?php }?>
+<script type="text/javascript">
+$('#paginationControl').change(function() {
+    window.location = $(this).val();
+})
+</script>

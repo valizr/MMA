@@ -1,0 +1,32 @@
+<div id="center">
+	<div class="main_wrap">
+		<h1 class="main_title">Edit</h1>
+	</div>
+	<?php echo $this->form; ?>
+</div>
+<!--afisare mesaje de eroare/succes-->
+<?php if(!empty($this->message)) : ?>
+	<?php foreach($this->message as $value) : ?>
+		<center><?php echo $value; ?></center>
+	<?php endforeach; ?>
+	<div class="clear"></div>
+<?php endif; ?>
+
+<div id="right">
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#idRole').change(function(){
+		if($(this).val() == 14)
+		{
+			$('.multiClass').show();
+			$('.selectClass').hide();
+		}
+		else
+		{
+			$('.multiClass').hide();
+			$('.selectClass').show();
+		}
+	});
+});
+</script>

@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'ApexNewThin';
+    src: url('fonts/apexnew-thin/thin.eot');
+    src: url('fonts/apexnew-thin/thin.eot') format('embedded-opentype'),
+         url('fonts/apexnew-thin/thin.woff') format('woff'),
+         url('fonts/apexnew-thin/thin.ttf') format('truetype'),
+         url('fonts/apexnew-thin/thin.svg#ApexNewThin') format('svg');
+}

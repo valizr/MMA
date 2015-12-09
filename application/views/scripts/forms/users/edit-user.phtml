@@ -1,0 +1,82 @@
+<div class="main_forms">
+	<div class="left_nowidth">
+	<form method="<?php echo $this->element->getMethod();?>" action="<?php echo $this->element->getAction();?>" id="<?php echo $this->element->getId();?>" enctype="<?php echo $this->element->getEncType();?>">
+			<div class="input_wrapper">	
+				<!-- name -->
+				<?php
+					$attribs = array(); if($this->element->name->isRequired()) { $attribs['class'] = 'required'; }
+					echo $this->formLabel($this->element->name->getName(), $this->element->name->getLabel());
+				?>			
+				<?php echo $this->{$this->element->name->helper}(
+					$this->element->name->getName(),
+					$this->element->name->getValue(),
+					$this->element->name->getAttribs()
+				);?>
+				<?php if(($this->element->name->getMessages())){ echo  $this->formErrors($this->element->name->getMessages());}?>	
+			</div>
+			<div class="clear"></div>
+                        <div class="input_wrapper">	
+				<!-- name -->
+				<?php
+					$attribs = array(); if($this->element->accountName->isRequired()) { $attribs['class'] = 'required'; }
+					echo $this->formLabel($this->element->accountName->getName(), $this->element->accountName->getLabel());
+				?>			
+				<?php echo $this->{$this->element->accountName->helper}(
+					$this->element->accountName->getName(),
+					$this->element->accountName->getValue(),
+					$this->element->accountName->getAttribs()
+				);?>
+				<?php if(($this->element->accountName->getMessages())){ echo  $this->formErrors($this->element->accountName->getMessages());}?>	
+			</div>
+			<div class="clear"></div>
+			<div class="input_wrapper">	
+				<!-- email -->
+				<?php
+					$attribs = array(); if($this->element->email->isRequired()) { $attribs['class'] = 'required'; }
+					echo $this->formLabel($this->element->email->getName(), $this->element->email->getLabel());
+				?>	
+				<?php echo $this->{$this->element->email->helper}(
+					$this->element->email->getName(),
+					$this->element->email->getValue(),
+					$this->element->email->getAttribs()
+				);?>
+			</div>
+			<div class="clear"></div>
+			<!--<div class="input_wrapper">-->
+			<!-- roleId -->	
+					<?php 
+//						echo $this->formLabel($this->element->idRole->getName(), $this->element->idRole->getLabel());
+//						echo $this->{$this->element->idRole->helper}(
+//							$this->element->idRole->getName(),
+//							$this->element->idRole->getValue(),					
+//							$this->element->idRole->getAttribs(),
+//							$this->element->idRole->getMultiOptions()
+//						);
+					?>
+					<?php //if(($this->element->idRole->getMessages())){ echo  $this->formErrors($this->element->idRole->getMessages());} ?>		
+			<!--</div>-->			
+			<!--<div class="clear"></div>-->
+		<!-- save -->
+				<?php echo $this->{$this->element->add->helper}(
+					$this->element->add->getName(),
+					$this->element->add->getValue(),
+					$this->element->add->getAttribs()
+				);?>
+	</form>
+</div>	
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#<?php echo $this->element->getId();?>').validationEngine('attach', {promptPosition : "centerRight"});
+	$('#allResource').click(function() {
+		var checked_status = this.checked;		
+		$(".resourceId").each(function()
+		{
+			this.checked = checked_status;
+		});		 
+	});
+	
+		$("#idRole").uniform();
+	});	
+});
+</script>

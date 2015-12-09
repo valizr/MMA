@@ -1,0 +1,47 @@
+<div class="main_forms">
+	<form method="<?php echo $this->element->getMethod();?>" action="<?php echo $this->element->getAction();?>" id="<?php echo $this->element->getId();?>" enctype="<?php echo $this->element->getEncType();?>">
+		<div class="clear"></div>
+		<div class="left" style="margin-top: 40px;">
+			<?php if(!Zend_Registry::get('isAdmin')){?>
+				<?php echo $this->{$this->element->tenancyId->helper}(
+					$this->element->tenancyId->getName(),
+					$this->element->tenancyId->getValue(),
+					$this->element->tenancyId->getAttribs()
+				);?>
+			<?php }?>
+
+			<?php echo $this->{
+			$this->element->parentName->helper}(
+				$this->element->parentName->getName(),
+				$this->element->parentName->getValue(),
+				$this->element->parentName->getAttribs()
+			);?>
+
+			<?php if('<ul class="errors"><li></li></ul>' != ($this->element->parentName->getMessages())) { echo $this->formErrors($this->element->parentName->getMessages()); } ?>
+			<small class="description"><?php echo $this->element->parentName->getDescription(); ?></small>
+
+			<?php echo $this->{
+			$this->element->name->helper}(
+				$this->element->name->getName(),
+				$this->element->name->getValue(),
+				$this->element->name->getAttribs()
+			);?>
+
+			<?php if('<ul class="errors"><li></li></ul>' != ($this->element->name->getMessages())) { echo $this->formErrors($this->element->name->getMessages()); } ?>
+			<small class="description"><?php echo $this->element->name->getDescription(); ?></small>
+
+			<?php echo $this->{
+				$this->element->submit->helper}(
+				$this->element->submit->getName(),
+				$this->element->submit->getValue(),
+				$this->element->submit->getAttribs()
+			);?>
+
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+	$("#<?php echo $this->element->getId();?>").validationEngine();
+});
+</script>

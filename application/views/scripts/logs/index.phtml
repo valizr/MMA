@@ -1,0 +1,34 @@
+<div id="center">
+	<!--afisare mesaje de eroare/succes-->
+	<?php if(!empty($this->message)) : ?>
+		<?php foreach($this->message as $value) : ?>
+			<center><?php echo $value; ?></center>
+		<?php endforeach; ?>
+		<div class="clear"></div>
+	<?php endif; ?>
+	
+	<div class="main_wrap">
+		<h1 class="main_title">Loguri</h1>
+		<div class="list">
+		<?php if($this->result){?>	
+			<?php foreach($this->result as $value): ?>		
+				<div class="utilizator">
+					<h1><?php echo $value->getActionDone();?></h1>
+					<div class="clear"></div>
+					<span class="nume_depart">Sectiune: <span><?php echo $value->getModul();?></span></span>
+					<span class="tip_util">Tip actiune: <span><?php echo $value->getActionType();?></span></span>
+					<span class="tip_util">Data: <span><?php echo date('d-m-Y',strtotime($value->getCreated())); ?></span></span>
+				</div>		
+			<?php endforeach ?>	
+			<?php if($this->itemCountPerPage < $this->totalItemCount){?>
+				<?php echo $this->result;?>
+			<?php }?>	
+		<?php }else{?>
+			<div class="utilizator"><h1>Nici un rezultat</h1></div>
+			<?php }?>
+		</div>
+	</div>
+</div>
+<div id="right">
+	<?php echo $this->form; ?>
+</div>

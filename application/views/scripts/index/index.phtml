@@ -1,0 +1,298 @@
+<div id="center">
+	<div class="pageTitle">
+		<h1><?php echo Zend_Registry::get('translate')->_('admin_dashboard');?></h1><p> <?php echo date('F d, Y');?></p>
+	</div>	
+	
+	<!--afisare mesaje de eroare/succes-->
+	<?php if(!empty($this->message)) : ?>
+		<?php foreach($this->message as $value) : ?>
+			<center class="w670"><?php echo $value; ?></center>
+		<?php endforeach; ?>
+		<div class="clearfix">&nbsp;</div>
+	<?php endif; ?>
+		
+                <div class="page_wrap">		
+                    <div class="inside_wrap">			
+                        <div class='products_wrap'>
+                            <?php if ($this->result) { ?>
+                                <table class='inside_table' cellspacing="0" cellpadding = "0" width="100%">
+                                    <colgroup>
+                                        <col width="535px"/>
+                                        <col width="135px"/>
+                                    </colgroup>
+                                    <?php $result = Needs_Tools::paginatorToModel($this->result, 'Default_Model_Messages'); ?>	
+                                    <div class="clear"></div>
+                                    <?php foreach ($result as $value) { ?>
+                                        <?php $link_detail = WEBROOT . 'messages/details/id/' . $value->getId() . '/type/' . $this->type; ?>
+                                        <tr>
+                                            <td>
+                                                <div class='users_col1 noborder message_url' data-url="<?php echo $link_detail; ?>">	
+                                                    <img class="user_pic" src="<?php echo WEBROOT ?>theme/front/images/user_no_pic.png" alt="user pic">
+                                                    <div class="user_info">														
+                                                        <p class="ui_group"><?php echo $value->getUserFrom()->getName(); ?>, 
+                                                            <span>
+                                                                <?php echo Needs_Strings::time_elapsed_string($value->getCreated()); ?>
+                                                            </span>
+                                                        </p><br />													
+                                                        <a class="ui_shop" href="<?php echo $link_detail; ?>" ><?php echo $value->getSubject(); ?></a>
+                                                    </div>
+                                                </div>
+                                            </td>										
+                                            <td>
+                                                <div class="options">
+                                                    <a class="attach fancybox" href="<?php echo WEBROOT; ?>iframe/messages-attachement/id/<?php echo $value->getId(); ?>"></a>
+                                                    <?php if ($value->getIdUserTo() == Zend_Registry::get('user')->getId()) { ?>
+                                                        <a class="reply" href="<?php echo WEBROOT; ?>messages/index/replyId/<?php echo $value->getId(); ?>"></a>
+                                                    <?php } ?>
+                                                    <a class="delete delete_products confirmDelete" href="<?php echo WEBROOT; ?>messages/delete/id/<?php echo $value->getId() . '/type/' . $this->type; ?>"></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <?php } ?>						
+                                </table>
+                                <?php if ($this->itemCountPerPage < $this->totalItemCount) { ?>
+                                    <?php echo $this->result; ?>
+                                <?php } ?>
+                            <?php } ?>
+                        </div>
+                    </div>
+                    <!--last month-->
+                    <div class="clear"></div>
+                    <h2><?php echo date('F Y', $this->newdate);?></h2>
+                    <div class="right_income_lm">
+                        <div class="inside_half_wrap">
+                            <p><?php echo Zend_Registry::get('translate')->_('admin_total_income_last_month');?>:</p>
+                            <div class="income_lm"><b><?php echo $this->incomeAmountLastMonth; ?></b> <?php echo Zend_Registry::get('translate')->_('currency');?></div>
+                        </div>
+                    </div>
+                    <div class="padding_boxes"></div>
+                    <div class="right_expense_lm">
+                        <div class="inside_half_wrap">
+                            <p><?php echo Zend_Registry::get('translate')->_('admin_total_expenses_last_month');?>:</p>
+                            <div class="expense_lm"><b><?php echo $this->expensesAmountLastMonth; ?></b> <?php echo Zend_Registry::get('translate')->_('currency');?></div>
+                        </div>
+                    </div>
+                    <?php 
+                    $moneyLastMonth=$this->incomeAmountLastMonth-$this->expensesAmountLastMonth;
+                    if ($moneyLastMonth<0) $youhad="expense_lm";
+                    else $youhad="income_lm";
+                    ?>
+                    <div class="padding_boxes"></div>
+                    <div class="right_<?php echo $youhad;?>">
+                        <div class="inside_half_wrap">
+                            <p><?php echo Zend_Registry::get('translate')->_('admin_you_had');?>:</p>
+                            <div class="<?php echo $youhad;?>"><b><?php echo $moneyLastMonth; ?></b> <?php echo Zend_Registry::get('translate')->_('currency');?></div>
+                        </div>
+                    </div>
+                    <!--current month-->
+                    <div class="clear"></div>
+                    <h2><?php echo date('F Y');?></h2>
+                    <div class="right_income">
+                        <div class="inside_half_wrap">
+                            <p><?php echo Zend_Registry::get('translate')->_('admin_total_income_this_month');?>:</p>
+                            <div class="income"><b><?php echo $this->incomeAmount; ?></b> <?php echo Zend_Registry::get('translate')->_('currency');?></div>
+                        </div>
+                    </div>
+                    <div class="padding_boxes"></div>
+                    <div class="right_expense">
+                        <div class="inside_half_wrap">
+                            <p><?php echo Zend_Registry::get('translate')->_('admin_total_expenses_this_month');?>:</p>
+                            <div class="expense"><b><?php echo $this->expensesAmount; ?></b> <?php echo Zend_Registry::get('translate')->_('currency');?></div>
+                        </div>
+                    </div>
+                    <?php 
+                    $money=$this->incomeAmount-$this->expensesAmount;
+                    if ($money<0) $youhave="expense";
+                    else $youhave="income";
+                    ?>
+                    <div class="padding_boxes"></div>
+                    <div class="right_<?php echo $youhave;?>">
+                        <div class="inside_half_wrap">
+                            <p><?php echo Zend_Registry::get('translate')->_('admin_you_have');?>:</p>
+                            <div class="<?php echo $youhave;?>"><b><?php echo $money; ?></b> <?php echo Zend_Registry::get('translate')->_('currency');?></div>
+                        </div>
+                    </div>
+
+                    <div class="clear"></div>
+                    <h2><?php echo Zend_Registry::get('translate')->_('latest_activity');?></h2>
+
+                    <div class='products_wrap'>
+				<table class='inside_table' cellspacing="0" cellpadding = "0" width="100%">
+					<colgroup>
+						<col width="100px"/>
+						<col width="470px"/>
+                                                <col width="100px"/>
+					</colgroup>
+					<tr>
+						<th><?php echo Zend_Registry::get('translate')->_('admin_date');?></th>
+                                                <th><?php echo Zend_Registry::get('translate')->_('admin_expense_income');?></th>
+						<th><?php echo Zend_Registry::get('translate')->_('admin_amount');?></th>
+					</tr>
+			<?php if($this->resultLatest){?>
+				<?php $resultLatest = Needs_Tools::paginatorToModel($this->resultLatest,'Default_Model_Expenses');?>
+				<?php foreach($resultLatest as $value){?>
+					<tr>
+						<td>
+                                                    <div class="product_col1"><?php echo date('D d-m',strtotime($value->getDate()));?></div>
+						</td>
+                                                <td>
+                                                    <div class='product_col1'> <p class="editname"><?php echo $value->getName(); ?></p></div>
+						</td>
+                                                <td>
+                                                    <div class='product_col1'> <p class="<?php echo ($value->getType()==0)?'expensecolor':'incomecolor';?>"><?php echo $value->getPrice(); ?> <?php echo Zend_Registry::get('translate')->_('admin_currency2');?></p></div>
+						</td>
+					</tr>
+				<?php }?>
+				</table>
+				<?php if($this->itemCountPerPageLatest < $this->totalItemCountLatest){?>
+					<?php echo $this->resultLatest;?>
+				<?php }?>	
+			<?php } ?>
+				
+			</div>
+                    
+                </div>
+</div>
+<div id="right">
+	<div class="search_right">
+		<form id="searchForm" action="">
+			<input type="text" id="search" name="search" placeholder="Search platform">
+			<input type="submit" id="searchSubmit" name="searchSubmit" value="">
+		</form>
+	</div>
+    <div id="visualization" style="width: 350px; height: 280px;"></div>
+    
+    <script type="text/javascript">
+      google.load('visualization', '1', {packages: ['corechart']});
+    </script>
+    <script type="text/javascript">
+      function drawVisualization() {
+        // Create and populate the data table.
+        var data = google.visualization.arrayToDataTable([
+          ['Income', 'Lei'],
+          <?php 
+            $resultPieI='';
+            $resultColorsI='';
+            foreach ($this->resultPieIncome as $resultPieInc){
+                $resultPieI.= "['".$resultPieInc->getName()."', ".$resultPieInc->getPrice()."],";
+                $resultColorsI.= "'".$resultPieInc->getColor()."',";
+            }
+            if (!empty($resultPieI)) {
+                $resultPieI=substr($resultPieI,0,-1);
+                echo $resultPieI;
+            }
+            if (!empty($resultColorsI)) $resultColorsI=substr($resultColorsI,0,-1);
+            ?>
+        ]);
+       var options = {
+                width:350,
+                height:280,
+                title: 'Income',
+                pieHole: 0.4,
+                legend:{position:'right'},
+                colors: [<?php echo $resultColorsI; ?>],
+                pieSliceText: 'value',
+                chartArea:{left:10,top:10,width:'100%',height:'80%'}
+              };
+      
+        // Create and draw the visualization.
+        new google.visualization.PieChart(document.getElementById('visualization')).
+            draw(data,options);
+      }
+      
+
+      google.setOnLoadCallback(drawVisualization);
+    </script>
+    
+    <div id="visualizatione" style="width: 350px; height: 280px;"></div>
+    
+    <script type="text/javascript">
+      function drawVisualizatione() {
+        // Create and populate the data table.
+        var data = google.visualization.arrayToDataTable([
+          ['Expenses', 'Lei'],
+          <?php 
+            $resultPieE='';
+            $resultColorsE='';
+            foreach ($this->resultPieExpenses as $resultPieExp){
+                $resultPieE.= "['".$resultPieExp->getName()."', ".$resultPieExp->getPrice()."],";
+                $resultColorsE.= "'".$resultPieExp->getColor()."',";
+            }
+            if (!empty($resultPieE)) {
+                $resultPieE=substr($resultPieE,0,-1);
+                echo $resultPieE;
+            }
+            if (!empty($resultColorsE)) $resultColorsE=substr($resultColorsE,0,-1);
+            ?>
+        ]);
+       var options = {
+                width:350,
+                height:280,
+                title: 'Expenses',
+                pieHole: 0.4,
+                colors: [<?php echo $resultColorsE; ?>],
+                pieSliceText: 'value',
+                legend:{position:'right'},
+                chartArea:{left:10,top:10,width:'100%',height:'80%'}
+              };
+      
+        // Create and draw the visualization.
+        new google.visualization.PieChart(document.getElementById('visualizatione')).
+            draw(data,options);
+      }
+      
+
+      google.setOnLoadCallback(drawVisualizatione);
+    </script>
+</div>
+
+
+<?php if($this->type == 'trash'){ ?>
+<div id="confirmDelete" title="Confirmation message" style="display:none;">
+	Are you sure you want to delete this message?
+</div>
+<?php }else{ ?>
+<div id="confirmDelete" title="Confirmation message" style="display:none;">
+	Are you sure you want to move to trash this message?
+</div>
+<?php } ?>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.message_url').on('click',function(){
+		var url = $(this).data('url');
+		window.location = url;
+	});
+	
+	$('.confirmDelete').click(function(){
+		var link = $(this);
+		$("#confirmDelete").dialog({
+			bgiframe: true,
+			height: 140,
+			width: 400,
+			modal: true,
+			buttons:{
+				'<?php echo Zend_Registry::get('translate')->_('yes'); ?>': function(){
+					$(this).dialog('close').dialog('destroy');
+					window.location.href = link.attr('href');
+				},
+				'<?php echo Zend_Registry::get('translate')->_('no'); ?>': function(){
+					$(this).dialog('close').dialog('destroy');
+					window.location.reload();
+				}
+			}
+		});
+		return false;
+	});
+	
+	$('.fancybox').fancybox({
+		'padding'	 : 0,
+		'openEffect' : 'elastic',
+		'type'		 : 'iframe',
+		'width'		 : 1000,
+		'height'	 : 380,
+		'resize'	 : false,
+		'autoSize'	 : false
+	});		
+});
+</script>
+

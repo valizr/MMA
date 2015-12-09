@@ -1,0 +1,29 @@
+
+		<h1>Login</h1>
+		<div class="login_wrap">
+				<!--afisare mesaje de eroare/succes-->
+				<?php if (!empty($this->message)) : ?>
+					<?php foreach ($this->message as $value) : ?>
+						<center><?php echo $value; ?></center>
+					<?php endforeach; ?>
+					<div class="clear"></div>
+				<?php endif; ?>
+			<div class="clear"></div>
+			<div class="login_form">
+				<p>Login with your email and password</p>
+				<?php echo $this->form; ?>
+				<div class="clear"></div>
+
+			</div>
+		</div>
+		
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".canhide").click(function() {
+			$(this).hide();
+		});
+		var wrapperHeight = $(document).height() - $('#wrapper').height() - 40;
+		console.log(wrapperHeight);
+		$('#footer_wrapper').css("height", wrapperHeight); //display full height of main divs
+	});
+</script>

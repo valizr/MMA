@@ -1,0 +1,22 @@
+$('input[name$="title"]').keyup(function() {
+	var nameValue = $(this).val();
+	var currentForm = $(this).closest('form');		
+	$.post('<?php echo WEBROOT ?>/ldmadmin/ajax/complete-metas',	{'nameValue':nameValue},		
+		function(data) 
+		{
+			try 
+			{
+				var items = eval('(' + data + ')');
+			} catch (e) {}
+			if(items) 
+			{
+				currentForm.find('input[name$="metaTitle"]').val(items.title);
+				currentForm.find('input[name$="metaKeywords"]').val(items.keywords);
+				currentForm.find('input[name$="metaDescription"]').val(items.description);
+				currentForm.find('textarea[name$="metaDescription"]').val(items.description);
+				currentForm.find('textarea[name$="metaKeywords"]').val(items.keywords);
+				currentForm.find('input[name$="url"]').val(items.url);
+			}
+		}
+	);
+});

@@ -1,0 +1,38 @@
+<div class="form_sidebar">
+	<form method="<?php echo $this->element->getMethod();?>" action="<?php echo $this->element->getAction();?>" id="<?php echo $this->element->getId();?>" enctype="<?php echo $this->element->getEncType();?>">	
+        <label for="filter_by">Filter by</label>
+<!--BEGIN SearchByDate --><!-- from -->
+                                <?php echo $this->{$this->element->dataStart->helper}(
+					$this->element->dataStart->getName(),
+					$this->element->dataStart->getValue(),					
+					$this->element->dataStart->getAttribs()
+				);?>
+                                <?php if(($this->element->dataStart->getMessages())){ echo  $this->formErrors($this->element->dataStart->getMessages());} ?>
+<!-- to -->
+        			<?php echo $this->{$this->element->dataEnd->helper}(
+					$this->element->dataEnd->getName(),
+					$this->element->dataEnd->getValue(),					
+					$this->element->dataEnd->getAttribs()
+				);?>
+                                <?php if(($this->element->dataEnd->getMessages())){ echo  $this->formErrors($this->element->dataEnd->getMessages());} ?>   				
+<!-- submit -->
+                                <?php echo $this->{$this->element->submit->helper}(
+                                        $this->element->submit->getName(),
+                                        $this->element->submit->getValue(),
+                                        $this->element->submit->getAttribs()
+                                );?>
+                <a href="<?php echo WEBROOT;?>statistics" class="reset">Reset</a>
+	</form>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+        $('#<?php echo $this->element->getId();?>').validationEngine('attach', {promptPosition : "centerRight"});
+	$('.data_inceput').datepicker({dateFormat:'yy-mm-dd'});
+	$('.data_sfarsit').datepicker({dateFormat:'yy-mm-dd',
+            beforeShowDay: function(date){
+                return [(date >= ($(".data_inceput").datepicker("getDate") || new Date()))];  
+            }
+        });
+});
+
+</script>

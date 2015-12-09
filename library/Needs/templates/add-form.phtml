@@ -1,0 +1,37 @@
+jQuery.fn.exists = function(){return this.length>0;}
+
+$("form.addForms").each(function(){
+	$(this).validationEngine('attach', {promptPosition : "centerRight"});
+	$(this).submit(function() {			
+		try {				
+			if ($('#tabs').find("[class*=ui-tabs]").exists()) {					
+				var tabDiv = $( "#tabs" ).tabs();					
+				var selectedTab = tabDiv.tabs( "option", "active");
+				var tabCount = $('#tabs >ul >li').size();					
+				for (var i=0; i<tabCount; i++) {
+					tabDiv.tabs( "option", "active", i);
+					var current = $("#tabs ul>li a").eq(i).attr('href');						
+					var tabForm = $(current).find('form');										
+					if (!tabForm.validationEngine('validate'))
+						return false;
+				}
+				tabDiv.tabs( "option", "active", selectedTab);
+
+				//big form submit
+				$(".addForms").each(function() {								
+					var fromIds = $(this).find('#formNumber').val();														
+					$('#form_'+fromIds).val($(this).serialize());				
+				});
+				$('#form-hidden').submit();
+				$('#formVisualAdd').submit();						
+				return false;
+			} else {
+				if (!$(this).validationEngine('validate'))
+					return false;
+			}
+		}catch(e)
+		{
+			console.log(e);
+		}
+	});	
+});	

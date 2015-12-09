@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'ApexNewBook';
+    src: url('fonts/apexnew-book/apexnew-book.eot');
+    src: url('fonts/apexnew-book/apexnew-book.eot') format('embedded-opentype'),
+         url('fonts/apexnew-book/apexnew-book.woff') format('woff'),
+         url('fonts/apexnew-book/apexnew-book.ttf') format('truetype'),
+         url('fonts/apexnew-book/apexnew-book.svg#ApexNewBook') format('svg');
+}

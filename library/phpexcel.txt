@@ -1,0 +1,102 @@
+in init
+require_once APPLICATION_PUBLIC_PATH."/library/PHPExcel/Classes/PHPExcel.php";
+
+in action
+$form = new Default_Form_ReportsProductGroups();	
+        $form->setDecorators(array('ViewScript', array('ViewScript', array('viewScript' => 'forms/reports/product-groups-reports.phtml'))));
+        $this->view->form = $form;	
+		if($this->getRequest()->isPost()) {
+            if($form->isValid($this->getRequest()->getPost())) {
+            	$dataStart = $this->getRequest()->getPost('dataStart');
+				$dataEnd = $this->getRequest()->getPost('dataEnd');
+				$idGroup = $this->getRequest()->getPost('idGroup');
+				$dailySales=new Default_Model_DailySales();
+				
+				$objPHPExcel = new PHPExcel();
+				$objPHPExcel->getProperties()->setCreator("Sales-Trax")
+							 ->setLastModifiedBy("Sales-Trax")
+							 ->setTitle("Form3")
+							 ->setSubject("")
+							 ->setDescription("")
+							 ->setKeywords("")
+							 ->setCategory("");
+
+				$objPHPExcel->setActiveSheetIndex(0)
+							->setCellValue('A1', "Group")			
+							->setCellValue('B1', "Date")
+							->setCellValue('C1', "Day")			
+							->setCellValue('D1', "GrossSales")			
+							->setCellValue('E1', "NetSales")			
+							->setCellValue('F1', "SalesTax")
+							->setCellValue('G1', "Voids")
+							->setCellValue('H1', "DepositAmount")
+							->setCellValue('I1', "DepositAudited")
+							->setCellValue('J1', "AmexAudited")
+							->setCellValue('K1', "Royality")
+							->setCellValue('L1', "MarketingFees")
+							->setCellValue('M1', "StoreManager");
+
+				$select=$dailySales->getMapper()->getDbTable()->select()
+							->from(array('ds'=>'daily_sales'),array('*'))
+							->joinLeft(array('s'=>'shops'), 's.id=ds.idShop', array(''))
+							->joinLeft(array('u'=>'users'), 'ds.idShop=u.idShop', array('userName'=>'u.name'))
+							->joinLeft(array('g'=>'groups'), 'g.id=s.idGroup', array('name'=>'g.name'))
+							->where('u.idRole = ?', 15)//store manager
+							->where('ds.date >= ?', $dataStart)
+							->where('ds.date <= ?',$dataEnd)
+							->where('g.id IN (?)',$idGroup)
+							->group('idShop')
+							->order(array('name ASC','ds.date ASC'))
+							->setIntegrityCheck(false);
+				$result = $dailySales->fetchAll($select);
+				$nr=1;
+				foreach($result as $values){
+							//$dateLastYear=strtotime($values->getDate(),'-1 year');
+					$idShop=$values->getIdShop();
+		//					$select2=$dailySales->getMapper()->getDbTable()->select()
+		//						->where('date = ?', $dateLastYear)
+		//						->where('idShop = ?',$idShop)
+		//						->setIntegrityCheck(false);
+					$rowName			= ($values->getName()!='') ? $values->getName() : '-';
+					$rowUserName		= ($values->getUserName()!='') ? $values->getUserName() : '-';
+					$rowDate			= ($values->getDate()!='') ? $values->getDate() : '-';
+					$rowDay				= ($values->getDate()!='') ? date('l',strtotime($values->getDate())) : '-';
+					$rowGrossSales		= ($values->getGrossSales()!='') ? $values->getGrossSales() : '-';
+					$rowNetSales		= ($values->getNetSales()!='') ? $values->getNetSales() : '-';
+					$rowSalesTax		= ($values->getSalesTax()!='') ? $values->getSalesTax() : '-';
+					$rowVoids			= ($values->getVoids()!='') ? $values->getVoids() : '-';
+					$rowDepositAmount	= ($values->getDepositAmount()!='') ? $values->getDepositAmount() : '-';
+					$rowDepositAudited	= ($values->getDepositAudited()!='') ? $values->getDepositAudited() : '-';
+					$rowAmexAudited		= ($values->getAmexAudited()!='') ? $values->getAmexAudited() : '-';
+					$rowRoyality		= ($values->getRoyality()!='') ? $values->getRoyality() : '-';
+					$rowMarketingFees	= ($values->getMarketingFees()!='') ? $values->getMarketingFees() : '-';
+
+					$objPHPExcel->setActiveSheetIndex(0)
+								->setCellValue('A'.($nr+1).'', $rowName)
+								->setCellValue('B'.($nr+1).'', $rowDate)
+								->setCellValue('C'.($nr+1).'', $rowDay)
+								->setCellValue('D'.($nr+1).'', $rowGrossSales)
+								->setCellValue('E'.($nr+1).'', $rowNetSales)
+								->setCellValue('F'.($nr+1).'', $rowSalesTax)
+								->setCellValue('G'.($nr+1).'', $rowVoids)
+								->setCellValue('H'.($nr+1).'', $rowDepositAmount)
+								->setCellValue('I'.($nr+1).'', $rowDepositAudited)
+								->setCellValue('J'.($nr+1).'', $rowAmexAudited)
+								->setCellValue('K'.($nr+1).'', number_format($rowRoyality*$rowGrossSales/100))
+								->setCellValue('L'.($nr+1).'', number_format($rowMarketingFees*$rowGrossSales/100))
+								->setCellValue('M'.($nr+1).'', $rowUserName);
+					$nr++;
+				}
+				$objPHPExcel->getActiveSheet()->setTitle('Form1');
+				$objPHPExcel->setActiveSheetIndex(0);
+
+				header('Content-Type: application/vnd.ms-excel');
+				header('Content-Disposition: attachment;filename="'.date('Y-m-d-H-i-s').'.xls"');
+							/*header('Cache-Control: max-age=0');*/
+
+				$objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+				$objWriter->save('php://output');
+				$this->_helper->viewRenderer->setNoRender();
+				$this->_helper->getHelper('layout')->disableLayout();
+			}
+		}

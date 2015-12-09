@@ -1,0 +1,60 @@
+<form class="addForms" method="<?php echo $this->element->getMethod();?>" action="<?php echo $this->element->getAction();?>" id="<?php echo $this->element->getId();?>" enctype="<?php echo $this->element->getEncType();?>">	
+	<?php echo $this->{$this->element->action->helper}(
+				$this->element->action->getName(),
+				$this->element->action->getValue(),
+				$this->element->action->getAttribs()
+			);?>
+	<?php echo $this->{$this->element->idFile->helper}(
+				$this->element->idFile->getName(),
+				$this->element->idFile->getValue(),
+				$this->element->idFile->getAttribs()
+			);?>
+	<label for="idUserTo" class="sendTo">Send To:</label>
+	<div class="clear"></div>
+	<?php echo $this->{$this->element->idUserTo->helper}(
+				$this->element->idUserTo->getName(),
+				$this->element->idUserTo->getValue(),
+				$this->element->idUserTo->getAttribs(),
+				$this->element->idUserTo->getMultiOptions(),
+				$this->element->idUserTo->getLabel()
+			);?>
+	<?php if(($this->element->idUserTo->getMessages())){ echo  $this->formErrors($this->element->idUserTo->getMessages());} ?>
+	
+	<?php echo $this->{$this->element->subject->helper}(
+				$this->element->subject->getName(),
+				$this->element->subject->getValue(),
+				$this->element->subject->getAttribs(),
+				$this->element->subject->getLabel()
+			);?>
+	<?php if(($this->element->subject->getMessages())){ echo  $this->formErrors($this->element->subject->getMessages());} ?>
+	<div class="clear"></div>
+	<?php echo $this->{$this->element->message->helper}(
+				$this->element->message->getName(),
+				$this->element->message->getValue(),
+				$this->element->message->getAttribs()
+			);?>
+	<?php if(($this->element->message->getMessages())){ echo  $this->formErrors($this->element->message->getMessages());} ?>
+	File attached <p class="currentFile"><?php echo Zend_Controller_Front::getInstance()->getRequest()->getParam('filename');?></p>
+	<div class="clear"></div>
+	<?php echo $this->{$this->element->rightSubmit->helper}(
+				$this->element->rightSubmit->getName(),
+				$this->element->rightSubmit->getValue(),
+				$this->element->rightSubmit->getAttribs()
+			);?>
+</form>
+<div class="clear"></div>
+
+<script type="text/javascript" src="<?php echo WEBROOT; ?>theme/front/js/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript">	
+$(document).ready(function() {
+	//validation
+	$('#<?php echo $this->element->getId();?>').validationEngine('attach', {promptPosition : "centerRight"});
+	
+	//editor
+	tinymce.init({
+		selector: "textarea",
+		// Theme options
+		theme_advanced_buttons1 : "bold,italic,underline,|,link"
+	 });	
+});
+</script>

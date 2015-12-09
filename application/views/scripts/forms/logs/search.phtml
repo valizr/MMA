@@ -1,0 +1,85 @@
+<div class="cauta"><h3>Cautare</h3></div>
+<div class="form_sidebar">
+	<form method="<?php echo $this->element->getMethod();?>" action="<?php echo $this->element->getAction();?>" id="<?php echo $this->element->getId();?>" enctype="<?php echo $this->element->getEncType();?>">	
+			<div class="input_wrapper">
+<!--BEGIN SearchByRole -->			
+			<?php
+				echo $this->{$this->element->modul->helper}(
+							$this->element->modul->getName(),
+							$this->element->modul->getValue(),					
+							$this->element->modul->getAttribs(),
+							$this->element->modul->getMultiOptions()
+						);
+			?>
+			<?php 
+				if(($this->element->modul->getMessages())){ echo  $this->formErrors($this->element->modul->getMessages());} 
+			?>   
+			</div>
+			<div class="clear"></div>
+			<div class="input_wrapper">
+<!--BEGIN SearchByRole -->			
+			<?php
+				echo $this->{$this->element->actionType->helper}(
+							$this->element->actionType->getName(),
+							$this->element->actionType->getValue(),					
+							$this->element->actionType->getAttribs(),
+							$this->element->actionType->getMultiOptions()
+						);
+			?>
+			<?php 
+				if(($this->element->actionType->getMessages())){ echo  $this->formErrors($this->element->actionType->getMessages());} 
+			?>   
+			</div>
+			<div class="clear"></div>
+<!--BEGIN SearchByDate -->
+		<!-- from -->
+			<div class="input_wrapper">
+				<?php
+					echo $this->{$this->element->data_inceput->helper}(
+								$this->element->data_inceput->getName(),
+								$this->element->data_inceput->getValue(),					
+								$this->element->data_inceput->getAttribs()
+							);
+				?>
+				<?php 
+					if(($this->element->data_inceput->getMessages())){ echo  $this->formErrors($this->element->data_inceput->getMessages());} 
+				?>   
+			</div>
+		<!-- to -->
+			<div class="input_wrapper">
+				<?php
+					echo $this->{$this->element->data_sfarsit->helper}(
+								$this->element->data_sfarsit->getName(),
+								$this->element->data_sfarsit->getValue(),					
+								$this->element->data_sfarsit->getAttribs()
+							);
+				?>
+				<?php 
+					if(($this->element->data_sfarsit->getMessages())){ echo  $this->formErrors($this->element->data_sfarsit->getMessages());} 
+				?>   				
+			</div>
+			<div class="clear"></div>
+<!-- submit -->
+			<div class="input_wrapper">
+				<?php echo $this->{$this->element->submit->helper}(
+				$this->element->submit->getName(),
+				$this->element->submit->getValue(),
+				$this->element->submit->getAttribs()
+				);?>
+				<a href="<?php echo WEBROOT;?>logs" id="reset">Reset</a>
+			</div>
+	</form>
+</div>
+<script>
+
+$(document).ready(function(){
+
+	$('.data_inceput').datepicker({dateFormat:'yy-mm-dd'});
+	$('.data_sfarsit').datepicker({dateFormat:'yy-mm-dd'});
+	$("#modul").uniform();
+	$("#actionType").uniform();
+	$('.data_inceput').uniform();
+
+});
+
+</script>

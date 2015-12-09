@@ -1,0 +1,113 @@
+<div class="admPageHeader">
+	<div class="pTitle">
+		<?php echo Zend_Registry::get('translate')->_('Comments'); ?>
+	</div>
+	<div class="clear"></div>
+</div>
+
+<!--afisare mesaje de eroare/succes-->
+<?php if(!empty($this->message)) : ?>
+	<?php foreach($this->message as $value) : ?>
+		<center class="w670"><?php echo $value; ?></center>
+	<?php endforeach; ?>
+	<div class="clearfix">&nbsp;</div>
+<?php endif; ?>
+
+<?php if($this->result){?>
+<table cellpadding="0" cellspacing="0" width="100%">
+	<tr>		
+		<th width="10%"><?php echo Zend_Registry::get('translate')->_('From'); ?></th>
+		<th width="10%"><?php echo Zend_Registry::get('translate')->_('To'); ?></th>
+		<th width="70%"><?php echo Zend_Registry::get('translate')->_('Comment'); ?></th>
+		<th width="10"><?php echo Zend_Registry::get('translate')->_('Action'); ?></th>		
+	</tr>
+	<?php foreach ($this->result as $value) { ?>
+		<tr>
+			<td>
+				<?php echo $value->getUserFrom()->getName()." ".$value->getUserFrom()->getSurname(); ?>
+			</td>
+			<td>
+				<?php echo $value->getIdUserTo(); ?>
+			</td>
+			<td>
+				<?php echo Needs_Strings::limitString($value->getDescription(),200); ?>
+			</td>
+			<td>
+				<!--<a href="<?php echo WEBROOT;?>/ldmadmin/comments/edit/id/<?php echo $value->getId();?>"  original-title="<?php echo Zend_Registry::get('translate')->_('admin_edit'); ?>" class="tipsyTrigger"><img src="<?php echo WEBROOT; ?>theme/admin/images/edit.png" title="<?php echo Zend_Registry::get('translate')->_('admin_edit'); ?>" alt="<?php echo Zend_Registry::get('translate')->_('admin_edit'); ?>" /></a>-->
+				&nbsp;			
+				<a class="tipsyTrigger" href="<?php echo WEBROOT;?>/comments/details/id/<?php echo $value->getId();?>"  original-title="<?php echo Zend_Registry::get('translate')->_('admin_details'); ?>" ><img src="<?php echo WEBROOT; ?>theme/admin/images/icons/details.png" title="<?php echo Zend_Registry::get('translate')->_('admin_details'); ?>" alt="<?php echo Zend_Registry::get('translate')->_('admin_details'); ?>" /></a>
+				&nbsp;			
+				<a class="tipsyTrigger fancybox" href="<?php echo WEBROOT;?>/iframe/reply/id/<?php echo $value->getId();?>"  original-title="<?php echo Zend_Registry::get('translate')->_('Reply'); ?>" ><img src="<?php echo WEBROOT; ?>theme/admin/images/email_edit.png" title="<?php echo Zend_Registry::get('translate')->_('Reply'); ?>" alt="<?php echo Zend_Registry::get('translate')->_('Reply'); ?>" /></a>
+				&nbsp;
+				<a class="confirmDelete tipsyTrigger" href="<?php echo WEBROOT;?>/comments/delete/id/<?php echo $value->getId();?>"  original-title="<?php echo Zend_Registry::get('translate')->_('admin_delete'); ?>" ><img src="<?php echo WEBROOT; ?>theme/admin/images/delete.gif" title="<?php echo Zend_Registry::get('translate')->_('admin_delete'); ?>" alt="<?php echo Zend_Registry::get('translate')->_('admin_delete'); ?>" /></a>
+			</td>
+		</tr>
+		<!--get child comments-->
+		<?php 
+		$modelComm = new Default_Model_Comments();
+		$childComments = Needs_Tools::getChildElements($value->getId(), $modelComm,1); 
+		if($childComments){
+			foreach ($childComments as $valueChild) { ?>
+				<tr>
+					<td class="childElementTd">
+						<?php echo $valueChild->getUserFrom()->getName()." ".$valueChild->getUserFrom()->getSurname(); ?>
+					</td>
+					<td>
+						<?php //echo $valueChild->getIdParent(); ?>
+					</td>
+					<td class="childElementTd">
+						<?php echo Needs_Strings::limitString($valueChild->getDescription(),200); ?>
+					</td>					
+					<td>
+						<!--<a href="<?php echo WEBROOT;?>/ldmadmin/comments/edit/id/<?php echo $valueChild->getId();?>"  original-title="<?php echo Zend_Registry::get('translate')->_('admin_edit'); ?>" class="tipsyTrigger"><img src="<?php echo WEBROOT; ?>theme/admin/images/edit.png" title="<?php echo Zend_Registry::get('translate')->_('admin_edit'); ?>" alt="<?php echo Zend_Registry::get('translate')->_('admin_edit'); ?>" /></a>-->
+						&nbsp;			
+						<a class="tipsyTrigger" href="<?php echo WEBROOT;?>/comments/details/id/<?php echo $valueChild->getId();?>"  original-title="<?php echo Zend_Registry::get('translate')->_('admin_details'); ?>" ><img src="<?php echo WEBROOT; ?>theme/admin/images/icons/details.png" title="<?php echo Zend_Registry::get('translate')->_('admin_details'); ?>" alt="<?php echo Zend_Registry::get('translate')->_('admin_details'); ?>" /></a>
+						&nbsp;
+						<a class="confirmDelete tipsyTrigger" href="<?php echo WEBROOT;?>/comments/delete/id/<?php echo $valueChild->getId();?>"  original-title="<?php echo Zend_Registry::get('translate')->_('admin_delete'); ?>" ><img src="<?php echo WEBROOT; ?>theme/admin/images/delete.gif" title="<?php echo Zend_Registry::get('translate')->_('admin_delete'); ?>" alt="<?php echo Zend_Registry::get('translate')->_('admin_delete'); ?>" /></a>
+					</td>
+				</tr>			
+			<?php } ?>	
+		<?php } ?>	
+	<?php } ?>	
+</table>
+<div id="confirmDelete" title="<?php echo Zend_Registry::get('translate')->_('admin_category_confirm_delete_title'); ?>" style="display:none;">
+	<?php echo Zend_Registry::get('translate')->_('admin_category_confirm_delete_message'); ?>
+</div>
+<?php if($this->itemCountPerPage < $this->totalItemCount){?>
+	<?php echo $this->result;?>
+<?php }?>
+<?php }?>
+<script type="text/javascript">
+$(document).ready(function(){
+		$('.fancybox').fancybox({
+		'padding'	 : 0,
+		'openEffect' : 'elastic',
+		'type'		 : 'iframe',
+		'width'		 : 960,
+		'height'	 : 480,
+		'resize'	 : false,
+		'autoSize'	 : false
+		});
+		$('.confirmDelete').click(function(){
+			var link = $(this);
+			$("#confirmDelete").dialog({
+				bgiframe: true,
+				height: 140,
+				width: 400,
+				modal: true,
+				buttons:{
+					'<?php echo Zend_Registry::get('translate')->_('yes'); ?>': function(){
+						$(this).dialog('close').dialog('destroy');
+						window.location.href = link.attr('href');
+					},
+					'<?php echo Zend_Registry::get('translate')->_('no'); ?>': function(){
+						$(this).dialog('close').dialog('destroy');
+						window.location.reload();
+					}
+				}
+			});
+			return false;
+		});
+});
+</script>
+	

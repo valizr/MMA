@@ -1,0 +1,361 @@
+<div id="center">
+	<div class="pageTitle">
+		<h1><?php echo Zend_Registry::get('translate')->_('reports') ?></h1><p> <?php echo date('F d, Y');?></p>
+	</div>	
+	
+	<!--afisare mesaje de eroare/succes-->
+	<?php if(!empty($this->message)) : ?>
+		<?php foreach($this->message as $value) : ?>
+			<center class="w670"><?php echo $value; ?></center>
+		<?php endforeach; ?>
+		<div class="clearfix">&nbsp;</div>
+	<?php endif; ?>
+		
+                <div class="filter_wrap">
+                    
+                    <?php echo $this->formsearch; ?>
+                    <?php if($this->search) :  ?>
+				<div class="search_wrapper">
+					<p><?php echo Zend_Registry::get('translate')->_('admin_search_results'); ?>: <?php echo ($this->search['dataStart']) ? '<span>'.Zend_Registry::get('translate')->_('admin_from_date').' - '.$this->search['dataStart'].'</span>' : '' ; ?><?php echo ($this->search['dataEnd']) ? '<span> '.Zend_Registry::get('translate')->_('admin_to_date').' - '.$this->search['dataEnd'].'</span>' : '' ; ?></p>
+				</div>
+			<?php endif; ?>
+                    <!--income donut chart-->    
+    <script type="text/javascript">
+      google.load('visualization', '1.1', {packages: ['corechart','controls']});
+    </script>
+    <?php if ($this->resultPieIncome):?>
+    <script type="text/javascript">
+      function drawVisualizationi() {
+        // Create and populate the data table.
+        var data = google.visualization.arrayToDataTable([
+          ['Name', 'Income'],
+          <?php 
+            $resultPieI='';
+            $resultColorsI='';
+            foreach ($this->resultPieIncome as $resultPieInc){
+                $resultPieI.= "['".$resultPieInc->getName()."', ".$resultPieInc->getPrice()."],";
+                $resultColorsI.= "'".$resultPieInc->getColor()."',";
+            }
+            if (!empty($resultPieI)) {
+                $resultPieI=substr($resultPieI,0,-1);
+                echo $resultPieI;
+            }
+            if (!empty($resultColorsI)) $resultColorsI=substr($resultColorsI,0,-1);
+            ?>
+        ]);
+       var slideri = new google.visualization.ControlWrapper({
+          'controlType': 'NumberRangeFilter',
+          'containerId': 'controli1',
+          'options': {
+            'filterColumnLabel': 'Income',
+            'ui': {'labelStacking': 'vertical'}
+          }
+        });
+      
+        // Define a pie chart
+        var piecharti = new google.visualization.ChartWrapper({
+          'chartType': 'PieChart',
+          'containerId': 'charti1',
+          'options': {
+            'width': 365,
+            'height': 290,
+            'legend': 'right',
+            'chartArea': {'left': 10, 'top': 10, 'width': '100%', 'height': '100%'},
+            'pieSliceText': 'value',
+            'pieHole':0.4,
+            'colors':[<?php echo $resultColorsI; ?>]
+                      }
+        });
+      
+        // Create and draw the visualization.
+        new google.visualization.Dashboard(document.getElementById('dashboardi')).
+          // Configure the slider to affect the piechart
+          bind(slideri, piecharti).
+          // Draw the dashboard
+          draw(data);
+      }
+      
+
+      google.setOnLoadCallback(drawVisualizationi);
+    </script>
+    <div id="dashboardi" style="width: 365px; height: 290px;float:left;">
+        <table>
+        <tr style='vertical-align: top'>
+          <td style='width: 300px; font-size: 0.9em;'>
+            <div id="controli1"></div>
+            <div id="controli2"></div>
+            <div id="controli3"></div>
+            <br>
+            <div style="float: left;" id="charti1"></div>
+            <div style="float: left;" id="charti2"></div>
+            <div style="float: left;" id="charti3"></div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <?php endif;?>
+    <?php if ($this->resultPieExpenses):?>
+    <!--expenses donut chart-->
+    <script type="text/javascript">
+      function drawVisualizatione() {
+        // Create and populate the data table.
+        var data = google.visualization.arrayToDataTable([
+          ['Name', 'Expenses'],
+          <?php 
+            $resultPieE='';
+            $resultColorsE='';
+            foreach ($this->resultPieExpenses as $resultPieExp){
+                $resultPieE.= "['".$resultPieExp->getName()."', ".$resultPieExp->getPrice()."],";
+                $resultColorsE.= "'".$resultPieExp->getColor()."',";
+            }
+            if (!empty($resultPieE)) {
+                $resultPieE=substr($resultPieE,0,-1);
+                echo $resultPieE;
+            }
+            if (!empty($resultColorsE)) $resultColorsE=substr($resultColorsE,0,-1);
+            ?>
+        ]);
+        
+         // Define a slider control for the 'Expenses' column
+        var slidere = new google.visualization.ControlWrapper({
+          'controlType': 'NumberRangeFilter',
+          'containerId': 'controle1',
+          'options': {
+            'filterColumnLabel': 'Expenses',
+            'ui': {'labelStacking': 'vertical'}
+          }
+        });
+      
+        // Define a pie chart
+        var piecharte = new google.visualization.ChartWrapper({
+          'chartType': 'PieChart',
+          'containerId': 'charte1',
+          'options': {
+            'width': 365,
+            'height': 290,
+            'legend': 'right',
+            'chartArea': {'left': 10, 'top': 10, 'width': '100%', 'height': '100%'},
+            'pieSliceText': 'value',
+            'pieHole':0.4,
+            'colors':[<?php echo $resultColorsE; ?>]
+                      }
+        });
+      
+        // Create and draw the visualization.
+        new google.visualization.Dashboard(document.getElementById('dashboarde')).
+          // Configure the slider to affect the piechart
+          bind(slidere, piecharte).
+          // Draw the dashboard
+          draw(data);
+      }
+      
+
+      google.setOnLoadCallback(drawVisualizatione);
+    </script>
+    <div id="dashboarde" style="width: 365px; height: 290px;float:left;">
+        <table>
+        <tr style='vertical-align: top'>
+          <td style='width: 300px; font-size: 0.9em;'>
+            <div id="controle1"></div>
+            <div id="controle2"></div>
+            <div id="controle3"></div>
+            <br>
+            <div style="float: left;" id="charte1"></div>
+            <div style="float: left;" id="charte2"></div>
+            <div style="float: left;" id="charte3"></div>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <?php endif;?>
+                    <!--current month-->
+                    <div class="clear"></div>
+                    <h2><?php echo date('F Y');?></h2>
+                    <div class="right_income">
+                        <div class="inside_half_wrap">
+                            <p>Total income this month:</p>
+                            <div class="income"><b><?php echo $this->incomeAmount; ?></b> ron</div>
+                        </div>
+                    </div>
+                    <div class="padding_boxes"></div>
+                    <div class="right_expense">
+                        <div class="inside_half_wrap">
+                            <p>Total expenses this month:</p>
+                            <div class="expense"><b><?php echo $this->expensesAmount; ?></b> ron</div>
+                        </div>
+                    </div>
+                    <?php 
+                    $money=$this->incomeAmount-$this->expensesAmount;
+                    if ($money<0) $youhave="expense";
+                    else $youhave="income";
+                    ?>
+                    <div class="padding_boxes"></div>
+                    <div class="right_<?php echo $youhave;?>">
+                        <div class="inside_half_wrap">
+                            <p>You have:</p>
+                            <div class="<?php echo $youhave;?>"><b><?php echo $money; ?></b> ron</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="clear"></div>
+               <div class="filter_wrap">
+               <?php echo $this->formsearchcomplex; ?>
+                
+    <script type="text/javascript">
+      function drawVisualizationl() {
+        // Create and populate the data table.
+        
+        <?php //if (!isset($this->dataStartC)){
+                        $categoryN='';
+                        $idCat=array();
+                        foreach ($this->categoryNames as $key => $categoryName){//key is the category id
+                            $categoryN.= "'".$categoryName."',";
+                            $idCat[]=$key;
+                        }
+                        $categoryN = substr($categoryN,0,-1);
+          $complexSearch="[
+          ['x', ".$categoryN."],";
+          foreach ($this->monthlyStats as $monthlyStat => $values){
+            $complexSearch.="['".$monthlyStat."', ";//day, week interval or month
+            foreach ($idCat as $key => $idCategory){
+                $complexSearch.=(isset($values[$idCategory])?$values[$idCategory]:0).", ";
+            }
+            $complexSearch=substr($complexSearch,0,-2);
+            $complexSearch.="],";
+          }
+          $complexSearch=substr($complexSearch,0,-1)."]";
+        //}
+        ?>
+        var data = google.visualization.arrayToDataTable(<?php echo $complexSearch;?>);
+      
+        // Create and draw the visualization.
+        new google.visualization.LineChart(document.getElementById('viewlinechart')).
+            draw(data, {//curveType: "function",
+                        colors: [<?php 
+                        $lineColors='';
+                        foreach ($idCat as $key => $lineColor){
+                            $lineColors.= "'".$this->lineColor[$lineColor]."',";
+                        }
+                        echo substr($lineColors,0,-1);
+                        ?>],
+                        width: 730, height: 400,
+                        chartArea : { left: '5%', top: '10%', width: '72%', height: '72%' },
+                        vAxis: {maxValue: 10}}
+                );
+      }
+      
+
+      google.setOnLoadCallback(drawVisualizationl);
+    </script>
+    
+    <div id="viewlinechart" style="width: 730px; height: 400px;"></div>
+    <?php if (!empty($this->monthlyStatsi)){?>
+    <script type="text/javascript">
+      function drawVisualizationi() {
+        // Create and populate the data table.
+        
+        <?php //if (!isset($this->dataStartC)){
+                        $categoryNi='';
+                        $idCati=array();
+                        foreach ($this->categoryNamesi as $keyi => $categoryNamei){//key is the category id
+                            $categoryNi.= "'".$categoryNamei."',";
+                            $idCati[]=$keyi;
+                        }
+                        $categoryNi = substr($categoryNi,0,-1);
+          $complexSearchi="[
+          ['x', ".$categoryNi."],";
+          foreach ($this->monthlyStatsi as $monthlyStati => $valuesi){
+            $complexSearchi.="['".$monthlyStati."', ";
+            foreach ($idCati as $key => $idCategoryi){
+                $complexSearchi.=(isset($valuesi[$idCategoryi])?$valuesi[$idCategoryi]:0).", ";
+            }
+            $complexSearchi=substr($complexSearchi,0,-2);
+            $complexSearchi.="],";
+          }
+          $complexSearchi=substr($complexSearchi,0,-1)."]";
+        //}
+        ?>
+        var data = google.visualization.arrayToDataTable(<?php echo $complexSearchi;?>);
+      
+        // Create and draw the visualization.
+        new google.visualization.LineChart(document.getElementById('viewlinecharti')).
+            draw(data, {//curveType: "function",
+                        colors: [<?php 
+                        $lineColorsi='';
+                        foreach ($idCati as $keyi => $lineColori){
+                            $lineColorsi.= "'".$this->lineColori[$lineColori]."',";
+                        }
+                        echo substr($lineColorsi,0,-1);
+                        ?>],
+                        width: 730, height: 400,
+                        chartArea : { left: '5%', top: '10%', width: '72%', height: '72%' },
+                        vAxis: {maxValue: 10}}
+                );
+      }
+      
+
+      google.setOnLoadCallback(drawVisualizationi);
+    </script>
+    <div id="viewlinecharti" style="width: 730px; height: 400px;"></div>
+    <?php } ?>
+               </div>
+</div>
+<div id="right">
+	<div class="search_right">
+		<form id="searchForm" action="">
+			<input type="text" id="search" name="search" placeholder="Search platform">
+			<input type="submit" id="searchSubmit" name="searchSubmit" value="">
+		</form>
+	</div>
+</div>
+
+
+<?php if($this->type == 'trash'){ ?>
+<div id="confirmDelete" title="Confirmation message" style="display:none;">
+	Are you sure you want to delete this message?
+</div>
+<?php }else{ ?>
+<div id="confirmDelete" title="Confirmation message" style="display:none;">
+	Are you sure you want to move to trash this message?
+</div>
+<?php } ?>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.message_url').on('click',function(){
+		var url = $(this).data('url');
+		window.location = url;
+	});
+	
+	$('.confirmDelete').click(function(){
+		var link = $(this);
+		$("#confirmDelete").dialog({
+			bgiframe: true,
+			height: 140,
+			width: 400,
+			modal: true,
+			buttons:{
+				'<?php echo Zend_Registry::get('translate')->_('yes'); ?>': function(){
+					$(this).dialog('close').dialog('destroy');
+					window.location.href = link.attr('href');
+				},
+				'<?php echo Zend_Registry::get('translate')->_('no'); ?>': function(){
+					$(this).dialog('close').dialog('destroy');
+					window.location.reload();
+				}
+			}
+		});
+		return false;
+	});
+	
+	$('.fancybox').fancybox({
+		'padding'	 : 0,
+		'openEffect' : 'elastic',
+		'type'		 : 'iframe',
+		'width'		 : 1000,
+		'height'	 : 380,
+		'resize'	 : false,
+		'autoSize'	 : false
+	});		
+});
+</script>
+

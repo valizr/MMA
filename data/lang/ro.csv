@@ -1,0 +1,297 @@
+admin_menu_index;Home
+admin_menu_categories;Categories
+admin_menu_all_categories;All categories
+admin_menu_add_new_category;Add new category
+admin_menu_are_you_sure_category;Are you sure you want to delete the category?
+admin_menu_administrators;Administrators
+
+#BEGIN:categories
+#BEGIN:category index
+admin_categories;Categories
+admin_category_add_new;Add new
+admin_add_subcategory;Add Subcategory
+admin_category_name;Category Name
+admin_color_for_charts;Color for Charts
+admin_category_select_type;Select type
+admin_category_confirm_delete_title;Confirm category delete
+admin_category_confirm_delete_message;Do you confirm deleting this category?
+#END:category index
+
+#BEGIN:category add
+admin_category_incorrect_fields_error_message;Some fields are not completed properly. Please check the error messages unde each field.
+admin_category_no_uploaded_images_error_message;Please upload images!
+#END:category add
+
+#BEGIN:category edit
+admin_category_edit;Edit
+admin_category_add;Add Category
+#END:category edit
+
+#CATEGORY messages
+category_add_success_message;Category successfully added.
+category_add_error_message;Error adding category.
+category_edit_success_message;Category successfully modified
+category_edit_error_message;Error modifying category.
+category_delete_success_message;Category successfully deleted
+category_delete_error_message;Error deleting category.
+
+#END:categories
+
+#BEGIN:Adminstrators
+admin_administrators;Administrators
+admin_administrators_change_password;Change Password
+admin_password_min_length;Password must contain between 6 and 32 characters
+admin_administrators_account_settings;Account settings
+admin_administrators_name;Name
+admin_administrators_username;Username
+admin_administrators_password;Password
+admin_administrators_retype_password;Retype Password
+admin_administrators_email;Email
+admin_administrators_rights;Rights
+admin_administrators_old_password;Old Password
+admin_administrators_new_password;New Password
+admin_administrators_retype_new_password;Retype New Password
+admin_administrators_modify;Modify
+admin_administrators_confirm_delete_title;Confirm delete
+admin_administrators_confirm_delete_message;Are you sure you want to delete this user?
+admin_add_administrators;Add administrators
+admin_email_address;Email address
+admin_email;Email
+admin_password;Password
+admin_login;Login
+
+#END:Adminstrators
+
+#BEGIN:Settings
+admin_settings_languages;Languages
+admin_settings_language_name;Name
+admin_settings_language_shortname;Short Name
+admin_settings_language_add_flag;Add flag
+admin_settings_language_confirm_delete_title;Confirm delete
+admin_settings_language_confirm_delete_message;Are you sure you want to delete this language?
+
+admin_general_settings;Setari Generale
+admin_general_settings_name;Nume
+admin_general_settings_value;Valoare
+
+#GENERAL messages
+general_edit_success_message; All the settings were saved successfully
+general_edit_error_message; Error saving settings
+admin_settings_translate;Translate
+
+#BEGIN:Translation variables
+institution_name;Institution Name
+poi_suggestion;Suggest Point of Interest
+application_interface_settings;Application Interface Settings
+
+#TRANSLATE messages
+translate_edit_success_message;Settings were successfully edited.
+translate_edit_error_message;Error editing settings.
+
+#END:Translation variables
+
+street_import_success_message;Streets were successfully imported
+street_import_error_message;Error importing streets
+street_edit_success_message;Street successfully modified.
+street_edit_error_message;Error editing street.
+street_delete_success_message;Street was successfully deleted.
+street_delete_error_message;Error deleting street.
+
+admin_settings_email_templates;Sabloane de email
+admin_settings_edit_email_templates;Editare Sablon email
+admin_email_templates_name;Denumire
+admin_settings_admin_email_templates;Sabloane de email pentru administratori
+admin_settings_user_email_templates;Sabloane de email pentru utilizatori
+admin_email_templates_subject;Subiect
+admin_email_templates_content;Continut
+admin_email_templates_legend;Legenda
+
+legend_username;Username
+legend_name;Name
+legend_problem_title;Title
+legend_problem_created;Created
+legend_problem_status;Problem Status
+confirmation_link;Confirmation link
+
+#email templates Name
+new_social_problem;New Social Problem Template
+social_problem_status_change;Social Problem Staus changed by User
+social_problem_new_message;New Social Problem Message from User
+user_social_problem_status_change;Social Problem Status changed by Admin
+user_social_problem_new_message;New Social Problem Message from Admin
+supporter_confirmation_email;Supporter Confirmation Email
+#END:Settings
+
+#BEGIN:templates
+admin_poi_templates;POI templates
+admin_poi_template_add;Add template
+admin_template_confirm_delete_title;Confirm delete
+admin_template_confirm_delete_message;Are you sure you want to delete this template?
+
+
+#BEGIN:Pages
+admin_pages;Pages
+admin_menu_add_pages;Add Page
+admin_pages_edit;Edit Page
+admin_menu_list_pages;List Pages
+admin_menu_pages;Pages
+admin_pages_name;Name
+admin_pages_status;Status
+admin_pages_content;Content
+admin_pages_title;Title
+admin_author;Author
+admin_pages_shortDescription;Short Description
+admin_meta_url;URL
+ 
+admin_poi_default_picture;Poza
+admin_poi_photo_gallery;Photo Gallery
+
+#PAGE messages
+page_add_success_message;Page was successfully added.
+page_add_error_message;Error adding page.
+page_edit_success_message;Page successfully edited.
+page_edit_error_message;Error editing page.
+#END:Pages
+
+#BEGIN:Setting Constants
+numeInst;Institute Name
+adresa;Address
+localitate;City
+judet;County
+tel;Phone
+fax;Fax
+email;Email
+webpage;Web Page
+smtp_username;SMTP Username
+smtp_password;SMTP Password
+smtp_url;SMTP URL
+smtp_port;SMTP Port
+numeSite;Webpage Name
+
+
+#BEGIN:Right Constants
+acces_modul_setari;Access Setting Module
+acces_modul_utilizatori;Access Adminstrator Users Module
+adaugare_utilizator;Add Users
+editare_utilizator;Edit Users
+stergere_utilizator;Delete Users
+acces_modul_categorii;Access Category Module
+adaugare_categorii;Add Category
+editare_categorii;Edit Category
+acces_modul_pagini;Access Page Module
+editare_pagini;Edit Page
+#END:Right Constants
+
+#generals
+admin_add_meta_tags_configuration;Configurare Taguri Meta
+admin_account_settings;Account Settings
+admin_account_sign_out;Sign Out
+admin_account_signed_in_as;Signed in as
+admin_add;Adauga
+admin_add_new;Adaugare
+admin_name;Name
+admin_action;Actiuni
+admin_edit;Edit
+admin_modify;Editeaza
+admin_delete;Stergere
+admin_details;Detalii
+admin_menu_form_search;Search
+admin_menu_form_reset;Reset
+admin_uploaded_photos;Uploaded Photos
+admin_uploaded_files;Uploaded Files
+admin_add;Add
+
+category;Category
+user;User
+admin_full_name;Full Name
+admin_select_user_level;Select user level
+admin_level;Level
+admin_add_user;Add User
+admin_edit_user;Edit User
+status;Status
+admin_meta_title;Titlu Meta
+admin_meta_keywords;Cuvinte cheie
+admin_meta_description;Descriere Meta
+map;Map
+map_configuration;Map Configuration
+marked_fields_are_required;Campurile marcate cu <span class="requiredStar">*</span> sunt obligatorii.
+
+back;Inapoi
+yes;Yes
+no;No
+
+attached_documents;Attached documents
+edit_project;Editare proiect
+add_user;Adauga membru
+change_password;Change Password
+administrators_change_password_success_message;Parola a fost schimbata cu succes
+administrators_change_password_failure_message;Parola nu a fost schimbata.
+administrators_change_invalid_old_password;Parola veche gresita!.
+latest_activity;Latest Activity
+admin_date;Date
+admin_expense_income;Expenses / Income
+admin_amount;Amount
+admin_currency1;
+admin_currency2;ron
+
+edit_recurrent_income;Edit recurrent income
+recurrent_income_description;Recurrent Income Description
+admin_filter;Filter
+admin_from_date;From Date
+admin_to_date;To Date
+all_recurrent_expenses;All recurrent expenses
+all_recurrent_income;All recurrent income
+add_new_recurrent_expense;Add new recurrent expense
+add_new_recurrent_income;Add new recurrent income
+admin_search_results;Search results
+admin_search_results_after;Search results after
+admin_select_income;Select income
+admin_select_expense;Select expense
+admin_add_expense;Add expense
+admin_add_recurrent_expense;Add recurrent expense
+admin_edit_recurrent_expense;Edit recurrent expense
+admin_add_income;Add income
+admin_add_recurrent_income;Add recurrent income
+admin_edit_recurrent_income;Edit recurrent income
+
+admin_edit_expense;Edit expense
+admin_edit_income;Edit income
+admin_expense_description;Expense Description
+admin_recurrent_expense_description;Recurrent Expense Description
+admin_income_description;Income Description
+admin_recurrent_income;Recurrent Income
+admin_recurrent_expense;Recurrent Expense
+admin_price;Price
+admin_delete_recurrent_income;Are you sure you want to delete the recurrent income?
+admin_search_platform;Search Platform
+admin_total_recurrent_income;Total recurrent income
+admin_expenses;Expenses
+admin_total_expenses;Total expenses
+admin_income;Income
+admin_monthly;Monthly
+admin_weekly;Weekly
+admin_daily;Daily
+admin_expenses_income_charts;Expenses and Income Charts
+admin_all_expenses;All expenses
+admin_expense;Expense
+admin_edit;Edit
+admin_expenses_chart;Expenses Chart
+admin_income_chart;Income Chart
+admin_generate_report_expenses;Generate Expenses Report
+admin_generate_report_income;Generate Income Report
+admin_delete_file;Do you confirm deleting this file?
+admin_select_day;Select day
+admin_dashboard;Dashboard
+admin_total_income_last_month;Total income last month
+admin_total_expenses_last_month;Total expenses last month
+admin_total_income_this_month;Total income this month
+admin_total_expenses_this_month;Total expenses this month
+currency;ron
+admin_you_have;You have
+admin_you_had;You had
+money_management_system;Money Management System
+unknown_user;unknown user
+unknown_account;unknown account
+please_login;please login
+all_rights_reserved;All rights reserved
+admin_account_name;Account name

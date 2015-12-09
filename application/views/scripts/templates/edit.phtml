@@ -1,0 +1,25 @@
+<!-- BEGIN: Page header -->
+<div class="admPageHeader">
+	<div class="pTitle">
+		<?php echo Zend_Registry::get('translate')->_($this->emailTemplate->getConst()); ?>
+	</div>
+	<div class="pLinks">
+		<a class="rLink" href="<?php echo WEBROOT; ?>templates/index" title="<?php echo Zend_Registry::get('translate')->_('back'); ?>">&laquo; <?php echo Zend_Registry::get('translate')->_('back'); ?></a>
+	</div>
+	<div class="clear"></div>
+</div>
+<!-- END: Page header -->
+
+<!-- BEGIN: Show error messages -->
+<?php if(!empty($this->message)):?>
+	<?php foreach($this->message as $value):?>
+		<center><?php echo $value; ?></center>
+	<?php endforeach; ?>
+	<div class="clearfix">&nbsp;</div>
+<?php endif;?>
+<!-- END: Show error messages -->
+
+<!-- BEGIN: Show admin form -->
+<?php 	echo $this->form;?>
+	
+<!-- END: Show admin form -->

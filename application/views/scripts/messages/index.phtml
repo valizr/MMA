@@ -1,0 +1,148 @@
+<div id="center">
+	<div class="pageTitle">
+		<h1>Messages</h1>				
+	</div>	
+	
+	<!--afisare mesaje de eroare/succes-->
+	<?php if(!empty($this->message)) : ?>
+		<?php foreach($this->message as $value) : ?>
+			<center class="w670"><?php echo $value; ?></center>
+		<?php endforeach; ?>
+		<div class="clearfix">&nbsp;</div>
+	<?php endif; ?>
+		
+	<div class="page_wrap">		
+		<div class="inside_wrap">
+			<a href="<?php echo WEBROOT; ?>/messages" class="inbox <?php if(empty($this->type)){ echo 'active_tab';} ?>">
+				Inbox (<?php echo $this->inboxNr ?>)
+			</a>
+			<a href="<?php echo WEBROOT; ?>/messages/index/type/sent" class="inbox <?php if($this->type == 'sent'){ echo 'active_tab';} ?>">
+				Sent (<?php echo $this->sentNr ?>)
+			</a>
+			<a href="<?php echo WEBROOT; ?>/messages/index/type/trash" class="inbox <?php if($this->type == 'trash'){ echo 'active_tab';} ?>">
+				Trash (<?php echo $this->trashNr ?>)
+			</a>
+			<div class="clear">&nbsp;</div>
+			
+			<!--BEGIN:FILTER-->
+			<div class="filter_wrap">
+				<?php echo $this->formSearch; ?>
+			</div>
+			<?php if($this->search) :  ?>
+				<div class="search_wrapper">
+					<p>
+						Search results after:	<?php echo ($this->search['searchTxt']) ? '<span>: "'.$this->search['searchTxt'].'"</span>' : '' ; ?>
+					</p>
+				</div>
+			<?php endif; ?>
+			<!--END:FILTER-->
+			
+			<div class="clear">&nbsp;</div>
+			<div class='products_wrap'>
+				<?php if($this->result){?>
+					<table class='inside_table' cellspacing="0" cellpadding = "0" width="100%">
+						<colgroup>
+							<col width="535px"/>
+							<col width="135px"/>
+						</colgroup>
+						<?php $result = Needs_Tools::paginatorToModel($this->result,'Default_Model_Messages');?>	
+							<div class="clear"></div>
+						<?php foreach($result as $value){?>
+							<?php $link_detail = WEBROOT.'messages/details/id/'.$value->getId().'/type/'.$this->type; ?>
+							<tr>
+								<td>
+									<div class='users_col1 noborder message_url' data-url="<?php echo $link_detail; ?>">	
+										<img class="user_pic" src="<?php echo  WEBROOT ?>theme/front/images/user_no_pic.png" alt="user pic">
+										<div class="user_info">														
+											<p class="ui_group"><?php echo $value->getUserFrom()->getName(); ?>, 
+												<span>
+													<?php echo Needs_Strings::time_elapsed_string($value->getCreated());?>
+												</span>
+											</p><br />													
+											<a class="ui_shop" href="<?php echo $link_detail; ?>" ><?php echo $value->getSubject(); ?></a>
+										</div>
+									</div>
+								</td>										
+								<td>
+									<div class="options">
+										<a class="attach fancybox" href="<?php echo WEBROOT; ?>iframe/messages-attachement/id/<?php echo $value->getId();?>"></a>
+										<?php if($value->getIdUserTo() == Zend_Registry::get('user')->getId()){ ?>
+											<a class="reply" href="<?php echo WEBROOT; ?>messages/index/replyId/<?php echo $value->getId();?>"></a>
+										<?php } ?>
+										<a class="delete delete_products confirmDelete" href="<?php echo WEBROOT;?>messages/delete/id/<?php echo $value->getId().'/type/'.$this->type;?>"></a>
+									</div>
+								</td>
+							</tr>
+						<?php }?>						
+					</table>
+					<?php if($this->itemCountPerPage < $this->totalItemCount){?>
+						<?php echo $this->result;?>
+					<?php }?>
+				<?php }?>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+<div id="right">
+   <div class="search_right">
+			<form id="searchForm" action="">
+				<input type="text" id="search" name="search" placeholder="Search platform">
+				<input type="submit" id="searchSubmit" name="searchSubmit" value="">
+			</form>
+		</div>
+		<div class="inner_right">
+			<div class="addUser">
+				<p>New message</p>
+				<?php echo $this->form; ?>
+			</div>
+		</div>
+</div>
+<?php if($this->type == 'trash'){ ?>
+<div id="confirmDelete" title="Confirmation message" style="display:none;">
+	Are you sure you want to delete this message?
+</div>
+<?php }else{ ?>
+<div id="confirmDelete" title="Confirmation message" style="display:none;">
+	Are you sure you want to move to trash this message?
+</div>
+<?php } ?>
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.message_url').on('click',function(){
+		var url = $(this).data('url');
+		window.location = url;
+	});
+	
+	$('.confirmDelete').click(function(){
+		var link = $(this);
+		$("#confirmDelete").dialog({
+			bgiframe: true,
+			height: 140,
+			width: 400,
+			modal: true,
+			buttons:{
+				'<?php echo Zend_Registry::get('translate')->_('yes'); ?>': function(){
+					$(this).dialog('close').dialog('destroy');
+					window.location.href = link.attr('href');
+				},
+				'<?php echo Zend_Registry::get('translate')->_('no'); ?>': function(){
+					$(this).dialog('close').dialog('destroy');
+					window.location.reload();
+				}
+			}
+		});
+		return false;
+	});
+	
+	$('.fancybox').fancybox({
+		'padding'	 : 0,
+		'openEffect' : 'elastic',
+		'type'		 : 'iframe',
+		'width'		 : 1000,
+		'height'	 : 380,
+		'resize'	 : false,
+		'autoSize'	 : false
+	});		
+});
+</script>

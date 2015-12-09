@@ -1,0 +1,45 @@
+<?php echo $this->doctype('HTML5'); ?>
+<html xmlns:fb="https://www.facebook.com/2008/fbml">
+	<head>
+		<title>Money</title>
+		<?php $this->headTitle($this->metaTitle, 'SET'); ?>
+		<?php echo $this->headTitle(); ?>
+		
+		<link rel="icon" type="images/jpeg" href="<?php echo WEBROOT;?>/favicon.ico" />
+		
+		<?php $this->headMeta()->appendName('keywords', $this->metaKeywords)
+							   ->appendName('description', $this->metaDescription);?>
+		<?php echo $this->headMeta()->appendHttpEquiv('Content-Type', 'text/html; charset=UTF-8')
+									->appendHttpEquiv('Content-Language', 'ro-RO')
+									->appendHttpEquiv('expires', date('D, j M Y H:i:s T'))
+									->appendHttpEquiv('pragma', 'no-cache')
+									->appendHttpEquiv('Cache-Control', 'no-cache');
+		?>
+		<?php echo $this->headLink();?>
+		<?php echo $this->headStyle();?>
+		<?php echo $this->headScript();?>
+		<?php if($this->ogUrl){ ?>
+			<meta property="og:title" content="<?php echo $this->ogTitle; ?>" />
+			<meta property="og:type" content="website" />
+			<meta property="og:url" content="<?php echo $this->ogUrl; ?>" />
+			<meta property="og:image" content="<?php echo $this->ogImage; ?>" />
+			<meta property="og:site_name" content="<?php echo WEBSITE_NAME;?>" />			
+		<?php } ?>
+		<!--[if lt IE 9]>
+		<script src="<?php echo WEBROOT ?>/js/html5shiv.js"></script>
+		<![endif]-->
+		<script>
+		$(document).ready(function(){
+			var maxHeight = $(this).height();
+			$('#masterwrapper').css('min-height', maxHeight+'px');
+			$(window).resize(function(){
+				var maxHeight = $(this).height();
+				$('#masterwrapper').css('min-height', maxHeight+'px');
+			});
+		});
+		</script>
+	</head>
+	<body>
+		<?php echo $this->layout()->content;?>
+	</body>
+</html>

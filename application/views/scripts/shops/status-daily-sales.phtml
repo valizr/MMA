@@ -1,0 +1,72 @@
+<div id="center">
+	<div class="pageTitle">
+		<h1 class="main_title">Stores</h1>
+	</div>
+
+<div class="main_wrap">
+	<div class="page_wrap">
+		<div class="inside_wrap">
+		<?php if (!empty($this->message)) : ?>
+			<?php foreach ($this->message as $value) : ?>
+				<center class="w670"><?php echo $value; ?></center>
+			<?php endforeach; ?>
+			<div class="clear"></div>
+		<?php endif; ?>
+		<a href="" class="inbox">Stores with no audit <span>(<?php echo ($this->totalNr) ? $this->totalNr : '0'; ?>)</span></a>
+		<div class="clear"></div>
+	<?php if($this->result):?>
+		<div class='listing_wrap'>
+			<table class='inside_table' cellspacing="0" cellpadding = "0" width="100%">
+				<colgroup>
+					<col width="430px"/>
+					<col width="240px"/>																			
+				</colgroup>
+				<tr>
+					<th>Date</th>
+					<th>Stores</th>
+				</tr>
+		<?php foreach ($this->result as $value):?>
+			<?php $shopIds = explode(',',$value['shopIds']) ?>
+			<tr>
+				<td>
+					<div> <?php echo $value['Date']; ?></div>
+				</td>
+				<?php $resultDiff = array_diff($this->arrayShopIds, $shopIds);?>
+				<td>
+					<div class='product_colleft'>
+						<?php 
+							foreach($resultDiff as $value){
+								echo Needs_Tools::getShopById($value).'<br/>';
+							} 
+						?> 
+					</div>
+				</td>
+				<td>
+					<div>
+					</div>
+				</td>
+			</tr>
+		<?php endforeach ?>
+			</table>
+		</div>
+		<?php if($this->itemCountPerPage < $this->totalItemCount){?>
+			<?php echo $this->result;?>
+		<?php }?>
+	<?php endif; ?>
+	</div>
+</div>
+</div>
+</div>
+<div id="right">
+	<div class="search_right">
+		<form id="searchForm" action="">
+			<input type="text" id="search" name="search" placeholder="Search platform">
+			<input type="submit" id="searchSubmit" name="searchSubmit" value="">
+		</form>
+	</div>
+</div>
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".pagination select").uniform();
+	});
+</script>

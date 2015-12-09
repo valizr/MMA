@@ -1,0 +1,146 @@
+<form class="addForms" method="<?php echo $this->element->getMethod();?>" action="<?php echo $this->element->getAction();?>" id="<?php echo $this->element->getId();?>" enctype="<?php echo $this->element->getEncType();?>">
+<?php echo $this->{$this->element->formNumber->helper}(
+	$this->element->formNumber->getName(),
+	$this->element->formNumber->getValue(),
+	$this->element->formNumber->getAttribs()
+);?>
+<?php echo $this->{$this->element->type->helper}(
+	$this->element->type->getName(),
+	$this->element->type->getValue(),
+	$this->element->type->getAttribs()
+);?>
+<?php
+if($this->element->pageId){
+	echo $this->{$this->element->pageId->helper}(
+	$this->element->pageId->getName(),
+	$this->element->pageId->getValue(),
+	$this->element->pageId->getAttribs()
+	);
+}	
+?>
+<div class="hint"><?php echo Zend_Registry::get('translate')->_("marked_fields_are_required"); ?></div>	
+<!------------------------------------------------------>
+<div class="clear"></div>
+<div class="column_box_left">
+	<div class="label-space">
+		<?php
+			$attribs = array(); if($this->element->title->isRequired()) { $attribs['class'] = 'required'; }
+			echo $this->formLabel($this->element->title->getName(), $this->element->title->getLabel(), $attribs);
+		?>	
+		<?php echo $this->{$this->element->title->helper}(
+			$this->element->title->getName(),
+			$this->element->title->getValue(),
+			$this->element->title->getAttribs()
+		);?>
+		<?php if(($this->element->title->getMessages())){ echo  $this->formErrors($this->element->title->getMessages());}?>
+	</div>
+</div>
+<!--------------------------------------------------------------------------------->
+<?php if($this->element->status){ ?>
+<div class="clear"></div>
+<div class="label-space">
+	<?php
+		$attribs = array(); if($this->element->status->isRequired()) { $attribs['class'] = 'required'; }
+		echo $this->formLabel($this->element->status->getName(), $this->element->status->getLabel(), $attribs);
+	?>	
+	<div class="clear"></div>
+	<?php
+		echo $this->{$this->element->status->helper}(
+					$this->element->status->getName(),
+					$this->element->status->getValue(),
+					$this->element->status->getAttribs(),
+					$this->element->status->getMultiOptions(),
+					'&nbsp;&nbsp;&nbsp;'
+				);
+		?>
+	<?php if(($this->element->status->getMessages())){ echo  $this->formErrors($this->element->status->getMessages());}?>
+</div>
+<div class="empty10">&nbsp;</div>
+<div class="empty10">&nbsp;</div>
+<?php } ?>
+<!------------------------------------------------------>
+
+<div class="clear"></div>
+<div class="label-space">
+	<?php
+		$attribs = array(); if($this->element->shortDescription->isRequired()) { $attribs['class'] = 'required'; }
+		echo $this->formLabel($this->element->shortDescription->getName(), $this->element->shortDescription->getLabel(), $attribs);
+	?>	
+	<?php echo $this->{$this->element->shortDescription->helper}(
+		$this->element->shortDescription->getName(),
+		$this->element->shortDescription->getValue(),
+		$this->element->shortDescription->getAttribs()
+	);?>
+	<?php if(($this->element->shortDescription->getMessages())){ echo  $this->formErrors($this->element->shortDescription->getMessages());}?>
+</div>
+<!------------------------------------------------------>
+
+<!--BEGIN:MAIN PICTURE AND GALLERY-->
+<?php if($this->element->picture->getValue()){ ?>
+
+<div class="clear"></div>
+<div class="empty10">&nbsp;</div>
+<div class="empty10">&nbsp;</div>
+<div class="column_box_left">
+	<div class="label-space">
+		<label for="defaultPicture"><?php echo Zend_Registry::get('translate')->_('admin_poi_default_picture'); ?></label>
+		<input type="file" name="defaultPicture" id="defaultPicture"/>	
+		<table class="loadDefaultPictureHeader" style="<?php if($this->element->picture->getValue() == 'yes') echo "display:none;"; ?>" width="100%" cellspacing="0" cellpadding="0">
+			<tr>
+				<th width="80%">
+					<?php echo Zend_Registry::get('translate')->_('admin_uploaded_photos');?>
+				</th>			
+				<th>
+					<?php echo Zend_Registry::get('translate')->_('admin_action');?>
+				</th>
+			</tr>
+		</table>
+		<table class="loadDefaultPicture" width="100%" cellspacing="0" cellpadding="0">
+			<colgroup>
+				<col width="80%"/>
+				<col />
+			</colgroup>
+			<tr>
+				<td>
+					<?php if($this->element->picture->getValue() != 'yes'){ ?>
+					<img src="<?php echo WEBROOT.'/media/pagePictures/thumbnails110x80/'.$this->element->picture->getValue(); ?>" alt="" title="" width="80"/>
+					<?php } ?>
+				</td>
+				<td></td>
+			</tr>
+		</table>
+		<div class="loadDefaultPictureInputs"></div>
+		
+	</div>
+</div>
+<div class="clear"></div>
+<div class="empty10">&nbsp;</div>
+<div class="empty10">&nbsp;</div>
+
+<div id="confirmDefaultFileDelete" title="<?php echo Zend_Registry::get('translate')->_('admin_poi_confirm_file_delete_title'); ?>" style="display:none;">
+	<?php echo Zend_Registry::get('translate')->_('admin_poi_confirm_file_delete_message'); ?>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){	
+	<?php Needs_Tools::includeTemplate('pictures-upload');?>	
+});
+</script>
+<?php } ?>
+<!--END:MAIN PICTURE AND GALLERY-->
+
+<!--------------------------------------------------------------------------------->
+	<div class="clear"></div>	
+	<div class="column_box_left">
+		<p>			
+			<?php echo $this->{$this->element->submit->helper}(
+				$this->element->submit->getName(),
+				$this->element->submit->getValue(),
+				$this->element->submit->getAttribs()
+			);?>
+		</p>	
+	</div>
+<!--------------------------------------------------------------------------------->
+	<div class="clear"></div>	
+</form>
+
+

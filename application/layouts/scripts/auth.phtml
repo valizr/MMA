@@ -1,0 +1,47 @@
+<?php echo $this->doctype() ?>
+<html>
+<head>
+    <?php echo $this->headTitle() ?>
+    <?php echo $this->headMeta()->appendHttpEquiv('Content-Type', 'text/html; charset=UTF-8');
+    ?>
+	<link rel="icon" type="images/jpeg" href="<?php echo WEBROOT;?>/theme/front/images/favicon.ico" />
+    <?php echo $this->headLink() ?>
+    <?php echo $this->headStyle() ?>
+    <?php echo $this->headScript() ?>
+<!--This is the styling for the error message for form validation-->
+</head>
+
+<body>
+	<div id="wrapper">
+	<div class="top">
+		<div class="top_content">
+			<h1><?php echo Zend_Registry::get('translate')->_('money_management_system'); ?><span></span><span class="store_name"><?php echo Zend_Registry::get('translate')->_('unknown_account'); ?></span></h1>
+			<div class="account_information">
+				<div class="user_info">
+					<span><?php echo Zend_Registry::get('translate')->_('unknown_user'); ?></span>
+					<a href="<?php echo WEBROOT."auth/login" ?>" class="please_login"><?php echo Zend_Registry::get('translate')->_('please_login'); ?></a>
+				</div>	
+			</div>
+		</div>
+	</div>
+	<div id="left">
+		<div class="menu">
+			<ul class="menu_ul navigation">
+                            <li<?php if($this->action == 'login'){ echo ' class="active"'; } ?>><a class="login_menu <?php if($this->action == 'login'){ echo ' active'; } ?>" href="<?php echo WEBROOT."auth/login" ?>">Login</a></li>
+                            <li><a class="recover_menu <?php if($this->action == 'forgot-password'){ echo ' active'; } ?>" href="<?php echo WEBROOT."auth/forgot-password" ?>">Password Recovery</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="center">
+	<?php echo $this->layout()->content;?>
+		<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+</div>
+<div id="footer_wrapper">
+	<div id="footer">
+		<p>© <?php echo date('Y'); ?>. <?php echo Zend_Registry::get('translate')->_('all_rights_reserved'); ?>.</p>
+	</div>
+</div>
+</body>
+</html>

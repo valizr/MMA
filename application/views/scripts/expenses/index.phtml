@@ -1,0 +1,140 @@
+<div id="center">
+	<div class="main_wrap">
+		<h1 class="main_title"><?php echo Zend_registry::get('translate')->_('admin_expenses'); ?></h1>
+		<div class="inside_wrap">
+			<!--afisare mesaje de eroare/succes-->
+			<?php if(!empty($this->message)) : ?>
+				<?php foreach($this->message as $value) : ?>
+					<center class="w670"><?php echo $value; ?></center>
+				<?php endforeach; ?>
+				<div class="clearfix">&nbsp;</div>
+			<?php endif; ?>
+                                <p class="desc"><?php echo Zend_registry::get('translate')->_('admin_all_expenses'); ?> <span><strong><?php echo ($this->totalItemCount) ? $this->totalItemCount : '0'; ?></strong></span>. <?php echo Zend_registry::get('translate')->_('admin_total_expenses'); ?> <strong><?php echo $this->resultExpense; ?></strong> ron</p>
+			<div class="filter_wrap">
+				<?php echo $this->formsearch; ?>
+			</div>
+			<?php if($this->search) :  ?>
+				<div class="search_wrapper">
+					<p><?php echo Zend_registry::get('translate')->_('admin_search_results_after'); ?>:  <?php echo !empty($this->search['nameSearch']) ? '<span>Name - <strong>'.$this->search['nameSearch'].'</strong> </span>' : '' ; ?><?php echo !empty($this->search['idGroupSearch']) ? '<span> Category  - <strong>'.Needs_Tools::getGroupName($this->search['idGroupSearch']).'</strong></span>' : ''; ?>
+                                        <?php echo !empty($this->search['fromDate']) ? '<span> Date from <strong>'.$this->search['fromDate'].'</strong></span>' : ''; ?>
+                                        <?php echo !empty($this->search['toDate']) ? '<span> Date to <strong>'.$this->search['toDate'].'</strong></span>' : ''; ?></p>
+				</div>
+			<?php endif; ?>
+			<div class='products_wrap'>
+				<table class='inside_table' cellspacing="0" cellpadding = "0" width="100%">
+					<colgroup>
+						<col width="460px"/>
+						<col width="100px"/>
+                                                <col width="110px"/>
+					</colgroup>
+					<tr>
+						<th><?php echo Zend_registry::get('translate')->_('admin_expense'); ?></th>
+                                                <th><?php echo Zend_registry::get('translate')->_('admin_price'); ?></th>
+						<th><?php echo Zend_registry::get('translate')->_('admin_edit'); ?></th>
+					</tr>
+			<?php if($this->result){?>
+				<?php $result = Needs_Tools::paginatorToModel($this->result,'Default_Model_Expenses');?>
+				<?php foreach($result as $value){?>
+					<tr>
+						<td>
+                                                    <div class='product_col1'> <p id="editname<?php echo $value->getId();?>" class="editname"><?php echo $value->getName(); ?></p></div>
+                                                    <div class="infod" id='infod<?php echo $value->getId();?>'><?php echo date('l d-m-Y',strtotime($value->getDate()));?></div>
+						</td>
+                                                <td>
+                                                    <div class='product_col1'> <p id="editprice<?php echo $value->getId();?>" class="editprice"><?php echo $value->getPrice(); ?></p></div>
+						</td>
+						<td>
+							<div class='product_action1'>
+                                                                <?php if ($value->getUfiles()!=NULL && $value->getRecurrent()==0){?><a class="attach fancybox" href="<?php echo WEBROOT;?>expenses/download/id/<?php echo $value->getUfiles();?>" target="_blank"></a><?php } ?>	
+                                                                <a class="edit tipsyTrigger" <?php echo Needs_Roles::hasAccess( Zend_Registry::get('user')->getIdRole(), 'edit_users',true); ?> href="<?php echo WEBROOT;?>expenses/edit/id/<?php echo $value->getId();?>/page/<?php echo $this->page ?>"></a>
+								<a class="delete confirmDelete tipsyTrigger" <?php echo Needs_Roles::hasAccess( Zend_Registry::get('user')->getIdRole(), 'delete_users',true); ?> href="<?php echo WEBROOT;?>expenses/delete/id/<?php echo $value->getId();?>/page/<?php echo $this->page ?>"></a>
+							</div>
+						</td>
+					</tr>
+                                        <script type="text/javascript">
+                                            $("#editname<?php echo $value->getId();?>").mouseover(function() {
+                                                $("#infod<?php echo $value->getId();?>").show();
+                                            }).mouseout(function() {
+                                                $("#infod<?php echo $value->getId();?>").hide();
+                                            });
+                                            $("#editprice<?php echo $value->getId();?>").mouseover(function() {
+                                                $("#infod<?php echo $value->getId();?>").show();
+                                            }).mouseout(function() {
+                                                $("#infod<?php echo $value->getId();?>").hide();
+                                            });
+                                            $("#editname<?php echo $value->getId();?>").editInPlace({
+                                                    url: "<?php echo WEBROOT ?>ajax/save-expenseincome-name/id/<?php echo $value->getId();?>",
+                                                    saving_animation_color: "#ECF2F8",
+                                                    bg_over: "transparent"
+                                            });
+                                            $("#editprice<?php echo $value->getId();?>").editInPlace({
+                                                    url: "<?php echo WEBROOT ?>ajax/save-expenseincome-price/id/<?php echo $value->getId();?>",
+                                                    saving_animation_color: "#ECF2F8",
+                                                    bg_over: "transparent"
+                                            });
+                                        </script>
+				<?php }?>
+				</table>
+				<?php if($this->itemCountPerPage < $this->totalItemCount){?>
+					<?php echo $this->result;?>
+				<?php }?>	
+			<?php } ?>
+				
+			</div>
+		</div>
+	</div>
+</div>
+<div id="right">
+	<div class="search_right">
+		<form id="searchForm" action="">
+			<input type="text" id="search" name="search" placeholder="Search platform">
+			<input type="submit" id="searchSubmit" name="searchSubmit" value="">
+		</form>
+	</div>
+	<div class="inner_right">
+			<div class="addUser">
+				<p>Add new expense</p>
+				<?php echo $this->form; ?>
+			</div>
+	</div>	
+</div>
+<div id="confirmDelete" title="Delete expense" style="display:none;">
+	Are you sure you want to delete the expense?
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#idGroup").uniform();
+	$(".uniformSelect").uniform();
+	$(".pagination select").uniform();
+	$('.confirmDelete').click(function(){
+		var link = $(this);
+		$("#confirmDelete").dialog({
+			bgiframe: true,
+			height: 140,
+			width: 400,
+			modal: true,
+			buttons:{
+				'<?php echo Zend_Registry::get('translate')->_('yes'); ?>': function(){
+					$(this).dialog('close').dialog('destroy');
+					window.location.href = link.attr('href');
+				},
+				'<?php echo Zend_Registry::get('translate')->_('no'); ?>': function(){
+					$(this).dialog('close').dialog('destroy');
+					window.location.reload();
+				}
+			}
+		});
+		return false;
+	});
+        $('.fancybox').fancybox({
+		'padding'	 : 0,
+		'openEffect' : 'elastic',
+		'type'		 : 'iframe',
+		'width'		 : 1024,
+		'height'	 : 1024,
+		'resize'	 : false,
+		'autoSize'	 : false
+	});	
+});
+</script>

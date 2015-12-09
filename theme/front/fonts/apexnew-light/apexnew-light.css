@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'ApexNewLight';
+    src: url('fonts/apexnew-light/apexnew-light.eot');
+    src: url('fonts/apexnew-light/apexnew-light.eot') format('embedded-opentype'),
+         url('fonts/apexnew-light/apexnew-light.woff') format('woff'),
+         url('fonts/apexnew-light/apexnew-light.ttf') format('truetype'),
+         url('fonts/apexnew-light/apexnew-light.svg#ApexNewLight') format('svg');
+}

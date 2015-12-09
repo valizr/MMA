@@ -1,0 +1,70 @@
+<div class="main_forms">
+	<form class="addForms" method="<?php echo $this->element->getMethod();?>" action="<?php echo $this->element->getAction();?>" id="<?php echo $this->element->getId();?>" enctype="<?php echo $this->element->getEncType();?>">
+		<div class="left">
+			<?php echo $this->{$this->element->formNumber->helper}(
+			$this->element->formNumber->getName(),
+			$this->element->formNumber->getValue(),
+			$this->element->formNumber->getAttribs()
+			);?>
+			<?php echo $this->{$this->element->const->helper}(
+				$this->element->const->getName(),
+				$this->element->const->getValue(),
+				$this->element->const->getAttribs()
+			);?>
+
+			<div class="hint"><?php echo Zend_Registry::get('translate')->_("marked_fields_are_required"); ?></div>	
+			<!------------------------------------------------------>
+			<div class="clear"></div>	
+			
+			<?php
+				$attribs = array(); if($this->element->subject->isRequired()) { $attribs['class'] = 'required'; }
+				echo $this->formLabel($this->element->subject->getName(), $this->element->subject->getLabel(), $attribs);
+			?>
+			<?php echo $this->{$this->element->subject->helper}(
+				$this->element->subject->getName(),
+				$this->element->subject->getValue(),
+				$this->element->subject->getAttribs()
+			);?>
+			<?php if(($this->element->subject->getMessages())){ echo  $this->formErrors($this->element->subject->getMessages());}?>
+			
+			<!------------------------------------------------------>
+			<div class="clear"></div>	
+
+			<?php
+				$attribs = array(); if($this->element->content->isRequired()) { $attribs['class'] = 'required'; }
+				echo $this->formLabel($this->element->content->getName(), $this->element->content->getLabel(), $attribs);
+			?>		
+			<?php echo $this->{$this->element->content->helper}(
+				$this->element->content->getName(),
+				$this->element->content->getValue(),
+				$this->element->content->getAttribs()
+			);?>
+			<?php if(($this->element->content->getMessages())){ echo  $this->formErrors($this->element->content->getMessages());}?>	
+
+			<div class="clear"></div>
+				<fieldset>
+					<legend><?php echo Zend_Registry::get('translate')->_('admin_email_templates_legend'); ?></legend>
+					<?php if($this->element->const->getValue() != 'adaugare_comentariu_admin'){ ?>
+						<span class="legendItem">{$name}</span> = <?php echo Zend_Registry::get('translate')->_('Nume si prenume'); ?><br/>	
+						<span class="legendItem">{$project}</span> = <?php echo Zend_Registry::get('translate')->_('Nume Proiect'); ?><br/>	
+					<?php }else{ ?>
+						<span class="legendItem">{$name}</span> = <?php echo Zend_Registry::get('translate')->_('Nume si prenume'); ?><br/>	
+					<?php } ?>
+
+				</fieldset> 
+			<div class="clear"></div>
+			<div class="empty10"></div>
+			<?php echo $this->{$this->element->submit->helper}(
+				$this->element->submit->getName(),
+				$this->element->submit->getValue(),
+				$this->element->submit->getAttribs()
+			);?>			
+			<div class="clear"></div>
+			<div class="empty10"></div>
+	</form>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {	
+    $('#formTemplateAdd').validationEngine('attach', {promptPosition : "centerRight"});
+});
+</script>

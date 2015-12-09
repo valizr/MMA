@@ -1,0 +1,32 @@
+<form class='iframeForm' method="<?php echo $this->element->getMethod(); ?>" action="<?php echo $this->element->getAction(); ?>" id="<?php echo $this->element->getId(); ?>" enctype="<?php echo $this->element->getEncType(); ?>">
+	<?php
+		echo $this->{$this->element->idParent->helper}(
+                $this->element->idParent->getName(), $this->element->idParent->getValue(), $this->element->idParent->getAttribs()
+        );
+        ?>
+	<div class="login_inputs">
+			<?php echo $this->formLabel($this->element->description->getName(), $this->element->description->getLabel());?>	
+			<?php
+			echo $this->{$this->element->description->helper}(
+					$this->element->description->getName(), $this->element->description->getValue(), $this->element->description->getAttribs()
+			);
+			?>
+			<?php
+			if (($this->element->description->getMessages())) {
+				echo $this->formErrors($this->element->description->getMessages());
+			}
+			?>
+			<?php
+			echo $this->{$this->element->submit->helper}(
+					$this->element->submit->getName(), $this->element->submit->getValue(), $this->element->submit->getAttribs()
+			);
+			?>
+    </div> 
+    </div> 
+</form>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#<?php echo $this->element->getId(); ?>').validationEngine('attach', {promptPosition: "centerRight"});	
+});
+
+</script>

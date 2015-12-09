@@ -1,0 +1,14 @@
+<!-- BEGIN: Show error messages -->
+<?php if(!empty($this->message)):?>
+	<?php foreach($this->message as $value):?>
+		<center><?php echo $value; ?></center>
+	<?php endforeach; ?>
+	<div class="clearfix">&nbsp;</div>
+<?php endif;?>
+<!-- END: Show error messages -->
+<?php echo $this->form; ?>
+<script>
+$("#reply").submit(function(event){
+	parent.location.reload(true);
+});
+</script>

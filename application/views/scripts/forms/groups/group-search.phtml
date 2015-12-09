@@ -1,0 +1,25 @@
+<div class="form_sidebar">
+	<form method="<?php echo $this->element->getMethod();?>" action="<?php echo $this->element->getAction();?>" id="<?php echo $this->element->getId();?>" enctype="<?php echo $this->element->getEncType();?>">
+	<label for="filter_by">Filter by</label>	
+<!--dupa nume-->	
+				<?php echo $this->{$this->element->nameSearch->helper}(
+					$this->element->nameSearch->getName(),
+					$this->element->nameSearch->getValue(),
+					$this->element->nameSearch->getAttribs()
+				);?>
+				<?php if(($this->element->nameSearch->getMessages())){ echo  $this->formErrors($this->element->nameSearch->getMessages());}?>	
+
+				<?php echo $this->{$this->element->searchGroup->helper}(
+					$this->element->searchGroup->getName(),
+					$this->element->searchGroup->getValue(),
+					$this->element->searchGroup->getAttribs()
+				);?>
+		
+		<a href="<?php echo WEBROOT;?>groups" class="reset">Reset</a>
+	</form>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#<?php echo $this->element->getId();?>').validationEngine('attach', {promptPosition : "centerRight"});
+});
+</script>

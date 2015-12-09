@@ -1,0 +1,191 @@
+$('#defaultPicture').uploadify({
+	'buttonText'		: 'SELECT FILE',
+	'swf'				: '<?php echo WEBROOT; ?>theme/admin/js/uploadify/uploadify.swf',
+	'uploader'			: '<?php echo WEBROOT ?>/ldmadmin/ajax/upload-page-photos',
+	'removeCompleted'	: true,			
+	'multi'				: false,		
+	'scriptAccess'		: 'always',
+	'formData'			: {'PHPSESSID' : '<?php echo session_id(); ?>'},
+	'onUploadSuccess'	: function(file, data, response) {
+		try 
+		{
+			var items= eval('(' + data + ')');
+		} catch (e) {}
+		if(items) 
+		{	
+			if(items.success)
+			{					
+				$('#defaultPicture').uploadify('disable', true);
+				$('.loadDefaultPictureInputs').append('<input type="hidden" name="defaultPic" value="'+items.fileId+'" />'); 
+				// load files
+				<?php global $count_images;
+				$count_images++;
+				?>
+				$.post('<?php echo WEBROOT ?>/ldmadmin/ajax/show-page-uploads/', {'fileId':items.fileId}, function(dataFile) 
+				{
+					try 
+					{
+						var itemsFile = eval('(' + dataFile + ')');
+					} catch (e) {}
+					if(itemsFile) 
+					{
+						$('.loadDefaultPictureHeader').show();
+						$('.loadDefaultPicture').html(itemsFile);
+					}
+				});
+			}else{
+				alert(items.message);
+			}
+
+		}				
+	}			
+	// Your options here
+});	
+
+$('#photo_gallery').uploadify({	
+	'buttonClass'		: 'upload-button',
+	'buttonImage'		: '<?php echo WEBROOT; ?>theme/10pteuropa/images/add_images.jpg',
+	'swf'				: '<?php echo WEBROOT; ?>theme/admin/js/uploadify/uploadify.swf',
+	'uploader'			: '<?php echo WEBROOT ?>/ldmadmin/ajax/upload-page-photos',
+	'removeCompleted'	: true,	
+	'scriptAccess'		: 'always',
+	'formData'			: {'PHPSESSID' : '<?php echo session_id(); ?>','gallery':'yes'},
+	'width'             : 510,
+	'line-height'       : 31,
+	'height'             : 31,
+	'onUploadSuccess'	: function(file, data, response) {
+		try 
+		{
+			var items= eval('(' + data + ')');
+		} catch (e) {}
+		if(items) 
+		{	
+			if(items.success)
+			{				
+				$('.load_gallery_inputs').append('<input type="hidden" id="gallery_'+items.fileId+'" name="galleryPic[]" value="'+items.fileId+'" />'); 
+				// load files
+				$.post('<?php echo WEBROOT ?>/ldmadmin/ajax/show-page-uploads/', {'fileId':items.fileId}, function(dataFile) 
+				{
+					try 
+					{
+						var itemsFile = eval('(' + dataFile + ')');
+					} catch (e) {}
+					if(itemsFile) 
+					{		
+						$('.loadGalleryHeader').show();
+						$('.load_gallery').append(itemsFile);
+					}
+				});
+			}else{
+				alert(items.message);
+			}	
+		}				
+	}			
+	// Your options here
+});	
+$(document).on('click', '.deleteDefault', function() {
+	var valueId = $(this).attr('rel');
+	$("#confirmDefaultFileDelete").dialog({
+		bgiframe: true,
+		height: 140,
+		width: 400,
+		modal: true,
+		buttons:{
+			'<?php echo Zend_Registry::get('translate')->_('yes'); ?>': function(){				
+				$.get('<?php echo WEBROOT ?>/ldmadmin/ajax/delete-page-upload/fileId/'+valueId, function(dataFile) 
+				{
+					try 
+					{
+						var itemsFile = eval('(' + dataFile + ')');
+					} catch (e) {}
+					if(itemsFile) 
+					{
+						if(itemsFile == 'page_default'){
+							$('#defaultPicture').uploadify('disable', false);
+							$('.loadDefaultPictureInputs').html('');
+							var defaultImg = $('#defaultImg').val();
+							if(defaultImg)
+							{
+								$('.loadDefaultPicture').html('<tr><td colspan="2"><img src="<?php echo WEBROOT.'/media/pagePictures/thumbnails205x193/' ?>'+defaultImg+'" alt="" title="" width="80"/></td></tr>');
+							}else{
+								$('.loadDefaultPictureHeader').hide();
+							}
+						}else{
+							$('#gallery_'+valueId).remove();
+						}
+						$('.defaultShow_'+valueId).remove();
+						var hasOneImage = $('.load_gallery').unbind().find('img');
+						if(hasOneImage.length > 0)
+						{
+							;
+						}else{
+							$('.loadGalleryHeader').hide();
+						}
+					}
+				});
+				$(this).dialog('close').dialog('destroy');		
+			},
+			'<?php echo Zend_Registry::get('translate')->_('no'); ?>': function(){
+				$(this).dialog('close').dialog('destroy');					
+			}
+		}
+	});
+	return false;		
+});
+$(document).on('click', '.deleteSavedDefault', function() {
+	var valueId = $(this).attr('rel');
+	$("#confirmDefaultFileDelete").dialog({
+		bgiframe: true,
+		height: 140,
+		width: 400,
+		modal: true,
+		buttons:{
+			'<?php echo Zend_Registry::get('translate')->_('yes'); ?>': function(){				
+				$.get('<?php echo WEBROOT ?>/ldmadmin/ajax/delete-page-saved-pictures/fileId/'+valueId, function(dataFile) 
+				{
+					try 
+					{
+						var itemsFile = eval('(' + dataFile + ')');
+					} catch (e) {}
+					if(itemsFile) 
+					{						
+						$('.defaultSavedShow_'+valueId).remove();	
+						var hasOneImage = $('.load_gallery').unbind().find('img');
+						if(hasOneImage.length > 0)
+						{
+							;
+						}else{
+							$('.loadGalleryHeader').hide();
+						}
+					}
+				});
+				$(this).dialog('close').dialog('destroy');		
+			},
+			'<?php echo Zend_Registry::get('translate')->_('no'); ?>': function(){
+				$(this).dialog('close').dialog('destroy');					
+			}
+		}
+	});
+	return false;		
+});
+
+//if edit Show saved picture
+//for edit
+var pageId = $('#pageId').val();
+if(pageId){
+	// load files
+	$.post('<?php echo WEBROOT ?>/ldmadmin/ajax/show-saved-page-pictures/', {'pageId':pageId}, function(dataFile) 
+	{
+		try 
+		{
+			var itemsFile = eval('(' + dataFile + ')');
+		} catch (e) {}
+		if(itemsFile) 
+		{	
+			$('.loadGalleryHeader').show();
+			$('.load_gallery').append(itemsFile);
+		}
+	});
+}
+	
+	

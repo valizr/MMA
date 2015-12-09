@@ -1,0 +1,170 @@
+<div id="center">
+	<div class="pageTitle">
+		<h1>File Manager</h1>				
+	</div>	
+	
+	<!--afisare mesaje de eroare/succes-->
+	<?php if(!empty($this->message)) : ?>
+		<?php foreach($this->message as $value) : ?>
+			<center class="w670"><?php echo $value; ?></center>
+		<?php endforeach; ?>
+		<div class="clearfix">&nbsp;</div>
+	<?php endif; ?>
+		
+	<div class="page_wrap">		
+		<div class="inside_wrap">	
+			<p>All files</p>
+			<!--BEGIN:FILTER-->
+			<div class="filter_wrap">
+				<?php echo $this->formSearch; ?>
+			</div>
+			<?php if($this->search) :  ?>
+				<div class="search_wrapper">
+					<p>
+						Search results after:	<?php echo ($this->search['searchTxt']) ? '<span>: "'.$this->search['searchTxt'].'"</span>' : '' ; ?>
+					</p>
+				</div>
+			<?php endif; ?>
+			<!--END:FILTER-->
+			
+			<div class="clear">&nbsp;</div>
+			<div class='products_wrap'>
+				<?php if($this->result){?>
+					<table class='inside_table' cellspacing="0" cellpadding = "0" width="100%">
+						<colgroup>
+							<col width="450"/>
+							<col width="100"/>
+							<col width="120" />
+						</colgroup>
+						<tr>
+							<th>File</th>
+							<th>File size</th>
+							<th>Actions</th>
+						</tr>
+						<?php $result = Needs_Tools::paginatorToModel($this->result,'Default_Model_FileManager');?>	
+							<div class="clear"></div>
+						<?php foreach($result as $value){?>							
+							<?php //print_r($value);//$link_detail = WEBROOT.'messages/details/id/'.$value->getId().'/type/'.$this->type; ?>
+							<tr>
+								<td>
+									<div class='users_col1 files_name message_url'>	
+										<img class="user_pic" src="<?php echo  WEBROOT ?>theme/front/images/pdf_icon.png" alt="shared file">
+										<div class="user_info">														
+											<p class="ui_group" id="edit<?php echo $value->getId();?>"><?php echo str_replace('.'.$value->getType(),'',$value->getName()); ?></p>.<?php echo $value->getType(); ?><br />													
+											<p class="ui_shop" id="editdesc<?php echo $value->getId();?>"><?php echo $value->getDescription(); ?></p>
+										</div>
+									</div>
+								</td>
+								<td>
+									<div class='users_col1 file_size message_url' data-url="<?php echo $link_detail; ?>">	
+										<span><?php echo $value->getSize(); ?></span>
+									</div>
+								</td>
+								<td>
+									<div class="options">
+										<a class="msg top_messages" id="top_messages<?php echo $value->getId();?>" href="#"></a>
+										<script>
+											$('#top_messages<?php echo $value->getId();?>').click(function(){
+												$('.share').html('');
+												$('#share<?php echo $value->getId();?>').attr("style","display:block");
+												$.ajax({
+														type: "POST",
+														url: "<?php echo WEBROOT ?>ajax/share-file/id/<?php echo $value->getId();?>/filename/"+$('#edit<?php echo $value->getId();?>').html()+".<?php echo $value->getType();?>",
+														success: function(data) {
+															$('#share<?php echo $value->getId();?>').html(data);
+														},
+														error: function(XMLHttpRequest, textStatus, errorThrown) {
+															debugger;
+														}
+													});
+													return false;
+											});
+											$("#edit<?php echo $value->getId();?>").editInPlace({
+												//url: "<?php echo WEBROOT ?>ajax/save-file-name/id/<?php echo $value->getId();?>",
+												saving_animation_color: "#ECF2F8",
+												callback: 
+													function(original_element, html){
+													$.ajax({
+														url:'<?php echo WEBROOT ?>ajax/save-file-name/id/<?php echo $value->getId();?>/filename/'+html+'/ext/<?php echo $value->getType(); ?>',
+														success: function(data){
+															$("#edit<?php echo $value->getId();?>").html(data);
+															$("#share<?php echo $value->getId();?> .currentFile").html(data+'.<?php echo $value->getType(); ?>');
+															return data;
+														}
+													});
+													return(html);
+												}
+											});
+											$("#editdesc<?php echo $value->getId();?>").editInPlace({
+												url: "<?php echo WEBROOT ?>ajax/save-file-desc/id/<?php echo $value->getId();?>",
+												saving_animation_color: "#ECF2F8"
+											});
+										</script>
+										<a class="download" href="<?php echo WEBROOT;?>file-manager/download/id/<?php echo $value->getId();?>" target="_blank"></a>
+										<a class="delete delete_products confirmDelete" href="<?php echo WEBROOT;?>file-manager/delete/id/<?php echo $value->getId();?>"></a>
+									</div>
+								</td>
+							</tr>
+							<tr id="share_hidden">
+								<td class="share_file">
+									<div class="share" id="share<?php echo $value->getId();?>"></div>
+								</td>
+							</tr>
+						<?php } ?>
+							<div class="underline"></div>
+					</table>
+					<?php if($this->itemCountPerPage < $this->totalItemCount){?>
+						<?php echo $this->result;?>
+					<?php }?>
+				<?php }?>
+			</div>
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>
+<div id="right">
+   <div class="search_right">
+			<form id="searchForm" action="">
+				<input type="text" id="search" name="search" placeholder="Search platform">
+				<input type="submit" id="searchSubmit" name="searchSubmit" value="">
+			</form>
+		</div>
+		<div class="inner_right">
+			<div class="addUser">
+				<p>Upload File</p>
+				<?php echo $this->form; ?>
+			</div>
+		</div>
+</div>
+
+<div id="confirmDelete" title="Confirmation message" style="display:none;">
+	Are you sure you want to delete this message?
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+//	$('.message_url').on('click',function(){
+//		var url = $('.top-messages').href;
+//		window.location = url;
+//	});
+	$('.confirmDelete').click(function(){
+		var link = $(this);
+		$("#confirmDelete").dialog({
+			bgiframe: true,
+			height: 140,
+			width: 400,
+			modal: true,
+			buttons:{
+				'<?php echo Zend_Registry::get('translate')->_('yes'); ?>': function(){
+					$(this).dialog('close').dialog('destroy');
+					window.location.href = link.attr('href');
+				},
+				'<?php echo Zend_Registry::get('translate')->_('no'); ?>': function(){
+					$(this).dialog('close').dialog('destroy');
+					window.location.reload();
+				}
+			}
+		});
+		return false;
+	});
+});
+</script>

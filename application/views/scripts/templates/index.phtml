@@ -1,0 +1,39 @@
+<div id="center">
+<?php if($this->adminEmails):?>	
+<!--afisare mesaje de eroare/succes-->
+<div class="utilizatori_wrap">
+	<h1><?php echo Zend_Registry::get('translate')->_('admin_settings_email_templates'); ?></h1>
+	<div class="utilizatori_listare">
+		<?php if(!empty($this->message)) : ?>
+			<?php foreach($this->message as $value) : ?>
+				<center><?php echo $value; ?></center>
+			<?php endforeach; ?>
+			<div class="clearfix">&nbsp;</div>
+		<?php endif; ?>
+		<?php foreach($this->adminEmails as $value):?>
+		<div class="utilizator">
+			<a class="edit tipsyTrigger" <?php echo Needs_Roles::hasAccess( Zend_Registry::get('user')->getIdRole(), 'edit_email_template',true); ?> href="<?php echo WEBROOT;?>templates/edit/id/<?php echo $value->getId();?>" original-title="<?php echo Zend_Registry::get('translate')->_('admin_edit'); ?>" class="tipsyTrigger"></a>
+			<h1><?php echo Zend_Registry::get('translate')->_($value->getConst()); ?></h1>
+		</div>
+		<?php endforeach; ?>
+		<?php if($this->itemCountPerPage < $this->totalItemCount){?>
+		<?php echo $this->adminEmails;?>
+	<?php }?>
+<?php endif;?>
+	</div>
+</div>
+<div class="empty10"></div>	
+<?php if($this->userEmails):?>
+<div class="utilizatori_wrap">	
+	<h1><?php echo Zend_Registry::get('translate')->_('admin_settings_email_templates'); ?></h1>
+	<div class="utilizatori_listare">
+	<?php foreach($this->userEmails as $value):?>
+		<div class="utilizator">
+			<a class="edit tipsyTrigger" <?php echo Needs_Roles::hasAccess( Zend_Registry::get('user')->getIdRole(), 'edit_email_template',true); ?> href="<?php echo WEBROOT;?>templates/edit/id/<?php echo $value->getId();?>" original-title="<?php echo Zend_Registry::get('translate')->_('admin_edit'); ?>"></a>
+			<h1><?php echo Zend_Registry::get('translate')->_($value->getConst()); ?></h1>
+		</div>
+	<?php endforeach; ?>
+	</div>
+</div>
+<?php endif; ?>
+</div>

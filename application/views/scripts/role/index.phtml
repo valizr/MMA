@@ -1,0 +1,245 @@
+<div id="center">
+	<div class="main_wrap">
+	<h1 class="main_title">Roles</h1>
+		<div class="list role">
+			<?php if(!empty($this->message)):?>
+				<?php foreach($this->message as $value):?>
+					<center class="w670"><?php echo $value;?></center>
+				<?php endforeach;?>
+				<div class="clear"></div>
+			<?php endif;?>
+			<form class="fancy-search-form" method="post">
+				<input class="input-text_white" type="text" name="roleSearchTxt" id="roleSearchTxt" placeholder="Cauta roluri"/>
+				<input class="input-submit_white" type="submit" name="submit1" value="Cauta" id="roleSubmit"/>
+			</form>
+			<div class="clear"></div>
+			<div class="display-roles" id="load-child-<?php echo Zend_Registry::get('user')->getIdRole(); ?>"></div>
+		</div>
+	<div class="clear"></div>
+	</div>
+</div>
+<div id="right">
+	<div class="cauta"><h3>Cautare</h3></div>
+	<div class="form_sidebar">
+		<form class="addForms" method="post">
+			<div class="input_wrapper">
+			<input class="input-text" type="text" name="resourceSearchTxt" id="resourceSearchTxt" placeholder="Cauta drepturi"/>
+			</div>
+			<div class="clear"></div>
+			<div class="input_wrapper">
+			<input class="input-submit" type="submit" name="submit" value="Cauta" id="searchResource"/>
+			</div>
+			<a id="reset" href="<?php echo WEBROOT;?>role" id="reset">Reset</a>
+		</form>
+	<div class="clear"></div>
+		<form method="POST">
+			
+			<div id="resourceRole">	
+				<?php		
+					$canAddResourceRole = false;
+					$isRoleAdmin = (Needs_Roles::isAdmin(Zend_Registry::get('user')->getIdRole()))?true:false;
+					if(!$isRoleAdmin)
+					{
+						if(Needs_Roles::hasAccess(Zend_Registry::get('user')->getIdRole(),'setare_drept_rol')){
+							$canAddResourceRole = true;
+						}
+					}			
+					$allResources = Needs_Roles::getAllResources($this->account->getIdRole(),$isRoleAdmin,$canAddResourceRole); 
+					echo $allResources;
+				?>			
+			</div>	
+			
+		</form>	
+	<div id="confirmDelete" title="Confirmare stergere" style="display:none;">Sigur doriti sa stergeti rolul?</div>
+	</div>
+</div>
+<div class="clear"></div>
+<script type="text/javascript">
+function showLevel(id, parent,first)
+{
+	var request = $.ajax({
+		url:'<?php echo WEBROOT; ?>ajax/show-childs',
+		type: "POST",
+		data: {
+			id	: id,
+			parent	: parent
+		},
+		dataType: "html"
+	});
+
+	request.done(function(msg)
+	{
+		var html = eval('(' + msg + ')');
+		$('#load-child-'+id).html(html);
+		$("#jsColapse-"+id).removeClass('jsColapse');	
+		if(first){ 
+			$('.first').addClass('active');
+		}
+	});
+
+	request.fail(function(jqXHR, textStatus)
+	{
+		//alert( "Request failed: " + textStatus );
+		//console.log(jqXHR);
+	});
+}
+
+//BEGIN:do resouce listing
+function doResourceListing() {
+	$('.roleListing').live('click',function(){		
+		var id = $(this).attr('rel');
+		var coreId = <?php echo $this->account->getIdRole(); ?>;
+		if(id != null){
+			$('#resourceRole').addClass('load');
+			$('div.listingDiv').removeClass('active');
+			$(this).parent().addClass('active');
+			$.get("<?php echo WEBROOT; ?>ajax/show-resource/id/"+id+'/coreId/'+coreId, function(data){
+				if(data){
+					try {
+						var items = eval('(' + data + ')');
+					}  catch (e) {}
+					if(items){
+						$('#resourceRole').unbind().html(items);
+						$(".resourceRole").accordion({ header: "h3", collapsible: true,heightStyle: "content" });
+						$('#resourceRole').removeClass('load');
+						$("input[type='checkbox']").uniform("destroy");
+						$(function(){
+							$("input[type='checkbox']").uniform();
+						});
+					}
+				}
+			});
+		}
+	});
+}	
+//END:do resouce childs
+
+function resourceActions()
+{
+	// onclick on checkbox will save recource-role connection in database
+	$('.roleResource').live('click',function(){	
+		var roleId = $("input[name=roleId]").val();						
+		if($(this).val() !== null){	
+			var actions = '';
+			if($(this).is(':checked'))
+			{
+				actions = 'add';
+			}else{
+				actions = 'remove';	
+			}
+			$.get("<?php echo WEBROOT; ?>ajax/save-resource/resourceId/"+$(this).val()+'/roleId/'+roleId+'/actions/'+actions, function(data)
+			{
+				if(data){
+					try {
+						var items = eval('(' + data + ')');
+					}  catch (e) {}
+					if(items){										
+						;							
+					}
+				}
+			});
+		}
+	});
+	//END: On click get resources for role. 
+}
+//END:FUNCTIONS
+	
+function searchResource(){
+	//BEGIN:Resource Search
+	$('#searchResource').live('click', 
+		function(e) {
+			e.preventDefault();
+			var searchtext = $('#resourceSearchTxt').val();			
+			var coreId = <?php echo $this->account->getIdRole(); ?>;
+			var roleId = $("input[name=roleId]").val();	
+			if(roleId)
+			{
+				$('#resourceRole').addClass('load');						
+				$.get("<?php echo WEBROOT; ?>ajax/show-resource/id/"+roleId+'/coreId/'+coreId+'/searchtext/'+searchtext, function(data){					
+					if(data){
+						try {
+							var items = eval('(' + data + ')');
+						}  catch (e) {}
+						if(items){
+							$('#resourceRole').unbind().html(items);
+							$(".resourceRole").accordion({ header: "h3", collapsible: true,heightStyle: "content" });
+							$('#resourceRole').removeClass('load');
+							$("input[type='checkbox']").uniform("destroy");
+							$(function(){
+								$("input[type='checkbox']").uniform();
+							});
+						}
+					}
+				});		
+			};				
+			return false;
+		}			
+	);
+	//END:Resource Search	
+}
+	
+function searchRole()
+{
+	//BEGIN:Role Search
+	$('#roleSubmit').live('click', 
+		function(e) {
+			e.preventDefault();
+			var searchtext = $('#roleSearchTxt').val();			
+			var roleId = <?php echo $this->account->getIdRole(); ?>;
+			$('#load-child-'+roleId).addClass('load');						
+			$.get("<?php echo WEBROOT; ?>ajax/search-role/id/"+roleId+'/searchtext/'+searchtext, function(data){					
+				if(data){
+					try {
+						var items = eval('(' + data + ')');
+					}  catch (e) {}
+					if(items){							
+						$('#load-child-'+roleId).unbind().html(items);								
+						$('#load-child-'+roleId).removeClass('load');	
+						$('#resourceRole').unbind().html('');
+					}
+				}
+			});
+			return false;
+		}			
+	);
+	//END:Role Search	
+}
+
+$(function(){
+	$("input[type='checkbox']").uniform();
+});
+$(document).ready(function(){
+	showLevel('<?php echo Zend_Registry::get('user')->getIdRole();?>', 'true','true');
+	$('.jsColapse').live('click', function(){
+		var root = $(this).attr('rel');
+		showLevel(root, 'false');
+	});
+	doResourceListing();	
+	resourceActions();	
+	searchResource();
+	searchRole();
+	$(".resourceRole").accordion({ header: "h3", collapsible: true,heightStyle: "content" }); 
+	//confirma 
+	$(document).on('click','.confirmDelete',function() {
+		var link = $(this);
+		$("#confirmDelete").dialog({
+			bgiframe: true,
+			height: 140,
+			width: 400,
+			modal: true,
+			buttons: {
+				'<?php echo Zend_Registry::get('translate')->_('yes'); ?>': function() {
+					$(this).dialog('close').dialog('destroy');
+					window.location.href = link.attr('href');
+				},
+				'<?php echo Zend_Registry::get('translate')->_('no'); ?>': function() {
+					$(this).dialog('close').dialog('destroy');
+					window.location.reload();
+				}
+			}
+		});
+		return false;
+	});
+});
+
+</script>

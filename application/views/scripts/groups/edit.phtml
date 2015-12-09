@@ -1,0 +1,38 @@
+<!--INCLUDE SCRIPTS-->
+<script type="text/javascript" src="<?php echo WEBROOT; ?>theme/admin/js/tiny_mce/jquery.tinymce.js"></script>
+
+<!-- BEGIN: Group header -->
+<div id="center">
+	<div class="main_wrap">
+		<h1 class="main_title">
+			<?php echo Zend_Registry::get('translate')->_('Edit group'); ?>
+		</h1>
+		<button class="submit" onclick="location.href='<?php echo WEBROOT; ?>groups '"<?php echo $this->type; ?> title="<?php echo Zend_Registry::get('translate')->_('back'); ?>"><?php echo Zend_Registry::get('translate')->_('back'); ?></button>
+	</div>
+	<?php echo $this->form; ?>
+</div>
+<!-- END: Project header -->
+
+<!-- BEGIN: Show error messages -->
+<?php if(!empty($this->message)):?>
+	<?php foreach($this->message as $value):?>
+		<center><?php echo $value; ?></center>
+	<?php endforeach; ?>
+	<div class="clearfix">&nbsp;</div>
+<?php endif;?>
+<!-- END: Show error messages -->
+<script>	
+$(document).ready(function(){
+$("#color").spectrum({
+            showInput: true,
+            showButtons: false,
+            color: "<?php echo $this->color;?>"
+        });
+    })
+</script>
+
+
+
+
+
+

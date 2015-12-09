@@ -1,0 +1,141 @@
+<form class="addForms" method="<?php echo $this->element->getMethod();?>" action="<?php echo $this->element->getAction();?>" id="<?php echo $this->element->getId();?>" enctype="<?php echo $this->element->getEncType();?>">	
+	<?php 
+			echo $this->{$this->element->action->helper}(
+				$this->element->action->getName(),
+				$this->element->action->getValue(),				
+				$this->element->action->getAttribs()
+			);
+		?>
+	<!--send to user--> 
+	<div>
+		<?php 
+			echo $this->{$this->element->idUserTo->helper}(
+				$this->element->idUserTo->getName(),
+				$this->element->idUserTo->getValue(),				
+				$this->element->idUserTo->getAttribs(),
+				$this->element->idUserTo->getMultiOptions()
+			);
+		?>
+		<?php if(($this->element->idUserTo->getMessages())){ echo  $this->formErrors($this->element->idUserTo->getMessages());} ?>
+	</div>
+	
+	<!--subject-->
+	<?php echo $this->{$this->element->subject->helper}(
+		$this->element->subject->getName(),
+		$this->element->subject->getValue(),
+		$this->element->subject->getAttribs()
+	);?>
+	<?php if(($this->element->subject->getMessages())){ echo  $this->formErrors($this->element->subject->getMessages());}?>
+	
+	<!--messages-->
+	<?php echo $this->{$this->element->message->helper}(
+				$this->element->message->getName(),
+				$this->element->message->getValue(),
+				$this->element->message->getAttribs()
+			);?>
+	<div class="clear">&nbsp;</div>
+	<div class="fileUpload btn btn-primary">
+		<!--BEGIN: Fisiere atasate -->			
+		<div><input type="file" id="attachedFiles" class="upload" name="attachedFiles" /></div>
+		<div class="load_file_inputs"></div> <!--	save uploaded files in hidden inputs-->
+		<table class="load_files"></table> <!--	show uploaded files-->
+		<!--END: Fisiere atasate -->
+	</div>
+	<div class="clear"></div>
+	<?php echo $this->{$this->element->rightSubmit->helper}(
+				$this->element->rightSubmit->getName(),
+				$this->element->rightSubmit->getValue(),
+				$this->element->rightSubmit->getAttribs()
+			);?>
+</form>
+<div class="clear"></div>
+<div id="confirmDefaultFileDelete" title="Confirm delete" style="display:none;">
+	Do you confirm deleting this file?
+</div>
+
+<script type="text/javascript" src="<?php echo WEBROOT; ?>theme/front/js/tiny_mce/tiny_mce.js"></script>
+<script type="text/javascript">	
+$(document).ready(function() {
+	//validation
+	$('#<?php echo $this->element->getId();?>').validationEngine('attach', {promptPosition : "centerRight"});
+	
+	//editor
+	tinymce.init({
+		selector: "textarea",
+		// Theme options
+		theme_advanced_buttons1 : "bold,italic,underline,|,link"
+	 });
+	 
+	 //BEGIN:UPLOAD FILES
+	$('#attachedFiles').uploadify({
+		'swf'				: '<?php echo WEBROOT; ?>theme/admin/js/uploadify/uploadify.swf',
+		'uploader'			: '<?php echo WEBROOT ?>ajax/upload-project-files',
+		'removeCompleted'	: true,	
+		'scriptAccess'		: 'always',
+		'formData'			: {'PHPSESSID' : '<?php echo session_id(); ?>'},		
+		'onUploadSuccess'	: function(file, data, response) {
+			try 
+			{
+				var items= eval('(' + data + ')');
+			} catch (e) {}
+			if(items) 
+			{	
+				if(items.success)
+				{				
+					$('.load_file_inputs').append('<input type="hidden" id="gallery_'+items.fileId+'" name="galleryFiles[]" value="'+items.fileId+'" />'); 
+					// load files
+					$.post('<?php echo WEBROOT ?>ajax/show-project-uploads/', {'fileId':items.fileId,'fileType':'file'}, function(dataFile) 
+					{
+						try 
+						{
+							var itemsFile = eval('(' + dataFile + ')');
+						} catch (e) {}
+						if(itemsFile) 
+						{							
+							$('.load_files').append(itemsFile);
+						}
+					});
+				}else{
+					alert(items.message);
+				}	
+			}				
+	}			
+	// Your options here
+    });
+	//END:UPLOAD FILES
+	
+	//BEGIN:Uploaded files delete		
+	$(document).on('click','.deleteDefault', function() {		
+			var valueId = $(this).attr('rel');
+			$("#confirmDefaultFileDelete").dialog({
+				bgiframe: true,
+				height: 140,
+				width: 400,
+				modal: true,
+				buttons:{
+					'<?php echo Zend_Registry::get('translate')->_('yes'); ?>': function(){				
+						$.get('<?php echo WEBROOT ?>ajax/delete-project-upload/fileId/'+valueId, function(dataFile) 
+						{
+							try 
+							{
+								var itemsFile = eval('(' + dataFile + ')');
+							} catch (e) {}
+							if(itemsFile) 
+							{								
+								$('#gallery_'+valueId).remove();								
+								$('.defaultShow_'+valueId).remove();
+							}
+						});
+						$(this).dialog('close').dialog('destroy');		
+					},
+					'<?php echo Zend_Registry::get('translate')->_('no'); ?>': function(){
+						$(this).dialog('close').dialog('destroy');					
+					}
+				}
+			});
+			return false;		
+	 });
+	//END:Uploaded files delete
+	
+});
+</script>

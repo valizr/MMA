@@ -1,0 +1,40 @@
+<div id="masterwrapper">
+	<div id="page">
+		<div id="header"></div>
+		<div class="clear"></div>
+		<div id="content">
+			<?php if ($this->message == 'Page not found'): ?>				
+				<div class="contentTop">
+					<div class="error_box">
+						<h1>404</h1>
+						<h3 class="apexbook">We are sorry  but the page was not found !</h3>						
+						<a href="<?php echo WEBROOT; ?>" class="error_home_link"></a>  
+					</div>
+				</div>
+			<?php endif;?>
+
+			<?php if ('testing' == APPLICATION_ENV || $_SERVER['REMOTE_ADDR'] == '82.137.34.18'): ?>
+				<div class="a404" style="position: absolute; top: 0;left: 0;">
+					<div class="empty10"></div>
+					<p>Informatii eroare - doar pentru testare(nu apare pe varianta production)</p>
+					<div class="box">
+						<p><strong>Mesaj:</strong>&nbsp;<?php echo $this->exception->getMessage(); ?></p>
+					</div>
+
+					<div class="empty10"></div>
+					<p>Date despre stiva:</p>
+					<div class="box">
+						<p><?php echo nl2br($this->exception->getTraceAsString()); ?></p>
+					</div>
+
+					<div class="empty10"></div>
+					<p>Parametrii solicitati:</p>
+					<div class="box">
+						<pre><?php echo var_export($this->request->getParams(), true); ?></pre>
+					</div>
+				</div>
+			<?php endif ?>		
+		</div>
+		<div class="clear"></div>
+	</div>
+</div>

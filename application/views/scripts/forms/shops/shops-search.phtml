@@ -1,0 +1,30 @@
+<div class="form_sidebar">
+	<form class="addForms" method="<?php echo $this->element->getMethod();?>" action="<?php echo $this->element->getAction();?>" id="<?php echo $this->element->getId();?>" enctype="<?php echo $this->element->getEncType();?>">
+		<label for="filter_by">Filter by</label>
+		<?php echo $this->{$this->element->action->helper}(
+					$this->element->action->getName(),
+					$this->element->action->getValue(),
+					$this->element->action->getAttribs()
+				);?>
+		
+				<?php echo $this->{$this->element->name->helper}(
+					$this->element->name->getName(),
+					$this->element->name->getValue(),
+					$this->element->name->getAttribs()
+				);?>
+				<?php if(($this->element->name->getMessages())){ echo  $this->formErrors($this->element->name->getMessages());}?>
+		
+				<?php echo $this->{$this->element->searchShops->helper}(
+					$this->element->searchShops->getName(),
+					$this->element->searchShops->getValue(),
+					$this->element->searchShops->getAttribs()
+				);?>
+		<a href="<?php echo WEBROOT;?>shops" class="reset">Reset</a>
+		
+	</form>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#<?php echo $this->element->getId();?>').validationEngine('attach', {promptPosition : "centerRight"});
+});
+</script>

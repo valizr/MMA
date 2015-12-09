@@ -1,0 +1,28 @@
+<a name="comments"></a>
+<form method="<?php echo $this->element->getMethod(); ?>" action="<?php echo $this->element->getAction(); ?>" id="<?php echo $this->element->getId(); ?>" enctype="<?php echo $this->element->getEncType(); ?>">
+	<div class="complete_form">
+			<?php
+			echo $this->{$this->element->description->helper}(
+					$this->element->description->getName(), $this->element->description->getValue(), $this->element->description->getAttribs()
+			);
+			?>
+			<?php
+			if (($this->element->description->getMessages())) {
+				echo $this->formErrors($this->element->description->getMessages());
+			}
+			?>
+			<div class="clear"></div>		
+<?php
+echo $this->{$this->element->button->helper}(
+		$this->element->button->getName(), $this->element->button->getValue(), $this->element->button->getAttribs()
+);
+?>			
+		<div class="clear"></div>
+	</div>
+</form>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('#<?php echo $this->element->getId(); ?>').validationEngine('attach', {promptPosition: "centerRight"});
+	});
+</script>

@@ -1,0 +1,53 @@
+<div id="center">
+	<div class="main_wrap">
+			<?php if($this->result):?>
+				<h1 class="main_title"> <?php echo $this->result->getUserFrom()->getName(); ?></h1>
+				<button class="back" onclick="location.href='<?php echo WEBROOT; ?>messages/index/type/<?php echo $this->type; ?>'"title="<?php echo Zend_Registry::get('translate')->_('back'); ?>"><?php echo Zend_Registry::get('translate')->_('back'); ?></button>
+			<?php endif; ?>
+	</div>
+	<div class="clear"></div>
+	<!--afisare mesaje de eroare/succes-->
+	<?php if(!empty($this->message)) : ?>
+		<?php foreach($this->message as $value) : ?>
+			<center><?php echo $value; ?></center>
+		<?php endforeach; ?>
+		<div class="clear"></div>
+	<?php endif; ?>
+
+	<?php if($this->result){?>
+	
+	<div class="list">
+			<div class="project_detail">
+				<span class="heading">Subject</span><span class="headingtext_message"><?php echo $this->result->getSubject();?></span>
+				<div class="clear"></div>				
+				
+				<div class="h_last_message"></div>
+				<span class="heading">Message</span><span class="headingtext_message headingdesc"><?php echo $this->result->getMessage();?></span>
+				<div class="h_last_message"></div>
+				<span class="heading">Attachements</span><table class="load_files"></table> <!--	show uploaded files-->
+				<div class="h_last_message"></div>
+			</div>
+		
+	</div>
+</div>
+<?php }?>
+
+<script type="text/javascript">
+$(document).ready(function(){	
+	//BEGIN:Show saved files
+	var messageId = <?php echo $this->result->getId(); ?>;	
+	// load files
+	$.post('<?php echo WEBROOT ?>ajax/view-saved-message-files', {'messageId':messageId,'type':'messages'}, function(dataFile) 
+	{
+		try 
+		{
+			var itemsFile = eval('(' + dataFile + ')');
+		} catch (e) {}
+		if(itemsFile) 
+		{ 
+			$('.load_files').append(itemsFile);
+		}
+	});	
+	//END:show saved files
+});
+</script>

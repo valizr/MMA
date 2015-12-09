@@ -1,0 +1,35 @@
+<div class="cauta"><h3>Cautare</h3></div>
+<div class="form_sidebar">
+	<form class="addForms" method="<?php echo $this->element->getMethod();?>" action="<?php echo $this->element->getAction();?>" id="<?php echo $this->element->getId();?>" enctype="<?php echo $this->element->getEncType();?>">	
+<!--dupa subiect-->
+		<div class="input_wrapper_fix">					
+				<?php echo $this->{$this->element->subject->helper}(
+					$this->element->subject->getName(),
+					$this->element->subject->getValue(),
+					$this->element->subject->getAttribs()
+				);?>
+				<?php if(($this->element->subject->getMessages())){ echo  $this->formErrors($this->element->subject->getMessages());}?>	
+		</div>
+		<div class="clear"></div>
+<!--dupa mesaj-->
+		<div class="input_wrapper_fix">	
+				<?php echo $this->{$this->element->message->helper}(
+					$this->element->message->getName(),
+					$this->element->message->getValue(),				
+					$this->element->message->getAttribs()
+				);
+				?>
+				<?php if(($this->element->message->getMessages())){ echo  $this->formErrors($this->element->message->getMessages());} ?>
+		</div>
+		<div class="clear"></div>
+<!--submit-->
+		<div class="input_wrapper_fix">	
+				<?php echo $this->{$this->element->searchNotifications->helper}(
+					$this->element->searchNotifications->getName(),
+					$this->element->searchNotifications->getValue(),
+					$this->element->searchNotifications->getAttribs()
+				);?>
+		</div>
+		<a href="<?php echo WEBROOT;?>notifications" id="reset">Reset</a>
+	</form>
+</div>

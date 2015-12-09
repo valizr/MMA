@@ -1,0 +1,123 @@
+<div class="form_sidebar">
+	<form class="addForms" method="<?php echo $this->element->getMethod();?>" action="<?php echo $this->element->getAction();?>" id="<?php echo $this->element->getId();?>" enctype="<?php echo $this->element->getEncType();?>">
+			<?php
+				echo $this->{$this->element->action->helper}(
+							$this->element->action->getName(),
+							$this->element->action->getValue(),					
+							$this->element->action->getAttribs()					
+						);
+			?>
+<!-- Shop name -->
+			<div class="input_wrapper">
+			<?php
+				echo $this->{$this->element->name->helper}(
+							$this->element->name->getName(),
+							$this->element->name->getValue(),					
+							$this->element->name->getAttribs()					
+						);
+			?>
+			<?php 
+				if(($this->element->name->getMessages())){ echo  $this->formErrors($this->element->name->getMessages());} 
+			?> 
+			</div>
+			<div class="clear"></div>
+<!-- Address-->	
+			<div class="input_wrapper">
+			<?php
+				echo $this->{$this->element->address->helper}(
+							$this->element->address->getName(),
+							$this->element->address->getValue(),					
+							$this->element->address->getAttribs()					
+						);
+			?>
+			<?php 
+				if(($this->element->address->getMessages())){ echo  $this->formErrors($this->element->address->getMessages());} 
+			?>
+			</div>
+			<div class="clear"></div>
+<!-- phoneNumber-->
+			<div class="input_wrapper">
+			<?php
+				echo $this->{$this->element->phoneNumber->helper}(
+							$this->element->phoneNumber->getName(),
+							$this->element->phoneNumber->getValue(),					
+							$this->element->phoneNumber->getAttribs()					
+						);
+			?>
+			<?php 
+				if(($this->element->phoneNumber->getMessages())){ echo  $this->formErrors($this->element->phoneNumber->getMessages());} 
+			?>
+			</div>
+			<div class="clear"></div>
+			<div class="input_wrapper">
+			<?php
+				echo $this->{$this->element->company->helper}(
+							$this->element->company->getName(),
+							$this->element->company->getValue(),					
+							$this->element->company->getAttribs()					
+						);
+			?>
+			<?php 
+				if(($this->element->company->getMessages())){ echo  $this->formErrors($this->element->company->getMessages());} 
+			?>
+			</div>
+			<div class="clear"></div>
+<!-- cashBank-->
+			<div class="input_wrapper">
+			<?php
+				echo $this->{$this->element->cashBank->helper}(
+							$this->element->cashBank->getName(),
+							$this->element->cashBank->getValue(),					
+							$this->element->cashBank->getAttribs()					
+						);
+			?>
+			<?php 
+				if(($this->element->cashBank->getMessages())){ echo  $this->formErrors($this->element->cashBank->getMessages());} 
+			?>
+			</div>
+			
+			
+			<div class="clear"></div>
+<!-- creditCardBank-->
+			<div class="input_wrapper">
+			<?php
+				echo $this->{$this->element->creditCardBank->helper}(
+							$this->element->creditCardBank->getName(),
+							$this->element->creditCardBank->getValue(),					
+							$this->element->creditCardBank->getAttribs()					
+						);
+			?>
+			<?php 
+				if(($this->element->creditCardBank->getMessages())){ echo  $this->formErrors($this->element->creditCardBank->getMessages());} 
+			?> 
+			</div>
+			<div class="clear"></div>
+			<div class="input_wrapper">	
+			<?php
+				echo $this->{$this->element->cashRegistry->helper}(
+							$this->element->cashRegistry->getName(),
+							$this->element->cashRegistry->getValue(),					
+							$this->element->cashRegistry->getAttribs(),
+							$this->element->cashRegistry->getMultiOptions()
+						);
+			?>
+			<?php 
+				if(($this->element->cashRegistry->getMessages())){ echo  $this->formErrors($this->element->cashRegistry->getMessages());} 
+			?>   
+			</div>
+			<div class="clear"></div>
+<!-- Submit-->
+			<div class="input_wrapper">
+			<?php echo $this->{$this->element->submit->helper}(
+				$this->element->submit->getName(),
+				$this->element->submit->getValue(),
+				$this->element->submit->getAttribs()
+			);?>
+			</div>
+	</form>
+</div>
+<script>
+	$(document).ready(function(){
+		$('#<?php echo $this->element->getId(); ?>').validationEngine('attach', {promptPosition: "centerRight"});
+	});
+</script>

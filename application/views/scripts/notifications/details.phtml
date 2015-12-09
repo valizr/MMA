@@ -1,0 +1,21 @@
+<div id="center">
+	<div class="main_wrap">
+		<h1 class="main_title"><?php echo Zend_Registry::get('translate')->_('Detalii Notificare'); ?></h1>
+		<button class="submit" onclick="location.href='<?php echo WEBROOT; ?>notifications '"<?php echo $this->type; ?> title="<?php echo Zend_Registry::get('translate')->_('back'); ?>"><?php echo Zend_Registry::get('translate')->_('back'); ?></button>
+		<!--afisare mesaje de eroare/succes-->
+		<?php if(!empty($this->message)) : ?>
+			<?php foreach($this->message as $value) : ?>
+				<center><?php echo $value; ?></center>
+			<?php endforeach; ?>
+			<div class="clear"></div>
+		<?php endif; ?>
+			<div class="clear"></div>
+		<div class="list <?php echo $this->notificationBg; ?>">
+				<div class="project_detail">
+					<span class="heading">Data notificare</span><span class="headingtext"><?php echo date('d-m-Y \l\a\ H:i:s', $this->result->getCreated()); ?></span>		
+					<span class="heading">Subiect notificare</span><span class="headingtext"><?php echo $this->result->getSubject();?></span>
+					<span class="heading">Detalii notificare</span><span class="headingtext"><?php echo $this->result->getMessage();?></span>
+				</div>
+		</div>
+	</div>
+</div>

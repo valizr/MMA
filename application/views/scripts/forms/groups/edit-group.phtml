@@ -1,0 +1,91 @@
+<div class="main_wrap">
+  <form method="<?php echo $this->element->getMethod();?>" action="<?php echo $this->element->getAction();?>" id="<?php echo $this->element->getId();?>" enctype="<?php echo $this->element->getEncType();?>">
+		<!--BEGIN Id Group -->
+		<?php
+			echo $this->{$this->element->idGroup->helper}(
+							$this->element->idGroup->getName(),
+							$this->element->idGroup->getValue(),					
+							$this->element->idGroup->getAttribs()
+						);
+		?>
+		<?php 
+			if(($this->element->idGroup->getMessages())){ echo  $this->formErrors($this->element->idGroup->getMessages());} 
+		?>   	
+		<div class="clear"></div>
+		<!--BEGIN NUME -->
+		<?php
+			echo $this->{$this->element->name->helper}(
+						$this->element->name->getName(),
+						$this->element->name->getValue(),					
+						$this->element->name->getAttribs()					
+					);
+		?>
+		<?php 
+			if(($this->element->name->getMessages())){ echo  $this->formErrors($this->element->name->getMessages());} 
+		?>
+		<div class="clear"></div>
+
+		<?php
+//			echo $this->{$this->element->idProduct->helper}(
+//						$this->element->idProduct->getName(),
+//						$this->element->idProduct->getValue(),					
+//						$this->element->idProduct->getAttribs(),
+//						$this->element->idProduct->getMultiOptions()
+//					);
+		?>
+		<?php 
+			//if(($this->element->idProduct->getMessages())){ echo  $this->formErrors($this->element->idProduct->getMessages());} 
+		?>
+<!--		<div class="btn-add"><a href="JavaScript:void(0);" id="btn-add">Add &raquo;</a></div>
+		<div class="rightbox"><ul id="select-to" ></ul></div>-->
+		<!--<a href="JavaScript:void(0);" id="btn-remove">&laquo; Remove</a>-->
+		<?php
+//			echo $this->{$this->element->idProductGroups->helper}(
+//						$this->element->idProductGroups->getName(),
+//						$this->element->idProductGroups->getValue(),				
+//						$this->element->idProductGroups->getAttribs()
+//					);
+		?>
+		<?php 
+			//if(($this->element->idProductGroups->getMessages())){ echo  $this->formErrors($this->element->idProductGroups->getMessages());} 
+		?>
+		<?php
+		
+//			echo $this->{$this->element->selectedProducts->helper}(
+//						$this->element->selectedProducts->getName(),
+//						$this->element->selectedProducts->getValue(),					
+//						$this->element->selectedProducts->getAttribs()
+//					);
+		?>
+	<div class="input_wrapper">		
+            <?php
+            echo $this->{$this->element->type->helper}(
+                    $this->element->type->getName(),
+                    $this->element->type->getValue(),
+                    $this->element->type->getAttribs(),
+                    $this->element->type->getMultiOptions()
+            )?>
+            <?php
+            if (($this->element->type->getMessages())) {
+                echo $this->formErrors($this->element->type->getMessages());
+            }?> 
+        </div>
+                <div class="clear"></div>
+                <?php
+            echo $this->{$this->element->color->helper}(
+                    $this->element->color->getName(),
+                    $this->element->color->getValue(),
+                    $this->element->color->getAttribs()
+            )?>
+            <?php
+            if (($this->element->type->getMessages())) {
+                echo $this->formErrors($this->element->type->getMessages());
+            }?>
+                <!--a fost submitbtn-->
+                <div class="input_wrapper"><?php echo $this->{$this->element->submit->helper}(
+		$this->element->submit->getName(),
+		$this->element->submit->getValue(),
+		$this->element->submit->getAttribs()
+		);?></div>
+  </form>
+</div>

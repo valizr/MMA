@@ -1,0 +1,24 @@
+<form method="<?php echo $this->element->getMethod();?>" action="<?php echo $this->element->getAction();?>" id="<?php echo $this->element->getId();?>" enctype="<?php echo $this->element->getEncType();?>">	
+	<label for="filter_by">Filter by</label>		
+	<?php echo $this->{$this->element->action->helper}(
+				$this->element->action->getName(),
+				$this->element->action->getValue(),
+				$this->element->action->getAttribs()
+			);?>
+
+			<!--search text-->	
+			<?php echo $this->{$this->element->searchTxt->helper}(
+				$this->element->searchTxt->getName(),
+				$this->element->searchTxt->getValue(),
+				$this->element->searchTxt->getAttribs()
+			);?>
+			<?php if(($this->element->searchTxt->getMessages())){ echo  $this->formErrors($this->element->searchTxt->getMessages());}?>
+
+			<!--submit-->
+			<?php echo $this->{$this->element->search->helper}(
+				$this->element->search->getName(),
+				$this->element->search->getValue(),
+				$this->element->search->getAttribs()
+			);?>
+			<a href="<?php echo WEBROOT;?>messages" class="reset">Reset</a>
+</form>

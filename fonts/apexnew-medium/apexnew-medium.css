@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'ApexNewMedium';
+    src: url('apexnew-medium.eot');
+    src: url('apexnew-medium.eot') format('embedded-opentype'),
+         url('apexnew-medium.woff') format('woff'),
+         url('apexnew-medium.ttf') format('truetype'),
+         url('apexnew-medium.svg#ApexNewMedium') format('svg');
+}

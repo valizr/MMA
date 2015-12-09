@@ -1,0 +1,24 @@
+<div class="top">
+	<div class="top_content">
+		<h1><?php echo Zend_Registry::get('translate')->_('money_management_system'); ?><span></span><span class="store_name"><?php echo Zend_Registry::get('user')->getAccountName(); ?></span></h1>
+		<div class="account_information">
+
+			<div class="user_info">
+				<img src="<?php echo WEBROOT ?>theme/front/images/user_no_pic.png" alt="user img">
+				<div class="username_display"><?php echo Zend_Registry::get('user')->getName(); ?></div>
+				<div class="notifications_div">
+					<a href="<?php echo WEBROOT ?>settings/edit-password">
+						<div class="top_change_password">
+						</div>
+					</a>
+					<div class="clear"></div>
+					<a href="<?php echo WEBROOT ?>auth/logout">
+						<div class="top_settings">
+						</div>
+					</a>
+					
+				</div>
+			</div>	
+		</div>
+	</div>
+</div>

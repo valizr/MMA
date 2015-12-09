@@ -1,0 +1,84 @@
+<div class="pageTitle"><h1><?php echo Zend_registry::get('translate')->_('admin_expenses_income_charts');?></h1></div>
+<div class="form_sidebar">
+	<form method="<?php echo $this->element->getMethod();?>" action="<?php echo $this->element->getAction();?>" id="<?php echo $this->element->getId();?>" enctype="<?php echo $this->element->getEncType();?>">
+<!--BEGIN SearchByDate --><!-- from -->
+        <?php
+        echo $this->{$this->element->idCategoryE->helper}(
+            $this->element->idCategoryE->getName(),
+            $this->element->idCategoryE->getValue(),               
+            $this->element->idCategoryE->getAttribs(),
+            $this->element->idCategoryE->getMultiOptions()
+        );
+        ?>
+        <?php if(($this->element->idCategoryE->getMessages())){ echo  $this->formErrors($this->element->idCategoryE->getMessages());} ?>
+
+        <?php
+        echo $this->{$this->element->idCategoryI->helper}(
+            $this->element->idCategoryI->getName(),
+            $this->element->idCategoryI->getValue(),               
+            $this->element->idCategoryI->getAttribs(),
+            $this->element->idCategoryI->getMultiOptions()
+        );
+        ?>
+        <?php if(($this->element->idCategoryI->getMessages())){ echo  $this->formErrors($this->element->idCategoryI->getMessages());} ?>
+
+        <?php echo $this->{$this->element->dataStartC->helper}(
+		$this->element->dataStartC->getName(),
+		$this->element->dataStartC->getValue(),					
+		$this->element->dataStartC->getAttribs()
+	);?>
+        <?php if(($this->element->dataStartC->getMessages())){ echo  $this->formErrors($this->element->dataStartC->getMessages());} ?>
+<!-- to -->
+        <?php echo $this->{$this->element->dataEndC->helper}(
+		$this->element->dataEndC->getName(),
+		$this->element->dataEndC->getValue(),					
+		$this->element->dataEndC->getAttribs()
+	);?>
+        <?php if(($this->element->dataEndC->getMessages())){ echo  $this->formErrors($this->element->dataEndC->getMessages());} ?>   				
+
+        <?php echo $this->{$this->element->timeframe->helper}(
+                $this->element->timeframe->getName(),
+                $this->element->timeframe->getValue(),               
+                $this->element->timeframe->getAttribs(),
+                $this->element->timeframe->getMultiOptions()
+        );
+        ?>
+        <?php if(($this->element->timeframe->getMessages())){ echo  $this->formErrors($this->element->timeframe->getMessages());} ?>
+<!-- submit -->
+        <?php echo $this->{$this->element->submitC->helper}(
+                $this->element->submitC->getName(),
+                Zend_Registry::get('translate')->_('admin_menu_form_search'),
+                $this->element->submitC->getAttribs()
+        );?>
+        <a href="<?php echo WEBROOT;?>statistics" class="reset">Reset</a>
+        <br>
+        <?php echo $this->{$this->element->submitReportE->helper}(
+                $this->element->submitReportE->getName(),
+                Zend_Registry::get('translate')->_('admin_generate_report_expenses'),
+                $this->element->submitReportE->getAttribs()
+        );?>
+        
+        <?php echo $this->{$this->element->submitReportI->helper}(
+                $this->element->submitReportI->getName(),
+                Zend_Registry::get('translate')->_('admin_generate_report_income'),
+                $this->element->submitReportI->getAttribs()
+        );?>
+        
+	</form>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){
+        $('#<?php echo $this->element->getId();?>').validationEngine('attach', {promptPosition : "centerRight"});
+	$('#dataStartC').datepicker({
+            dateFormat:'yy-mm-dd'}
+        );
+	$('#dataEndC').datepicker({
+            dateFormat:'yy-mm-dd',
+            beforeShowDay: function(date){
+                return [(date >= ($("#dataStartC").datepicker("getDate") || new Date()))];  
+            }
+        });
+	//$('.data_inceput_c').uniform();
+});
+
+</script>

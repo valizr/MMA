@@ -1,0 +1,38 @@
+<form method="<?php echo $this->element->getMethod();?>" action="<?php echo $this->element->getAction();?>" id="<?php echo $this->element->getId();?>" enctype="<?php echo $this->element->getEncType();?>">
+	<?php	
+		echo $this->formLabel($this->element->tbUser->getName(), $this->element->tbUser->getLabel());?>		
+
+	<?php
+		echo $this->{$this->element->tbUser->helper}(
+					$this->element->tbUser->getName(),
+					$this->element->tbUser->getValue(),
+					$this->element->tbUser->getAttribs()
+				);
+	?>
+	<?php 
+		if(($this->element->tbUser->getMessages())){ echo  $this->formErrors($this->element->tbUser->getMessages());} 
+	?>
+	<br />    				
+	<div class="clearfix">&nbsp;</div>
+	<?php
+		echo $this->formLabel($this->element->tbPass->getName(), $this->element->tbPass->getLabel());?>
+
+	<?php
+		echo $this->{$this->element->tbPass->helper}(
+					$this->element->tbPass->getName(),
+					$this->element->tbPass->getValue(),
+					$this->element->tbPass->getAttribs()
+				);
+	?>
+	<?php 
+		if(($this->element->tbPass->getMessages())){ echo  $this->formErrors($this->element->tbPass->getMessages());} 
+	?>
+	<br />    				
+	<div class="clearfix">&nbsp;</div>			
+	<?php echo $this->{$this->element->submit->helper}(
+		$this->element->submit->getName(),
+		$this->element->submit->getValue(),
+		$this->element->submit->getAttribs()
+	);?>
+	<a href="<?php echo WEBROOT?>/auth/forgot-password" title="forgot password">Forgot my password</a>
+</form>

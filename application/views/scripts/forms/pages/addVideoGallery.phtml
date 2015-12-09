@@ -1,0 +1,183 @@
+<form class="addForms" method="<?php echo $this->element->getMethod();?>" action="<?php echo $this->element->getAction();?>" id="<?php echo $this->element->getId();?>" enctype="<?php echo $this->element->getEncType();?>">
+<?php echo $this->{$this->element->formNumber->helper}(
+	$this->element->formNumber->getName(),
+	$this->element->formNumber->getValue(),
+	$this->element->formNumber->getAttribs()
+);?>
+<?php echo $this->{$this->element->type->helper}(
+	$this->element->type->getName(),
+	$this->element->type->getValue(),
+	$this->element->type->getAttribs()
+);?>
+<?php
+if($this->element->pageId){
+	echo $this->{$this->element->pageId->helper}(
+	$this->element->pageId->getName(),
+	$this->element->pageId->getValue(),
+	$this->element->pageId->getAttribs()
+	);
+}	
+?>
+<div class="hint"><?php echo Zend_Registry::get('translate')->_("marked_fields_are_required"); ?></div>	
+<!------------------------------------------------------>
+<div class="clear"></div>
+<div class="column_box_left">
+	<div class="label-space">
+		<?php
+			$attribs = array(); if($this->element->title->isRequired()) { $attribs['class'] = 'required'; }
+			echo $this->formLabel($this->element->title->getName(), $this->element->title->getLabel(), $attribs);
+		?>	
+		<?php echo $this->{$this->element->title->helper}(
+			$this->element->title->getName(),
+			$this->element->title->getValue(),
+			$this->element->title->getAttribs()
+		);?>
+		<?php if(($this->element->title->getMessages())){ echo  $this->formErrors($this->element->title->getMessages());}?>
+	</div>
+</div>
+
+<!--------------------------------------------------------------------------------->
+<?php if($this->element->status){ ?>
+<div class="clear"></div>
+<div class="label-space">
+	<?php
+		$attribs = array(); if($this->element->status->isRequired()) { $attribs['class'] = 'required'; }
+		echo $this->formLabel($this->element->status->getName(), $this->element->status->getLabel(), $attribs);
+	?>	
+	<div class="clear"></div>
+	<?php
+		echo $this->{$this->element->status->helper}(
+					$this->element->status->getName(),
+					$this->element->status->getValue(),
+					$this->element->status->getAttribs(),
+					$this->element->status->getMultiOptions(),
+					'&nbsp;&nbsp;&nbsp;'
+				);
+		?>
+	<?php if(($this->element->status->getMessages())){ echo  $this->formErrors($this->element->status->getMessages());}?>
+</div>
+<div class="empty10">&nbsp;</div>
+<div class="empty10">&nbsp;</div>
+<?php } ?>
+<!------------------------------------------------------>
+
+<!--BEGIN:MAIN PICTURE AND GALLERY-->
+<?php if($this->element->picture->getValue()){ ?>
+
+<div class="clear"></div>
+<div class="empty10">&nbsp;</div>
+<div class="empty10">&nbsp;</div>
+<div class="column_box_left">
+	<div class="label-space">
+		<label for="photo_gallery" ><?php echo Zend_Registry::get('translate')->_('admin_poi_photo_gallery'); ?></label>
+		<input id='photo_gallery' name='photo_gallery' type='file' class='file template-photo uploadFiles' multiple='true' />
+		<table class="loadGalleryHeader" style="display:none;" width="100%" cellspacing="0" cellpadding="0">
+			<tr>
+				<th width="80%">Photo</th>			
+				<th>Actions</th>
+			</tr>
+		</table>
+		<table class="load_gallery" width="100%" cellspacing="0" cellpadding="0">			
+		</table>
+		<div class="load_gallery_inputs"></div>
+		
+	</div>
+</div>
+<div class="clear"></div>
+<div class="empty10">&nbsp;</div>
+<div class="empty10">&nbsp;</div>
+
+<div id="confirmDefaultFileDelete" title="<?php echo Zend_Registry::get('translate')->_('admin_poi_confirm_file_delete_title'); ?>" style="display:none;">
+	<?php echo Zend_Registry::get('translate')->_('admin_poi_confirm_file_delete_message'); ?>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){	
+	<?php Needs_Tools::includeTemplate('pictures-upload');?>	
+});
+</script>
+<?php } ?>
+<!--END:MAIN PICTURE AND GALLERY-->
+
+
+<!--------------------------------------------------------------------------------->
+	<div class="clear"></div>
+	<h2><?php echo Zend_Registry::get('translate')->_('admin_add_meta_tags_configuration');?></h2>
+	<div class="column_box_left">
+		<div class="label-space">
+			<?php
+				$attribs = array(); if($this->element->metaTitle->isRequired()) { $attribs['class'] = 'required'; }
+				echo $this->formLabel($this->element->metaTitle->getName(), $this->element->metaTitle->getLabel(), $attribs);
+			?>	
+			<?php echo $this->{$this->element->metaTitle->helper}(
+				$this->element->metaTitle->getName(),
+				$this->element->metaTitle->getValue(),
+				$this->element->metaTitle->getAttribs()
+			);?>
+			<?php if(($this->element->metaTitle->getMessages())){ echo  $this->formErrors($this->element->metaTitle->getMessages());}?>
+		</div>
+	</div>	
+	<div class="column_box_left">		
+		<div class="label-space">
+			<?php
+				$attribs = array(); if($this->element->metaDescription->isRequired()) { $attribs['class'] = 'required'; }
+				echo $this->formLabel($this->element->metaDescription->getName(), $this->element->metaDescription->getLabel(), $attribs);
+			?>
+			<?php echo $this->{$this->element->metaDescription->helper}(
+				$this->element->metaDescription->getName(),
+				$this->element->metaDescription->getValue(),
+				$this->element->metaDescription->getAttribs()
+			);?>
+			<?php if(($this->element->metaDescription->getMessages())){ echo  $this->formErrors($this->element->metaDescription->getMessages());}?>	
+		</div>	
+	</div>
+	
+<!--------------------------------------------------------------------------------->
+	<div class="clear"></div>
+	<div class="column_box_left">	
+		<div class="label-space">
+			<?php
+				$attribs = array(); if($this->element->metaKeywords->isRequired()) { $attribs['class'] = 'required'; }
+				echo $this->formLabel($this->element->metaKeywords->getName(), $this->element->metaKeywords->getLabel(), $attribs);
+			?>		
+			<?php echo $this->{$this->element->metaKeywords->helper}(
+				$this->element->metaKeywords->getName(),
+				$this->element->metaKeywords->getValue(),
+				$this->element->metaKeywords->getAttribs()
+			);?>
+			<?php if(($this->element->metaKeywords->getMessages())){ echo  $this->formErrors($this->element->metaKeywords->getMessages());}?>	
+		</div>	
+	</div>	
+	
+<!--------------------------------------------------------------------------------->
+	
+	<div class="column_box_left">	
+		<div class="label-space">
+			<?php
+				$attribs = array(); if($this->element->url->isRequired()) { $attribs['class'] = 'required'; }
+				echo $this->formLabel($this->element->url->getName(), $this->element->url->getLabel(), $attribs);
+			?>		
+			<?php echo $this->{$this->element->url->helper}(
+				$this->element->url->getName(),
+				$this->element->url->getValue(),
+				$this->element->url->getAttribs()
+			);?>
+			<?php if(($this->element->url->getMessages())){ echo  $this->formErrors($this->element->url->getMessages());}?>	
+		</div>	
+	</div>	
+	
+<!--------------------------------------------------------------------------------->
+	<div class="clear"></div>	
+	<div class="column_box_left">
+		<p>			
+			<?php echo $this->{$this->element->submit->helper}(
+				$this->element->submit->getName(),
+				$this->element->submit->getValue(),
+				$this->element->submit->getAttribs()
+			);?>
+		</p>	
+	</div>
+<!--------------------------------------------------------------------------------->
+	<div class="clear"></div>	
+</form>
+
+

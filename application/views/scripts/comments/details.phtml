@@ -1,0 +1,66 @@
+<div class="admPageHeader">
+	<div class="pTitle">
+		<?php echo Zend_Registry::get('translate')->_('Comment Details'); ?>
+	</div>
+	<div class="clear"></div>
+</div>
+
+<!--afisare mesaje de eroare/succes-->
+<?php if(!empty($this->message)) : ?>
+	<?php foreach($this->message as $value) : ?>
+		<center><?php echo $value; ?></center>
+	<?php endforeach; ?>
+	<div class="clearfix">&nbsp;</div>
+<?php endif; ?>
+				
+				<?php echo "<p class='detalii_intrebare'><label class='label'>Comment date: </label>".date('d-m-Y \a\t\ H:i:s', $this->result->getCreated())."</p>"; ?>
+
+				<?php echo "<p class='detalii_intrebare'><label class='label'>From Name: </label>".$this->result->getUserFrom()->getName()." ".$this->result->getUserFrom()->getSurname()." </p>"; ?>
+		
+				<?php echo "<p class='detalii_intrebare'><label class='label'>Comment: </label>".$this->result->getDescription()."</p>"; ?>
+				
+				<div class="raspuns_actions">
+					<h3>Actions</h3>
+					<a class="confirmDelete tipsyTrigger" href="<?php echo WEBROOT;?>comments/delete/id/<?php echo $this->result->getId();?>"  original-title="<?php echo Zend_Registry::get('translate')->_('admin_delete'); ?>" ><img src="<?php echo WEBROOT; ?>theme/admin/images/delete.gif" title="<?php echo Zend_Registry::get('translate')->_('admin_delete'); ?>" alt="<?php echo Zend_Registry::get('translate')->_('admin_delete'); ?>" /></a>	
+					<a class="tipsyTrigger fancybox" href="<?php echo WEBROOT;?>iframe/reply/id/<?php echo $this->result->getId();?>" original-title="Raspunde" ><img src="<?php echo WEBROOT; ?>theme/admin/images/email_edit.png" title="Reply" alt="Reply" /></a>	
+				</div>
+<div id="confirmDelete" title="<?php echo Zend_Registry::get('translate')->_(''); ?>" style="display:none;">
+	<?php echo Zend_Registry::get('translate')->_(''); ?>
+</div>
+<?php if($this->itemCountPerPage < $this->totalItemCount){?>
+	<?php echo $this->result;?>
+<?php }?>
+<script type="text/javascript">
+$(document).ready(function(){
+		$('.fancybox').fancybox({
+		'padding'	 : 0,
+		'openEffect' : 'elastic',
+		'type'		 : 'iframe',
+		'width'		 : 960,
+		'height'	 : 480,
+		'resize'	 : false,
+		'autoSize'	 : false
+		});
+		$('.confirmDelete').click(function(){
+			var link = $(this);
+			$("#confirmDelete").dialog({
+				bgiframe: true,
+				height: 140,
+				width: 400,
+				modal: true,
+				buttons:{
+					'<?php echo Zend_Registry::get('translate')->_('yes'); ?>': function(){
+						$(this).dialog('close').dialog('destroy');
+						window.location.href = link.attr('href');
+					},
+					'<?php echo Zend_Registry::get('translate')->_('no'); ?>': function(){
+						$(this).dialog('close').dialog('destroy');
+						window.location.reload();
+					}
+				}
+			});
+			return false;
+		});
+});
+</script>
+	

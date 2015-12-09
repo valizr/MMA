@@ -1,0 +1,17 @@
+<!-- BEGIN: Department header -->
+<div id="center">
+	<div class="main_wrap">
+		<h1 class="main_title"><?php echo Zend_Registry::get('translate')->_('admin_add'); ?></h1>
+		<button class="submit" onclick="location.href='<?php echo WEBROOT; ?>shops '"<?php echo $this->type; ?> title="<?php echo Zend_Registry::get('translate')->_('back'); ?>"><?php echo Zend_Registry::get('translate')->_('back'); ?></button>
+	</div>
+	<?php echo $this->form; ?>
+</div>
+<!-- END: Department header -->
+
+<!-- BEGIN: Show error messages -->
+<?php if(!empty($this->message)):?>
+	<?php foreach($this->message as $value):?>
+		<center><?php echo $value; ?></center>
+	<?php endforeach; ?>
+<?php endif;?>
+<!-- END: Show error messages -->

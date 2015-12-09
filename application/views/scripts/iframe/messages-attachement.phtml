@@ -1,0 +1,21 @@
+<table class="load_files"></table> <!--	show uploaded files-->
+
+<script type="text/javascript">
+$(document).ready(function(){	
+	//BEGIN:Show saved files
+	var messageId = <?php echo $this->id; ?>;	
+	// load files
+	$.post('<?php echo WEBROOT ?>ajax/view-saved-message-files', {'messageId':messageId,'type':'messages'}, function(dataFile) 
+	{
+		try 
+		{
+			var itemsFile = eval('(' + dataFile + ')');
+		} catch (e) {}
+		if(itemsFile) 
+		{ 
+			$('.load_files').append(itemsFile);
+		}
+	});	
+	//END:show saved files
+});
+</script>

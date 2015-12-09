@@ -1,0 +1,59 @@
+<div class="form_sidebar">
+	<form class="addForms" method="<?php echo $this->element->getMethod();?>" action="<?php echo $this->element->getAction();?>" id="<?php echo $this->element->getId();?>" enctype="<?php echo $this->element->getEncType();?>">
+	<label for="filter_by">Filter by</label>	
+<!--dupa nume-->	
+				<?php echo $this->{$this->element->nameSearch->helper}(
+					$this->element->nameSearch->getName(),
+					$this->element->nameSearch->getValue(),
+					$this->element->nameSearch->getAttribs()
+				);?>
+				<?php if(($this->element->nameSearch->getMessages())){ echo  $this->formErrors($this->element->nameSearch->getMessages());}?>	
+<!--dupa persoana care a adaugat proiectul-->	
+				<?php echo $this->{$this->element->idGroupSearch->helper}(
+					$this->element->idGroupSearch->getName(),
+					$this->element->idGroupSearch->getValue(),
+					$this->element->idGroupSearch->getAttribs(),
+					$this->element->idGroupSearch->getMultiOptions()
+				);?>
+				<?php if(($this->element->idGroupSearch->getMessages())){ echo  $this->formErrors($this->element->idGroupSearch->getMessages());}?>	
+<!-- SUBMIT -->
+                                <?php echo $this->{$this->element->fromDate->helper}(
+					$this->element->fromDate->getName(),
+					$this->element->fromDate->getValue(),
+					$this->element->fromDate->getAttribs()
+				);?>
+                                <?php if(($this->element->fromDate->getMessages())){ echo  $this->formErrors($this->element->fromDate->getMessages());}?>	
+                                <?php echo $this->{$this->element->toDate->helper}(
+					$this->element->toDate->getName(),
+					$this->element->toDate->getValue(),
+					$this->element->toDate->getAttribs()
+				);?>
+                                <?php if(($this->element->toDate->getMessages())){ echo  $this->formErrors($this->element->toDate->getMessages());}?>	
+
+				<?php echo $this->{$this->element->searchProduct->helper}(
+					$this->element->searchProduct->getName(),
+					$this->element->searchProduct->getValue(),
+					$this->element->searchProduct->getAttribs()
+				);?>                                
+		<a href="<?php echo WEBROOT;?>recurrent-income" class="reset">Reset</a>
+	</form>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#<?php echo $this->element->getId();?>').validationEngine('attach', {promptPosition : "centerRight"});
+	$("#fromDate").datepicker({
+		onSelect: function(dateText, inst) {
+			date = new Date(inst.selectedYear, inst.selectedMonth, inst.selectedDay);
+			var finalDate = ($.datepicker.formatDate( "yy-mm-dd", date));
+			$('#fromDate').val($.datepicker.formatDate( "mm/dd/yy", date));
+		}	
+	});
+        $("#toDate").datepicker({
+		onSelect: function(dateText, inst) {
+			date = new Date(inst.selectedYear, inst.selectedMonth, inst.selectedDay);
+			var finalDate = ($.datepicker.formatDate( "yy-mm-dd", date));
+			$('#toDate').val($.datepicker.formatDate( "mm/dd/yy", date));
+		}	
+	});
+});
+</script>

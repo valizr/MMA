@@ -1,0 +1,97 @@
+<div id="center">
+<!--afisare mesaje de eroare/succes-->
+<div class="page_wrap">
+	<h1 class="main_title">Stores</h1>
+	<div class="inside_wrap">
+	<?php if (!empty($this->message)) : ?>
+		<?php foreach ($this->message as $value) : ?>
+			<center class="w670"><?php echo $value; ?></center>
+		<?php endforeach; ?>
+		<div class="clear"></div>
+	<?php endif; ?>
+	<p>All stores <span>(<?php echo ($this->totalItemCount) ? $this->totalItemCount : '0'; ?>)</span></p>
+	<div class="filter_wrap">
+		<?php echo $this->form; ?> <!--box search-->
+	</div>
+	<?php if($this->search) :  ?>
+		<div class="search_wrapper">
+			<p>Search results after:  <?php echo ($this->search['name']) ? '<span>Name - '.$this->search['name'].';</span>' : '' ; ?></p>
+		</div>
+	<?php endif; ?>
+<?php if($this->result):?>
+	<div class='listing_wrap'>
+		<table class='inside_table' cellspacing="0" cellpadding = "0" width="100%">
+			<colgroup>
+				<col width="570px"/>
+				<col width="100px"/>										
+			</colgroup>
+			<tr>
+				<th>Store</th>
+				<th>Edit</th>
+			</tr>
+	<?php foreach ($this->result as $value): ?>
+		<tr>
+			<td>
+				<div class='product_col1'> <?php echo $value->getName(); ?></div>
+			</td>
+			<td>
+				<div>
+					<a class="edit tipsyTrigger" <?php echo Needs_Roles::hasAccess( Zend_Registry::get('user')->getIdRole(), 'edit_users',true); ?> href="<?php echo WEBROOT;?>shops/edit/id/<?php echo $value->getId();?>/page/<?php echo $this->page ?>"></a>
+					<a class="delete confirmDelete tipsyTrigger" <?php echo Needs_Roles::hasAccess( Zend_Registry::get('user')->getIdRole(), 'delete_users',true); ?> href="<?php echo WEBROOT;?>shops/delete/id/<?php echo $value->getId();?>/page/<?php echo $this->page ?>"></a>
+				</div>
+			</td>
+		</tr>
+	<?php endforeach ?>
+		</table>
+		<?php if($this->itemCountPerPage < $this->totalItemCount){?>
+			<?php echo $this->result;?>
+		<?php }?>
+	</div>
+<?php endif; ?>
+</div>
+</div>
+</div>
+<div id="right">
+	<div class="search_right">
+		<form id="searchForm" action="">
+			<input type="text" id="search" name="search" placeholder="Search platform">
+			<input type="submit" id="searchSubmit" name="searchSubmit" value="">
+		</form>
+	</div>
+	<div class="inner_right">
+		<div class="addUser">
+			<p>Add new store</p>
+			<?php echo $this->formAdd; ?>
+		</div>
+	</div>	
+</div>
+<div id="confirmDelete" title="Delete shop" style="display:none;">
+Are you sure you want to delete the shop?
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$(".pagination select").uniform();
+		$("#cashRegistry").uniform();
+		$('.confirmDelete').click(function() {
+			var link = $(this);
+			$("#confirmDelete").dialog({
+				bgiframe: true,
+				height: 140,
+				width: 400,
+				modal: true,
+				buttons: {
+					'<?php echo Zend_Registry::get('translate')->_('yes'); ?>': function() {
+						$(this).dialog('close').dialog('destroy');
+						window.location.href = link.attr('href');
+					},
+					'<?php echo Zend_Registry::get('translate')->_('no'); ?>': function() {
+						$(this).dialog('close').dialog('destroy');
+						window.location.reload();
+					}
+				}
+			});
+			return false;
+		});
+	});
+</script>

@@ -1,0 +1,108 @@
+<div id="center">
+	<div class="main_wrap">
+		<h1 class="main_title"><?php echo Zend_Registry::get('translate')->_('admin_menu_categories'); ?></h1>
+		<div class="inside_wrap">
+			<!--afisare mesaje de eroare/succes-->
+			<?php if(!empty($this->message)) : ?>
+				<?php foreach($this->message as $value) : ?>
+					<center class="w670"><?php echo $value; ?></center>
+				<?php endforeach; ?>
+				<div class="clearfix">&nbsp;</div>
+			<?php endif; ?>
+                                <p class="desc"><?php echo Zend_Registry::get('translate')->_('admin_menu_all_categories'); ?> <span><strong><?php echo ($this->totalItemCount) ? $this->totalItemCount : '0'; ?></strong></span></p>
+			<div class="filter_wrap">
+				<?php echo $this->formsearch; ?>
+			</div>
+			<?php if($this->search) :  ?>
+				<div class="search_wrapper">
+					<p><?php echo Zend_Registry::get('translate')->_('admin_search_results_after'); ?>:	<?php echo ($this->search['nameSearch']) ? '<span>'.Zend_Registry::get('translate')->_('admin_category_name_label').' - '.$this->search['nameSearch'].';</span>' : '' ; ?></p>
+				</div>
+			<?php endif; ?>
+			<div class='listing_wrap'>
+				<table class='inside_table' cellspacing="0" cellpadding = "0" width="100%">
+					<colgroup>
+						<col width="570px"/>
+						<col width="100px"/>
+					</colgroup>
+					<tr>
+						<th><?php echo Zend_Registry::get('translate')->_('admin_menu_categories'); ?></th>
+						<!--<th>Products in group</th>-->
+						<th><?php echo Zend_Registry::get('translate')->_('admin_category_edit'); ?></th>
+					</tr>
+	<?php if($this->result){?>
+		<?php $result = Needs_Tools::paginatorToModel($this->result,'Default_Model_Groups');?>
+		<?php foreach($result as $value){?>
+			<tr>
+				<td>
+					<div class='product_col1'><?php echo $value->getName(); ?></div>
+				</td>
+				<!--<td class="product_group_number"><?php //echo $value->getProductsNr(); ?> products</td>-->
+				<td>
+					<div>
+						<a href="<?php echo WEBROOT;?>groups/index/idGroup/<?php echo $value->getId();?>" class="edit tipsyTrigger"></a>
+						<a class="delete confirmDelete tipsyTrigger" href="<?php echo WEBROOT;?>groups/delete/id/<?php echo $value->getId();?>"></a>
+					</div>
+				</td>
+			</tr>
+		<?php }?>	
+		</table>
+		<?php if($this->itemCountPerPage < $this->totalItemCount){?>
+			<?php echo $this->result;?>
+		<?php }?>	
+	<?php } ?>
+				
+			</div>
+		</div>
+	</div>
+</div>
+<div id="right">
+	<div class="search_right">
+		<form id="searchForm" action="">
+			<input type="text" id="search" name="search" placeholder="Search platform">
+			<input type="submit" id="searchSubmit" name="searchSubmit" value="">
+		</form>
+	</div>
+	<div class="inner_right">
+			<div class="addUser">
+				<p><?php if ($this->idGroup) echo Zend_Registry::get('translate')->_('editare_categorii');
+                                    else echo Zend_Registry::get('translate')->_('admin_menu_add_new_category'); ?></p>
+				<?php echo $this->form; ?>
+			</div>
+	</div>	
+</div>
+<div id="confirmDelete" title="Delete group" style="display:none;">
+	<?php echo Zend_Registry::get('translate')->_('admin_menu_are_you_sure_category'); ?>
+</div>
+
+<script type="text/javascript">
+$(document).ready(function(){
+        $("#color").spectrum({
+            showInput: true,
+            showButtons: false,
+            color: "<?php echo $this->color;?>"
+        });
+	$("#nameSearch").uniform();
+        $("#type").uniform();
+	$(".pagination select").uniform();
+	$('.confirmDelete').click(function(){
+		var link = $(this);
+		$("#confirmDelete").dialog({
+			bgiframe: true,
+			height: 140,
+			width: 400,
+			modal: true,
+			buttons:{
+				'<?php echo Zend_Registry::get('translate')->_('yes'); ?>': function(){
+					$(this).dialog('close').dialog('destroy');
+					window.location.href = link.attr('href');
+				},
+				'<?php echo Zend_Registry::get('translate')->_('no'); ?>': function(){
+					$(this).dialog('close').dialog('destroy');
+					window.location.reload();
+				}
+			}
+		});
+		return false;
+	});
+});
+</script>

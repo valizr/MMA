@@ -1,0 +1,33 @@
+<?php echo $this->doctype('HTML5'); ?>
+<html>
+<head>
+	<?php echo $this->headTitle(); ?>
+	<?php echo $this->headMeta()->appendName('keywords', 'registru, intrari, iesiri'); ?>
+	<link rel="icon" type="images/jpeg" href="<?php echo WEBROOT;?>/theme/10pteuropa/favicon.ico" />
+	<?php echo $this->headMeta()
+		->appendHttpEquiv('Content-Type', 'text/html; charset=UTF-8')
+		->appendHttpEquiv('Content-Language', 'ro-RO')
+		->appendHttpEquiv('expires', 'Wed, 26 Feb 2013 08:21:57 GMT')
+		->appendHttpEquiv('pragma', 'no-cache')
+		->appendHttpEquiv('Cache-Control', 'no-cache');
+	?>
+	<?php echo $this->headLink();?>
+	<?php echo $this->headStyle();?>
+	<?php echo $this->headScript();?>
+</head>
+	<body>
+		<?php echo $this->render('header.phtml') ?>
+		<div id="main_content_wrap" class="container_12">			
+			<?php echo $this->layout()->content ?>
+		</div>
+		<div class="clear"></div>
+		<?php echo $this->render('footer.phtml');?>
+		<script type="text/javascript">
+		$(document).ready(function() {
+			$(".canhide").click(function() {
+				$(this).fadeOut(700);
+			});
+		});
+		</script>		
+	</body>
+</html>
