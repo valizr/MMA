@@ -1,7 +1,7 @@
 <?php
-$servername = "restaurante-baiamare.ro";
-$username = "restabm_restaur";
-$password = "trinity";
+$servername = "https://mobile-site.ro";
+$username = "mobilesi_mma";
+$password = "trencad1$";
 
 // Create connection
 $conn = new mysqli($servername, $username, $password);
